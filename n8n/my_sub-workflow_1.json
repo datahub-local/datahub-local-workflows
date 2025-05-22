@@ -45,7 +45,7 @@
   "pinData": {},
   "repo_name": "datahub-local-workflows",
   "repo_owner": "datahub-local",
-  "repo_path": "n8n/",
+  "repo_path": "n8n",
   "settings": {
     "executionOrder": "v1"
   },
