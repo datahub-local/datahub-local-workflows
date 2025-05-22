@@ -1,0 +1,57 @@
+{
+  "active": false,
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Replace me with your logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-21T14:25:30.374Z",
+  "fileName": "my_sub-workflow_1.json",
+  "id": "xVyatywrdsER57MN",
+  "isArchived": true,
+  "meta": null,
+  "name": "My Sub-Workflow 1",
+  "nodes": [
+    {
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        260,
+        340
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "b5942df6-0160-4ef7-965d-57583acdc8aa",
+      "name": "Replace me with your logic",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        520,
+        340
+      ],
+      "parameters": {}
+    }
+  ],
+  "pinData": {},
+  "repo_name": "datahub-local-workflows",
+  "repo_owner": "datahub-local",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-21T14:26:18.513Z",
+  "versionId": "76d708bd-2775-4c32-a70b-2cc17a6cafa2"
+}
