@@ -141,11 +141,11 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are a writing assistant for creating LinkedIn posts.\n\n{{ $('set_workflow_vars').item.json.RULES }}\n\nExtra Rules:\n\n{{ $('init_workflow').item.json.EXTRA_RULES }}\n\nExample Input:\n\n<url>https://example.com/small-data-ai</url>\n<content>\nWhile the world is obsessed with big data, some researchers and companies are making huge strides by focusing on small data—more curated, higher quality datasets. These lean datasets are improving training efficiency and model explainability. This shift is especially important for businesses that can't afford massive infrastructure but still want to leverage AI responsibly.\n</content>\n\nExample Output:\n\nBig data gets all the attention—but what if small, well-crafted datasets could drive smarter, faster AI innovation?\n\nHere's what stood out to me:\n\n🔍 Small, curated datasets improve model accuracy and explainability\n⚡ They're faster and more efficient to train on—no need for massive compute\n💡 Ideal for organizations with limited resources that still want real AI impact\n\nDo you think we're overvaluing data quantity at the expense of quality?\n\n👉 Read the full post: https://example.com/small-data-ai\n\n#AIethics #SmallData #DataScience\n\n\nInput:\n\n<url>{{ $('init_workflow').item.json.URL }}</url>\n<content>\n{{ $('init_workflow').item.json.CONTENT }}\n</content>",
+        "text": "=You are a writing assistant for creating LinkedIn posts.\n\n{{ $('set_workflow_vars').item.json.RULES }}\n\nExtra Rules:\n\n{{ $('init_workflow').item.json.EXTRA_RULES }}\n\nExample Input:\n\n<content>\nWhile the world is obsessed with big data, some researchers and companies are making huge strides by focusing on small data—more curated, higher quality datasets. These lean datasets are improving training efficiency and model explainability. This shift is especially important for businesses that can't afford massive infrastructure but still want to leverage AI responsibly.\n</content>\n\nExample Output:\n\nBig data gets all the attention—but what if small, well-crafted datasets could drive smarter, faster AI innovation?\n\nHere's what stood out to me:\n\n🔍 Small, curated datasets improve model accuracy and explainability\n⚡ They're faster and more efficient to train on—no need for massive compute\n💡 Ideal for organizations with limited resources that still want real AI impact\n\nDo you think we're overvaluing data quantity at the expense of quality?\n\n👉 Read the full post: SOME_LINK\n\n#AIethics #SmallData #DataScience\n\n\nInput:\n\n<content>\n{{ $('init_workflow').item.json.CONTENT }}\n</content>",
         "messages": {
           "messageValues": [
             {
-              "message": "=You are an expert social media and LinkedIn content writer.\n\nYou will be provided with:\n- The content of an external post\n- A Link to the post\n- Specific instructions from the user"
+              "message": "=You are an expert social media and LinkedIn content writer.\n\nYou will be provided with:\n- The content of an external post\n- Specific instructions from the user"
             }
           ]
         }
@@ -290,7 +290,7 @@
             {
               "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
               "name": "text",
-              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim() || $json.text }}",
+              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
               "type": "string"
             }
           ]
@@ -342,7 +342,7 @@
             {
               "id": "3278d703-6413-4117-95ef-f5e639096d2b",
               "name": "RULES",
-              "value": "=Strict Structure format:\n1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.\n2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.\n3. Reflection: End with a one-sentence question that invites engagement.\n4. a URL to the content preceded by a text like \"For more info\" or \"Read the original post here:\". Use the URL provided as input.\n5. CTA + Hashtags: One sentence with the original link and up to 3 hashtags. Hashtags must be on a new line.\n\nRules:\n- Never change the structure with the marked order.\n- No use more that 5 bullet points.\n- Output ONLY the final LinkedIn post content inside a \"<output></output>\".\n- Keep the tone positive, inclusive, and professional.\n- Do not summarize everything—focus on key insights or reflections only.\n- Total output: Maximum {{ $('init_workflow').item.json.MAX_WORDS }} words.\n- Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.\n- Never write in first person.\n- Emojis: Optional, but no more than 4.\n- Use 2 line breaks between every sections.\n- Ensure that the valid URL is provided.",
+              "value": "=Strict Structure format:\n1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.\n2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.\n3. Reflection: End with a one-sentence question that invites engagement.\n4. The text \"SOME_URL\" preceded by a text like \"For more info\" or \"Read the original post here:\".\n5. CTA + Hashtags: One sentence with the original link and up to 3 hashtags. Hashtags must be on a new line.\n\nRules:\n- Never change the structure with the marked order.\n- No use more that 5 bullet points.\n- Output ONLY the final LinkedIn post content inside a \"<output></output>\".\n- Keep the tone positive, inclusive, and professional.\n- Do not summarize everything—focus on key insights or reflections only.\n- Total output: Maximum {{ $('init_workflow').item.json.MAX_WORDS }} words.\n- Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.\n- Never write in first person.\n- Emojis: Optional, but no more than 4.\n- Use 2 line breaks between every sections.",
               "type": "string"
             },
             {
@@ -378,7 +378,7 @@
       "typeVersion": 3.4,
       "position": [
         300,
-        185
+        180
       ],
       "id": "44e6348d-ad4f-474e-b40a-b265133b141e",
       "name": "set_workflow_vars"
@@ -390,7 +390,7 @@
             {
               "id": "2b0bc19a-ed15-45a0-9022-a59e2c9e56d1",
               "name": "text",
-              "value": "={{ $('create_post_ai').item.json.text }}",
+              "value": "={{ $('parse_llm_output').item.json.text }}",
               "type": "string"
             }
           ]
@@ -410,13 +410,13 @@
   "pinData": {},
   "repo_name": "datahub-local-workflows",
   "repo_owner": "datahub-local",
-  "repo_path": "n8n/",
+  "repo_path": "n8n",
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-05-21T17:49:20.267Z",
-  "versionId": "987286c2-7b9a-4a44-98ad-bd4462411171"
+  "updatedAt": "2025-05-22T08:07:37.368Z",
+  "versionId": "88ab996e-91e4-4c2e-b529-c8de81ad4e8a"
 }
