@@ -1,93 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Ollama Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "create_post_ai",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "check_rules_llm",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Form": {
-      "main": [
-        []
-      ]
-    },
-    "Slack": {
-      "main": [
-        [
-          {
-            "node": "Form",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "on_form_submission": {
-      "main": [
-        [
-          {
-            "node": "set_form_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "extract_content": {
-      "main": [
-        [
-          {
-            "node": "convert_2_Markdown",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "download_post": {
-      "main": [
-        [
-          {
-            "node": "extract_content",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "convert_2_Markdown": {
-      "main": [
-        [
-          {
-            "node": "create_post_ai",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "create_post_ai": {
-      "main": [
-        [
-          {
-            "node": "parse_output",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "accept_post": {
       "main": [
         [
@@ -99,98 +12,18 @@
         ]
       ]
     },
-    "set_static_vars": {
-      "main": [
-        [
-          {
-            "node": "download_post",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "parse_output": {
-      "main": [
-        [
-          {
-            "node": "check_rules_llm",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "set_form_vars": {
-      "main": [
-        [
-          {
-            "node": "set_static_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "check_rules_llm": {
-      "main": [
-        [
-          {
-            "node": "parse_output_2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "parse_output_2": {
-      "main": [
-        [
-          {
-            "node": "switch_check_rules_llm",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "switch_check_rules_llm": {
-      "main": [
-        [
-          {
-            "node": "accept_post",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "set_error_max_tries",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "create_post_ai",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "switch_user_accept": {
       "main": [
         [
           {
-            "node": "Slack",
+            "node": "send_2_linkedin",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "create_post_ai",
+            "node": "execute_post_creator",
             "type": "main",
             "index": 0
           }
@@ -208,18 +41,96 @@
       "main": [
         [
           {
-            "node": "Form",
+            "node": "end_form",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "set_error_max_tries": {
+    "send_2_linkedin": {
       "main": [
         [
           {
-            "node": "Form",
+            "node": "send_published_notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_published_notification": {
+      "main": [
+        [
+          {
+            "node": "end_form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "init_form": {
+      "main": [
+        [
+          {
+            "node": "parse_form_input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_form_input": {
+      "main": [
+        [
+          {
+            "node": "download_content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_content": {
+      "main": [
+        [
+          {
+            "node": "execute_post_creator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "end_form": {
+      "main": [
+        []
+      ]
+    },
+    "check_subworkflow_error": {
+      "main": [
+        [
+          {
+            "node": "accept_post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "end_form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_post_creator": {
+      "main": [
+        [
+          {
+            "node": "check_subworkflow_error",
             "type": "main",
             "index": 0
           }
@@ -238,200 +149,25 @@
   "nodes": [
     {
       "parameters": {
-        "model": "gemma3:4b-it-qat",
-        "options": {
-          "keepAlive": "5m"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmOllama",
-      "typeVersion": 1,
-      "position": [
-        1644,
-        -65
-      ],
-      "id": "2d4c1f5f-efea-4d97-b353-76c63bdc36d7",
-      "name": "Ollama Model",
-      "credentials": {
-        "ollamaApi": {
-          "id": "w7dU7nKm7FYuEJdd",
-          "name": "Ollama account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "select": "channel",
-        "channelId": {
-          "__rl": true,
-          "value": "C08RQNXQV3P",
-          "mode": "list",
-          "cachedResultName": "workflows"
-        },
-        "text": "=Published Post ({{ $('on_form_submission').item.json.URL }}) in LinkedIn!",
-        "otherOptions": {
-          "includeLinkToWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.slack",
-      "typeVersion": 2.3,
-      "position": [
-        2812,
-        -160
-      ],
-      "id": "47bd0b7c-6d65-4f71-a571-c70b71178409",
-      "name": "Slack",
-      "webhookId": "9b312988-a3b0-4385-a7a7-2ca3e66c8f7f",
-      "credentials": {
-        "slackApi": {
-          "id": "DszMmPE7WwOjHQjz",
-          "name": "Slack account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "completion",
-        "completionTitle": "Form Ended",
-        "completionMessage": "=ERROR: {{ $json.ERROR || \"NONE\" }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.form",
-      "typeVersion": 1,
-      "position": [
-        3040,
-        -160
-      ],
-      "id": "1f02c0c8-d554-40b1-ac2c-8e98fb42b80d",
-      "name": "Form",
-      "webhookId": "b89f66a9-0683-4e89-8709-0befa5ae58c3"
-    },
-    {
-      "parameters": {
-        "formTitle": "LinkedIn Post Worflow",
-        "formFields": {
-          "values": [
-            {
-              "fieldLabel": "URL",
-              "placeholder": "https://example.com/some_article",
-              "requiredField": true
-            },
-            {
-              "fieldLabel": "MAX_WORDS",
-              "fieldType": "=number",
-              "placeholder": "150",
-              "fieldOptions": {
-                "values": [
-                  {}
-                ]
-              }
-            },
-            {
-              "fieldLabel": "EXTRA_PROMPT",
-              "fieldType": "textarea"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.2,
-      "position": [
-        -360,
-        15
-      ],
-      "id": "7e699ae3-3801-4a64-9c7c-b9b4d72937fb",
-      "name": "on_form_submission",
-      "webhookId": "e9400822-40ab-4a0f-a01f-a191dd52a960"
-    },
-    {
-      "parameters": {
-        "html": "={{ $json.body }}"
-      },
-      "type": "CUSTOM.webpageContentExtractor",
-      "typeVersion": 1,
-      "position": [
-        520,
-        15
-      ],
-      "id": "be42d78f-36a5-4bd3-b8d2-eeb9b2778597",
-      "name": "extract_content"
-    },
-    {
-      "parameters": {
-        "url": "={{ $json.URL }}",
-        "options": {
-          "browserWSEndpoint": "ws://datahub-local-core-automation-n8n-chromium:3000?token=TOKEN-1234567890"
-        }
-      },
-      "type": "CUSTOM.puppeteer",
-      "typeVersion": 1,
-      "position": [
-        300,
-        15
-      ],
-      "id": "6fd34f4c-60d1-470d-aff6-0863c48c7b32",
-      "name": "download_post"
-    },
-    {
-      "parameters": {
-        "html": "={{ $json.content }}",
-        "destinationKey": "mkdown",
-        "options": {
-          "maxConsecutiveNewlines": 2
-        }
-      },
-      "type": "n8n-nodes-base.markdown",
-      "typeVersion": 1,
-      "position": [
-        740,
-        15
-      ],
-      "id": "0b296aa6-d54c-4f66-90f0-372cfbf46e09",
-      "name": "convert_2_Markdown"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=You are a writing assistant for creating LinkedIn posts.\n\n{{ $('set_static_vars').item.json.RULES }}\n\nExtra Requirements:\n{{ $('set_form_vars').item.json.EXTRA_PROMPT }}\n\nExample Input:\n\n<url>https://example.com/small-data-ai</url>\n<content>\nWhile the world is obsessed with big data, some researchers and companies are making huge strides by focusing on small data—more curated, higher quality datasets. These lean datasets are improving training efficiency and model explainability. This shift is especially important for businesses that can't afford massive infrastructure but still want to leverage AI responsibly.\n</content>\n\nExample Output:\n\nBig data gets all the attention—but what if small, well-crafted datasets could drive smarter, faster AI innovation?\n\nHere's what stood out to me:\n\n🔍 Small, curated datasets improve model accuracy and explainability\n⚡ They're faster and more efficient to train on—no need for massive compute\n💡 Ideal for organizations with limited resources that still want real AI impact\n\nDo you think we're overvaluing data quantity at the expense of quality?\n\n👉 Read the full post: https://example.com/small-data-ai\n\n#AIethics #SmallData #DataScience\n\n\nInput:\n\n<url>{{ $('set_form_vars').item.json.URL }}</url>\n<content>\n{{ $json.mkdown }}\n</content>",
-        "messages": {
-          "messageValues": [
-            {
-              "message": "=You are an expert social media and LinkedIn content writer.\n\nYou will be provided with:\n- The content of an external post\n- A Link to the post\n- Specific instructions from the user"
-            }
-          ]
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.6,
-      "position": [
-        960,
-        15
-      ],
-      "id": "59d69b26-164b-4a2c-bb4e-6c7916eba5b2",
-      "name": "create_post_ai",
-      "alwaysOutputData": false
-    },
-    {
-      "parameters": {
         "formFields": {
           "values": [
             {
               "fieldType": "html",
-              "html": "<div class=\"linkedin-preview\">\n  <p>Waiting for approval to share on LinkedIn:</p>\n  <ul>\n    <li>\n      <strong>URL:</strong>\n      <span>{{ $('set_form_vars').item.json.URL }}</span>\n    </li>\n    <li>\n      <strong>POST:</strong>\n      <pre class=\"post-content\">{{ $('parse_output').item.json.text }}</pre>\n    </li>\n  </ul>\n</div>"
+              "html": "<div>\n  <h3>Waiting for your approval to share on LinkedIn...</h3>\n  <p>\n    <strong>URL</strong>\n  </p>\n  <p>\n    <span>{{ $('parse_form_input').item.json.URL }}</span>\n  </p>\n  <p>\n    <strong>CONTENT</strong>\n  </p>\n  <p>\n    <pre>{{ $json.text }}</pre>\n  </p>\n</div>"
             },
             {
-              "fieldLabel": "confirm",
+              "fieldLabel": "Confirm?",
               "fieldType": "dropdown",
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "accept"
+                    "option": "YES"
                   },
                   {
-                    "option": "cancel"
+                    "option": "CANCEL"
                   },
                   {
-                    "option": "retry"
+                    "option": "RETRY"
                   }
                 ]
               },
@@ -441,14 +177,14 @@
         },
         "options": {
           "buttonLabel": "Continue",
-          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 448px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}\n\n.linkedin-preview {\n  max-width: 600px;\n  margin: 1em auto;\n  padding: 1em;\n  border: 1px solid #e1e9ee;\n  border-radius: 8px;\n  background: #f8fafb;\n  font-family: Arial, sans-serif;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.linkedin-preview ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\n.linkedin-preview li {\n  margin-bottom: 1em;\n  word-break: break-word;\n}\n\n.linkedin-preview strong {\n  color: #0077b5;\n}\n\n.linkedin-preview .post-content {\n  background: #fff;\n  border: 1px solid #dbe5ea;\n  border-radius: 4px;\n  padding: 0.75em;\n  font-size: 1em;\n  white-space: pre-wrap;\n  word-break: break-word;\n  overflow-x: auto;\n}\n\n@media (max-width: 600px) {\n  .linkedin-preview {\n    padding: 0.5em;\n    max-width: 98vw;\n  }\n  .linkedin-preview .post-content {\n    font-size: 0.95em;\n    padding: 0.5em;\n  }\n}"
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 448px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}\n\npre {\n    white-space: pre-wrap;       /* Since CSS 2.1 */\n    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */\n    white-space: -pre-wrap;      /* Opera 4-6 */\n    white-space: -o-pre-wrap;    /* Opera 7 */\n    word-wrap: break-word;       /* Internet Explorer 5.5+ */\n}"
         }
       },
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
       "position": [
-        2372,
-        -185
+        400,
+        -580
       ],
       "id": "9821ad46-b710-4145-a624-16d75c49c07a",
       "name": "accept_post",
@@ -456,131 +192,6 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "3278d703-6413-4117-95ef-f5e639096d2b",
-              "name": "RULES",
-              "value": "=Strict Structure format:\n1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.\n2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.\n3. Reflection: End with a one-sentence question that invites engagement.\n4. a URL to the content preceded by a text like \"For more info\" or \"Read the original post here:\". Use the URL provided as input.\n5. CTA + Hashtags: One sentence with the original link and up to 3 hashtags. Hashtags must be on a new line.\n\nRules:\n- Never change the structure with the marked order.\n- No use more that 5 bullet points.\n- Output ONLY the final LinkedIn post content inside a \"<output></output>\".\n- Keep the tone positive, inclusive, and professional.\n- Do not summarize everything—focus on key insights or reflections only.\n- Total output: Maximum {{ $('set_form_vars').item.json.MAX_WORDS }} words.\n- Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.\n- Never write in first person.\n- Emojis: Optional, but no more than 4.\n- Use 2 line breaks between every sections.\n- Ensure that the valid URL is provided.",
-              "type": "string"
-            },
-            {
-              "id": "97804ec0-c646-438a-bbc8-fad3b1081264",
-              "name": "MAX_TRIES",
-              "value": 3,
-              "type": "number"
-            }
-          ]
-        },
-        "includeOtherFields": true,
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        80,
-        15
-      ],
-      "id": "5e551312-b748-4cea-b4d1-b6fbfdf38979",
-      "name": "set_static_vars"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
-              "name": "text",
-              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim() || $json.text }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1336,
-        -285
-      ],
-      "id": "cf9cd4ac-4800-4363-8a86-78201c1f03a7",
-      "name": "parse_output"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "98368679-ae9b-49ca-a79c-3eb2a9532430",
-              "name": "URL",
-              "value": "={{ $json.URL || \"https://www.alvsanand.com/blog/2024/04/02/yet-another-kubernetes-to-do-list/\" }}",
-              "type": "string"
-            },
-            {
-              "id": "8f072eda-32d8-438f-95ba-a50f23d7703f",
-              "name": "EXTRA_PROMPT",
-              "value": "={{ $json.EXTRA_PROMPT }}",
-              "type": "string"
-            },
-            {
-              "id": "dae78c99-7039-465d-af4a-c1738c50eed5",
-              "name": "MAX_WORDS",
-              "value": "={{ $json.MAX_WORDS || 150 }}",
-              "type": "number"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -140,
-        15
-      ],
-      "id": "bd057123-ae25-4d6d-97b5-539a7b0dea50",
-      "name": "set_form_vars"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=You are a strict validator for LinkedIn post formatting. Review the provided text and return:\n\n<output>true</output>  \n— if ALL the following conditions are met.\n\n<output>false</output>  \n— if ANY rule is violated.\n\nValidation Criteria:\n\n{{ $('set_static_vars').item.json.RULES }}\n\nExtra Requirements:\n{{ $('set_form_vars').item.json.EXTRA_PROMPT }}\n\n- Do not return any explanation. Return only <output>true</output> or <output>false</output> based on the evaluation.\n\nValidate input:\n<url>{{ $('set_form_vars').item.json.URL }}<url/>\n<text_2_validate>\n{{ $json.text }}\n<text_2_validate>"
-      },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.6,
-      "position": [
-        1556,
-        -285
-      ],
-      "id": "cd177a32-9692-4e18-b9a4-66a3da18ef1a",
-      "name": "check_rules_llm"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
-              "name": "text",
-              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim() || 111 }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1932,
-        -285
-      ],
-      "id": "4ee86dd1-699c-428f-b9f7-1b1453541d8c",
-      "name": "parse_output_2"
-    },
-    {
-      "parameters": {
         "rules": {
           "values": [
             {
@@ -593,70 +204,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.text }}",
-                    "rightValue": "true",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "026400c6-45e4-40f3-9a8a-b257a1e8c1f1"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "1b9690c4-cdcd-47f0-bb35-f302ecea849e",
-                    "leftValue": "={{ $runIndex }}",
-                    "rightValue": "={{ $('set_static_vars').item.json.MAX_TRIES }}",
-                    "operator": {
-                      "type": "number",
-                      "operation": "gt"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {
-          "fallbackOutput": "extra"
-        }
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        2152,
-        -285
-      ],
-      "id": "2707e5c3-8fa2-4c69-ae48-a74029edc741",
-      "name": "switch_check_rules_llm"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.confirm }}",
+                    "leftValue": "={{ $json['Confirm?'] }}",
                     "rightValue": "YES",
                     "operator": {
                       "type": "string",
@@ -679,7 +227,7 @@
                 "conditions": [
                   {
                     "id": "ff5900ad-ed83-4755-a621-d0a21c4cbc39",
-                    "leftValue": "={{ $json.confirm }}",
+                    "leftValue": "={{ $json['Confirm?'] }}",
                     "rightValue": "RETRY",
                     "operator": {
                       "type": "string",
@@ -702,7 +250,7 @@
                 "conditions": [
                   {
                     "id": "d02ebf8b-39af-4e99-8a2f-94ff2b8eb2d9",
-                    "leftValue": "={{ $json.confirm }}",
+                    "leftValue": "={{ $json['Confirm?'] }}",
                     "rightValue": "CANCEL",
                     "operator": {
                       "type": "string",
@@ -716,13 +264,15 @@
             }
           ]
         },
-        "options": {}
+        "options": {
+          "fallbackOutput": 2
+        }
       },
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        2592,
-        -60
+        620,
+        -500
       ],
       "id": "1c03ffd6-36da-497c-b5a2-fa6934388036",
       "name": "switch_user_accept"
@@ -734,7 +284,7 @@
             {
               "id": "6a77a0ee-e904-467b-9f9f-e04aa3ddf203",
               "name": "ERROR",
-              "value": "MAX LLM TRIES",
+              "value": "CANCELLED",
               "type": "string"
             }
           ]
@@ -744,20 +294,129 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2812,
-        40
+        1060,
+        -400
       ],
       "id": "39ceb77b-1f7a-424a-b394-a017d13f0296",
       "name": "set_error_cancelled"
     },
     {
       "parameters": {
+        "person": "ZK1zEXWkav",
+        "text": "={{ $('execute_post_creator').item.json.text }}",
+        "additionalFields": {
+          "visibility": "PUBLIC"
+        }
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -600
+      ],
+      "id": "5c35fd57-85db-46d5-b912-e46b37751f91",
+      "name": "send_2_linkedin",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "dNaa8BbpK1D8IDZZ",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C08RQNXQV3P",
+          "mode": "list",
+          "cachedResultName": "workflows"
+        },
+        "text": "=Published Post ({{ $('init_form').item.json.URL }}) in LinkedIn!",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1060,
+        -600
+      ],
+      "id": "47bd0b7c-6d65-4f71-a571-c70b71178409",
+      "name": "send_published_notification",
+      "webhookId": "9b312988-a3b0-4385-a7a7-2ca3e66c8f7f",
+      "credentials": {
+        "slackApi": {
+          "id": "DszMmPE7WwOjHQjz",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "LinkedIn Post Workflow",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "URL",
+              "placeholder": "https://example.com/some_article",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "MAX_WORDS",
+              "fieldType": "=number",
+              "placeholder": "150",
+              "fieldOptions": {
+                "values": [
+                  {}
+                ]
+              }
+            },
+            {
+              "fieldLabel": "EXTRA_RULES",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -700,
+        -500
+      ],
+      "id": "7e699ae3-3801-4a64-9c7c-b9b4d72937fb",
+      "name": "init_form",
+      "webhookId": "e9400822-40ab-4a0f-a01f-a191dd52a960"
+    },
+    {
+      "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "6a77a0ee-e904-467b-9f9f-e04aa3ddf203",
+              "id": "98368679-ae9b-49ca-a79c-3eb2a9532430",
+              "name": "URL",
+              "value": "={{ $json.URL || \"https://www.alvsanand.com/blog/2024/04/02/yet-another-kubernetes-to-do-list/\" }}",
+              "type": "string"
+            },
+            {
+              "id": "8f072eda-32d8-438f-95ba-a50f23d7703f",
+              "name": "EXTRA_PROMPT",
+              "value": "={{ $json.EXTRA_PROMPT }}",
+              "type": "string"
+            },
+            {
+              "id": "dae78c99-7039-465d-af4a-c1738c50eed5",
+              "name": "MAX_WORDS",
+              "value": "={{ $json.MAX_WORDS || 150 }}",
+              "type": "number"
+            },
+            {
+              "id": "0c0a5f34-23e6-47d0-928d-f01205dd4ee3",
               "name": "ERROR",
-              "value": "MAX LLM TRIES",
+              "value": "",
               "type": "string"
             }
           ]
@@ -767,17 +426,193 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2812,
-        -360
+        -480,
+        -500
       ],
-      "id": "aa9b1e3f-2c36-413c-8646-0e127d5c6bee",
-      "name": "set_error_max_tries"
+      "id": "bd057123-ae25-4d6d-97b5-539a7b0dea50",
+      "name": "parse_form_input"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "qUfjfWLGEjV96ljf",
+          "mode": "list",
+          "cachedResultName": "DownloadContent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "URL": "={{ $json.URL }}"
+          },
+          "matchingColumns": [
+            "URL"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -260,
+        -500
+      ],
+      "id": "909ffab8-5348-4f2f-9c28-75871fba2269",
+      "name": "download_content"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Finished LinkedIn Post Workflow",
+        "completionMessage": "=ERRORS: {{ $json.ERROR || \"None\" }}",
+        "limitWaitTime": true,
+        "resumeUnit": "minutes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -500
+      ],
+      "id": "1f02c0c8-d554-40b1-ac2c-8e98fb42b80d",
+      "name": "end_form",
+      "webhookId": "b89f66a9-0683-4e89-8709-0befa5ae58c3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.ERROR || \"\" }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "fc19486a-369f-4500-9f0c-d803d0e28a33"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        180,
+        -575
+      ],
+      "id": "b04048ec-9c4d-4f05-8eba-373c0acf74b9",
+      "name": "check_subworkflow_error"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PaeHFdCsdoVbQx11",
+          "mode": "list",
+          "cachedResultName": "LinkedPostCreator"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "MAX_WORDS": "={{ $('parse_form_input').item.json.MAX_WORDS }}",
+            "URL": "={{ $('parse_form_input').item.json.URL }}",
+            "EXTRA_RULES": "={{ $('parse_form_input').item.json.EXTRA_PROMPT }}",
+            "CONTENT": "={{ $json.contentMkdown }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "EXTRA_RULES",
+              "displayName": "EXTRA_RULES",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "CONTENT",
+              "displayName": "CONTENT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "MAX_WORDS",
+              "displayName": "MAX_WORDS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        -500
+      ],
+      "id": "7d4e170f-0906-47ee-a893-9d79224e7268",
+      "name": "execute_post_creator"
     }
   ],
   "pinData": {},
   "repo_name": "datahub-local-workflows",
   "repo_owner": "datahub-local",
-  "repo_path": "n8n/",
+  "repo_path": "n8n",
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
@@ -786,6 +621,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-05-21T02:58:11.526Z",
-  "versionId": "37ab97d1-0853-4ac5-8485-e0bc45d26279"
+  "updatedAt": "2025-05-22T08:20:40.258Z",
+  "versionId": "bd382537-26e8-49ae-9de1-7a366a8b644b"
 }
