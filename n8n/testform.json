@@ -268,13 +268,13 @@
   "pinData": {},
   "repo_name": "datahub-local-workflows",
   "repo_owner": "datahub-local",
-  "repo_path": "n8n/",
+  "repo_path": "n8n",
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-05-20T17:40:33.164Z",
+  "updatedAt": "2025-05-21T17:49:10.249Z",
   "versionId": "fe51fdba-1f29-4b8c-ab5a-827c24ff031f"
 }
