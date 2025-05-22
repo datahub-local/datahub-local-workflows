@@ -1,0 +1,158 @@
+{
+  "active": false,
+  "connections": {
+    "extract_content": {
+      "main": [
+        [
+          {
+            "node": "convert_2_markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_post": {
+      "main": [
+        [
+          {
+            "node": "extract_content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "main_trigger": {
+      "main": [
+        [
+          {
+            "node": "parse_input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_input": {
+      "main": [
+        [
+          {
+            "node": "download_post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-21T13:55:57.395Z",
+  "fileName": "downloadcontent.json",
+  "id": "qUfjfWLGEjV96ljf",
+  "isArchived": false,
+  "meta": null,
+  "name": "DownloadContent",
+  "nodes": [
+    {
+      "parameters": {
+        "html": "={{ $json.body }}"
+      },
+      "type": "CUSTOM.webpageContentExtractor",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -120
+      ],
+      "id": "2ef38eea-5a71-402c-a849-712834dd5702",
+      "name": "extract_content"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.URL }}",
+        "options": {
+          "browserWSEndpoint": "ws://datahub-local-core-automation-n8n-chromium:3000?token=TOKEN-1234567890"
+        }
+      },
+      "type": "CUSTOM.puppeteer",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        -120
+      ],
+      "id": "cbaa6462-01a3-40a6-b2be-0754a0be92e7",
+      "name": "download_post"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "URL"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -540,
+        -120
+      ],
+      "id": "4d141064-70a0-4d7e-8e28-79693871e0b7",
+      "name": "main_trigger"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.content }}",
+        "destinationKey": "contentMkdown",
+        "options": {
+          "maxConsecutiveNewlines": 2
+        }
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -120
+      ],
+      "id": "deb20501-bfe7-4a54-8b5e-b4c1c8ef5952",
+      "name": "convert_2_markdown"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f206b7cd-f84d-4ba3-bbf6-c20f5b13dd33",
+              "name": "URL",
+              "value": "={{ $json.URL || 'https://datahub-local.alvsanand.com/' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -320,
+        -120
+      ],
+      "id": "8715e1c0-7f3d-42d6-8c6f-987b734e1b32",
+      "name": "parse_input"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "datahub-local-workflows",
+  "repo_owner": "datahub-local",
+  "repo_path": "n8n/",
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-05-21T17:48:56.051Z",
+  "versionId": "b47b03a5-f00b-4b3a-a97b-b3144d8ae65e"
+}
