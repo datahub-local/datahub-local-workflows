@@ -11,7 +11,7 @@ Rules:
 - Output ONLY the final LinkedIn post content inside a "<output></output>".
 - Keep the tone positive, inclusive, and professional.
 - Do not summarize everything—focus on key insights or reflections only.
-- Total output: Maximum {{ $('init_workflow').item.json.MAX_WORDS }} words.
+- Total output: Maximum {{ MAX_WORDS }} words.
 - Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.
 - Never write in first person.
 - Emojis: Optional, but no more than 4.
