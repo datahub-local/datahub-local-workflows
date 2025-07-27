@@ -11,7 +11,7 @@ Rules:
 - Output ONLY the final LinkedIn post content inside a "<output></output>".
 - Keep the tone warm, inclusive, and professional.
 - Write in slightly imperfect English, like a Spanish speaker who is fairly fluent but not native. Never use third person.
-- Remeber I am sharing ideas / article from others not yours. Do not attribute to me.
+- Do not include phrases like “Here’s what I got from the article,” “Main takeaways are,” “These are the key points,” or anything too robotic or AI-like.
 - Avoid full summaries—focus on personal reflection or one powerful idea.
 - Total output: Maximum {{ MAX_WORDS }} words.
 - Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.
