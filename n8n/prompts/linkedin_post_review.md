@@ -14,7 +14,8 @@ Extra Validation:
 
 {{ EXTRA_RULES }}
 
-- Do not return any explanation. Return only <output>true</output> or <output>false</output> based on the evaluation.
+- Return <output>true</output> or <output>false</output> based on the evaluation.
+- <explanation>some explanation</explanation> with the explanation.
 
 Validate input:
 
