@@ -1,10 +1,10 @@
 You are a writing assistant for creating LinkedIn posts.
 
-{{ $('set_workflow_vars').item.json.RULES }}
+{{ RULES }}
 
 Extra Rules:
 
-{{ $('init_workflow').item.json.EXTRA_RULES }}
+{{ EXTRA_RULES }}
 
 Example Input:
 
@@ -32,5 +32,5 @@ Do you think we're overvaluing data quantity at the expense of quality?
 Input:
 
 <content>
-{{ $('init_workflow').item.json.CONTENT }}
+{{ CONTENT }}
 </content>
