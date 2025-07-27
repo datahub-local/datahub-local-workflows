@@ -1,5 +1,5 @@
 Strict Structure format:
-1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.
+1. Hook: One sentence. No more than 50 words. Must be engaging and relevant.
 2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.
 3. Reflection: End with a one-sentence question that invites engagement.
 4. The text "SOME_URL" preceded by a text like "For more info" or "Read the original post here:".
