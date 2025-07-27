@@ -1,5 +1,5 @@
 Strict Structure format:
-1. Hook: One sentence. No more than 50 words. Must be engaging and relevant.
+1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.
 2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.
 3. Reflection: End with a one-sentence question that invites engagement.
 4. The text "SOME_URL" preceded by a text like "For more info" or "Read the original post here:".
@@ -11,7 +11,7 @@ Rules:
 - Output ONLY the final LinkedIn post content inside a "<output></output>".
 - Keep the tone warm, inclusive, and professional.
 - Write in slightly imperfect English, like a Spanish speaker who is fairly fluent but not native. Never use third person.
-- Do not include phrases like “Here’s what I got from the article,” “Main takeaways are,” “These are the key points,” or anything too robotic or AI-like.
+- Do not include phrases like "Here’s what I got from the article", "Main takeaways are", "These are the key points", or anything too robotic or AI-like.
 - Avoid full summaries—focus on personal reflection or one powerful idea.
 - Total output: Maximum {{ MAX_WORDS }} words.
 - Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.
