@@ -768,7 +768,7 @@
         },
         "filePath": "={{ $('input_sync_file').item.json.repo_path }}/{{ $('sanitize_filename').first().json.fileName }}",
         "fileContent": "={{$('is_diff_or_new').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=chore: update backup workflow {{ $('sanitize_filename').first().json.fileName }}"
+        "commitMessage": "=chore: update backup workflow {{ $('sanitize_filename').first().json.fileName }} ({{ $now.setZone('UTC').toFormat('yyyy-MM-dd') }})"
       },
       "id": "53853034-2e3b-467f-b57b-47a4988cb590",
       "name": "update_file",
@@ -801,7 +801,7 @@
         },
         "filePath": "={{ $('input_sync_file').item.json.repo_path }}/{{ $('sanitize_filename').first().json.fileName }}",
         "fileContent": "={{$('is_diff_or_new').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "=chore: add backup workflow {{ $('sanitize_filename').first().json.fileName }}"
+        "commitMessage": "=chore: add backup workflow {{ $('sanitize_filename').first().json.fileName }} ({{ $now.setZone('UTC').toFormat('yyyy-MM-dd') }})"
       },
       "id": "9ecb337e-da27-4c12-819b-e22ba7eb0a97",
       "name": "create_file",
@@ -966,6 +966,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-28T08:38:18.146Z",
-  "versionId": "2eb059b9-755c-4673-ab05-6d75a7fee2e5"
+  "updatedAt": "2025-07-28T08:41:18.481Z",
+  "versionId": "6ccdb23b-e8ec-4947-87eb-9db708bd5e13"
 }
