@@ -1,3 +1,654 @@
 {
-  "fileName": "linked_in_post_creator.workflow.json"
+  "active": false,
+  "connections": {
+    "create_post_ai": {
+      "main": [
+        [
+          {
+            "node": "parse_llm_output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_rules_llm": {
+      "main": [
+        [
+          {
+            "node": "parse_llm_check_output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "switch_check_rules_llm": {
+      "main": [
+        [
+          {
+            "node": "set_output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "set_error_max_tries",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "create_post_ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_llm_output": {
+      "main": [
+        [
+          {
+            "node": "download_post_review_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_workflow_vars": {
+      "main": [
+        [
+          {
+            "node": "download_post_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ai_model_gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "check_rules_llm",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "create_post_ai",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_post_prompt": {
+      "main": [
+        [
+          {
+            "node": "download_post_system_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_post_system_prompt": {
+      "main": [
+        [
+          {
+            "node": "create_post_ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_post_review_prompt": {
+      "main": [
+        [
+          {
+            "node": "check_rules_llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_post_rules_prompt": {
+      "main": [
+        [
+          {
+            "node": "set_workflow_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "main_trigger": {
+      "main": [
+        [
+          {
+            "node": "download_post_rules_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_llm_check_output": {
+      "main": [
+        [
+          {
+            "node": "switch_check_rules_llm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-05-21T14:27:03.290Z",
+  "id": "PaeHFdCsdoVbQx11",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "LinkedIn Post Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('download_post_prompt').item.json.output }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={{ $('download_post_system_prompt').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1200,
+        32
+      ],
+      "id": "53b6e790-4391-4a4f-81c4-6438332f3ba1",
+      "name": "create_post_ai",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('download_post_review_prompt').item.json.output }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        2048,
+        -96
+      ],
+      "id": "3ccf8e77-c8f2-46c2-ad0d-23f39f480398",
+      "name": "check_rules_llm"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ef976d0c-a5e3-4a2f-8740-82b3edbdb3ce"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1f7bef35-3f55-4abe-87a7-c30b8961ae2e",
+                    "leftValue": "={{ $runIndex }}",
+                    "rightValue": "={{ $('set_workflow_vars').item.json.MAX_TRIES }}",
+                    "operator": {
+                      "type": "number",
+                      "operation": "gt"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2672,
+        16
+      ],
+      "id": "9ce5d8f1-1f42-424e-ba06-095121d20a0f",
+      "name": "switch_check_rules_llm"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a77a0ee-e904-467b-9f9f-e04aa3ddf203",
+              "name": "ERROR",
+              "value": "MAX_RETRIES_EXCEEDED",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2896,
+        128
+      ],
+      "id": "db12fcdb-214d-4990-9f55-4f16016b41af",
+      "name": "set_error_max_tries"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
+              "name": "text",
+              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1600,
+        -96
+      ],
+      "id": "cf3e92f0-e28a-48e5-ac36-5358d86946da",
+      "name": "parse_llm_output"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3278d703-6413-4117-95ef-f5e639096d2b",
+              "name": "RULES",
+              "value": "={{ $('download_post_rules_prompt').item.json.output }}",
+              "type": "string"
+            },
+            {
+              "id": "97804ec0-c646-438a-bbc8-fad3b1081264",
+              "name": "MAX_TRIES",
+              "value": 3,
+              "type": "number"
+            },
+            {
+              "id": "b072d171-1af0-407c-8b16-ee61278bbd52",
+              "name": "ERROR",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "b090338e-13b0-4b58-b768-6a826051edf8",
+              "name": "POST_TYPE",
+              "value": "={{ $('main_trigger').item.json.POST_TYPE || \"LinkedIn Post\" }}",
+              "type": "string"
+            },
+            {
+              "id": "8b1c6021-99ec-4daa-9f4a-f5d583ac2daf",
+              "name": "URL",
+              "value": "={{ $('main_trigger').item.json.URL || \"https://datahub-local.alvsanand.com/\" }}",
+              "type": "string"
+            },
+            {
+              "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
+              "name": "MODEL",
+              "value": "models/gemini-2.5-flash-lite",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        32
+      ],
+      "id": "44e6348d-ad4f-474e-b40a-b265133b141e",
+      "name": "set_workflow_vars"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2b0bc19a-ed15-45a0-9022-a59e2c9e56d1",
+              "name": "text",
+              "value": "={{ $('parse_llm_output').item.json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2896,
+        -64
+      ],
+      "id": "74d054b4-1f82-4953-8af9-976953cf1bea",
+      "name": "set_output"
+    },
+    {
+      "parameters": {
+        "modelName": "={{ $('set_workflow_vars').item.json.MODEL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        128
+      ],
+      "id": "00ed08b6-9d7b-480f-a6bf-ab1e15102a79",
+      "name": "ai_model_gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"CONTENT\": $('main_trigger').item.json.CONTENT,\n} }}",
+            "template_name": "prompts/linkedin_post.md"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        32
+      ],
+      "id": "563c908b-b064-452e-afb8-fc56f3ee5117",
+      "name": "download_post_prompt"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {} }}",
+            "template_name": "prompts/linkedin_post_system.md"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        32
+      ],
+      "id": "88e31fa6-f212-4330-9132-cf74783d77fd",
+      "name": "download_post_system_prompt"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"URL\": $('main_trigger').item.json.URL,\n\"TEXT\": $json.text,\n} }}",
+            "template_name": "prompts/linkedin_post_review.md"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1824,
+        -96
+      ],
+      "id": "b5eeb825-fc8a-4d57-a20f-42a093b708c9",
+      "name": "download_post_review_prompt"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {\"MAX_WORDS\": $('main_trigger').item.json.MAX_WORDS || 200 } }}",
+            "template_name": "prompts/linkedin_post_rules.md"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        32
+      ],
+      "id": "811334a4-12bd-4e27-91b3-941d7968a795",
+      "name": "download_post_rules_prompt"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "EXTRA_RULES"
+            },
+            {
+              "name": "CONTENT"
+            },
+            {
+              "name": "URL"
+            },
+            {
+              "name": "MAX_WORDS",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        32
+      ],
+      "id": "e8f79d38-f386-4476-b357-403edda33687",
+      "name": "main_trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  const { text } = item.json;\n\n  const output = text.includes('<output>') && text.includes('</output>')\n    ? text.split('<output>')[1].split('</output>')[0]\n    : 'false';\n  \n  item.json.output = output;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        -96
+      ],
+      "id": "de066296-b1a5-4cbb-9ea6-798bc1ab3891",
+      "name": "parse_llm_check_output"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-28T05:35:53.575Z",
+  "versionId": "2ac682bf-8962-43f7-86c2-c31b6fd7fac5"
 }
