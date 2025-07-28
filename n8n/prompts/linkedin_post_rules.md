@@ -3,7 +3,8 @@ Strict Structure format:
 2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.
 3. Reflection: End with a one-sentence question that invites engagement.
 4. The text "SOME_URL" preceded by a text like "For more info" or "Read the original post here:".
-5. CTA + Hashtags: One sentence with the original link and up to 3 hashtags. Hashtags must be on a new line.
+5. CTA: A sentence with the original link.
+5. Hashtags: Revelant Hashtags to the content.
 
 Rules:
 - Never change the structure with the marked order.
