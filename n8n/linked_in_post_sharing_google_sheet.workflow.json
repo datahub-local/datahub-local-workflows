@@ -172,7 +172,13 @@
     },
     "send_error_notification": {
       "main": [
-        []
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "update_status_in_progress": {
@@ -235,6 +241,17 @@
         [
           {
             "node": "send_error_notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
             "type": "main",
             "index": 0
           }
@@ -430,7 +447,7 @@
       "typeVersion": 1.2,
       "position": [
         128,
-        -712
+        -720
       ],
       "id": "74d70931-55a5-43ce-9f15-c533072d52f8",
       "name": "download_content"
@@ -543,7 +560,7 @@
       "typeVersion": 1.2,
       "position": [
         352,
-        -712
+        -720
       ],
       "id": "bbb9075e-10fd-4ae2-a023-a95a8ec9c48b",
       "name": "execute_post_creator"
@@ -577,7 +594,7 @@
       "typeVersion": 4.6,
       "position": [
         -544,
-        -808
+        -816
       ],
       "id": "37f0e405-74e7-448c-bc27-a8764cb0f3b2",
       "name": "read_articles_sheet",
@@ -596,7 +613,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -712
+        -720
       ],
       "id": "8c22f52d-03e5-4958-a175-869d9e67b38d",
       "name": "select_article_to_post"
@@ -609,7 +626,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -904
+        -912
       ],
       "id": "4389ebaf-c191-4c68-90a8-6d3bb37db094",
       "name": "select_article_to_clean",
@@ -1279,7 +1296,7 @@
       "typeVersion": 4.6,
       "position": [
         -96,
-        -712
+        -720
       ],
       "id": "c2222ba2-20f4-4c2d-beaa-1cf3bf1037c5",
       "name": "update_status_in_progress",
@@ -1311,7 +1328,7 @@
       "typeVersion": 1,
       "position": [
         -768,
-        -904
+        -912
       ],
       "id": "4274b2df-ee1e-4bee-833b-c2a66adfb5bf",
       "name": "click_trigger"
@@ -1331,7 +1348,7 @@
       "typeVersion": 1.2,
       "position": [
         -768,
-        -712
+        -720
       ],
       "id": "f122c73e-d541-4c27-9ce3-f76e8ebc2c61",
       "name": "schedule_trigger"
@@ -1487,6 +1504,53 @@
       ],
       "id": "40a0eda7-f8f2-4923-a6b6-3889547fbaa9",
       "name": "set_error_error"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "aaa4a285-bddd-46ed-ace4-96e9a65926b8",
+              "leftValue": "={{ $('set_error_error').item.json.ERROR || \"\" }}",
+              "rightValue": "=ERROR",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2576,
+        -688
+      ],
+      "id": "6f5ce4a6-173a-4fd4-828b-3a911e41e632",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "ERROR"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        2784,
+        -784
+      ],
+      "id": "f5182d5f-b69c-469e-b950-d2decf51eddb",
+      "name": "Stop and Error"
     }
   ],
   "pinData": {},
@@ -1506,6 +1570,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-28T05:41:13.011Z",
-  "versionId": "575c44a3-4fc0-4303-a816-4d464db2549e"
+  "updatedAt": "2025-08-04T18:32:22.621Z",
+  "versionId": "690cfb7b-93ee-4269-a1e5-8c4ee6185c73"
 }
