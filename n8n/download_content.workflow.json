@@ -268,7 +268,7 @@
     },
     {
       "parameters": {
-        "jsCode": "for (const item of $input.all()) {\n  const match = item.json.body.match(/<meta\\s+property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']/i);\n\n  const ogImageUrl = match ? match[1] : null;\n  \n  item.json.ogImageUrl = ogImageUrl;\n}\n\nreturn $input.all();"
+        "jsCode": "for (const item of $input.all()) {\n  const body = item.json.original_body || item.json.body;\n\n  console.log(body);\n\n  const match = body.match(/property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']/i);\n  console.log(match);\n\n  const ogImageUrl = match ? match[1] : null;\n  \n  item.json.ogImageUrl = ogImageUrl;\n}\n\nreturn $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -300,8 +300,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        560,
-        -112
+        480,
+        -64
       ],
       "id": "07dff05e-106d-4333-804b-ba61ccd83c97",
       "name": "HTTP Request",
@@ -335,6 +335,12 @@
               "id": "709a1488-1cd3-4e5a-8b26-3c181eb919e1",
               "name": "body",
               "value": "={{ $json.solution.response }}",
+              "type": "string"
+            },
+            {
+              "id": "c970b0f3-d6c3-4f70-adfc-0359ffd595e8",
+              "name": "original_body",
+              "value": "={{ $('set_freedium').item.json.body }}",
               "type": "string"
             }
           ]
@@ -395,6 +401,7 @@
             }
           ]
         },
+        "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
@@ -426,6 +433,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-07-27T10:00:43.993Z",
-  "versionId": "155edf1c-f559-4118-8644-e8c0c6358c37"
+  "updatedAt": "2025-08-05T12:22:29.141Z",
+  "versionId": "24d64b02-d95c-4c5e-9e44-cdd6cf52c71b"
 }
