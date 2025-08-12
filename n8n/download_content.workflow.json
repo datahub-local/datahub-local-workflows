@@ -78,7 +78,7 @@
         ],
         [
           {
-            "node": "HTTP Request",
+            "node": "set_freedium",
             "type": "main",
             "index": 0
           }
@@ -163,8 +163,8 @@
       "type": "CUSTOM.webpageContentExtractor",
       "typeVersion": 1,
       "position": [
-        1232,
-        -176
+        1248,
+        -256
       ],
       "id": "2ef38eea-5a71-402c-a849-712834dd5702",
       "name": "extract_content",
@@ -184,7 +184,7 @@
       "typeVersion": 1.1,
       "position": [
         -544,
-        -272
+        -352
       ],
       "id": "4d141064-70a0-4d7e-8e28-79693871e0b7",
       "name": "main_trigger"
@@ -200,8 +200,8 @@
       "type": "n8n-nodes-base.markdown",
       "typeVersion": 1,
       "position": [
-        1680,
-        -176
+        1696,
+        -256
       ],
       "id": "deb20501-bfe7-4a54-8b5e-b4c1c8ef5952",
       "name": "convert_2_markdown"
@@ -224,7 +224,7 @@
       "typeVersion": 3.4,
       "position": [
         -320,
-        -176
+        -256
       ],
       "id": "8715e1c0-7f3d-42d6-8c6f-987b734e1b32",
       "name": "parse_input"
@@ -236,8 +236,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1456,
-        -176
+        1472,
+        -256
       ],
       "id": "10f80111-320a-4a3d-a3c9-a8a4dcb5e3e4",
       "name": "normalize_content"
@@ -260,8 +260,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1904,
-        -176
+        1920,
+        -256
       ],
       "id": "5915e4bb-64da-4ee1-bb56-408863fc38d7",
       "name": "set_output"
@@ -273,8 +273,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1008,
-        -176
+        1024,
+        -256
       ],
       "id": "a2eeff4f-bcd6-4c06-8d46-435e9ce892f5",
       "name": "find_og_image_url"
@@ -300,8 +300,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        480,
-        -64
+        576,
+        -328
       ],
       "id": "07dff05e-106d-4333-804b-ba61ccd83c97",
       "name": "HTTP Request",
@@ -321,7 +321,7 @@
       "typeVersion": 1,
       "position": [
         -96,
-        -176
+        -256
       ],
       "id": "a8aa2d9e-a02f-451b-a8e8-a3da7cce6fef",
       "name": "Puppeteer",
@@ -350,8 +350,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        784,
-        -112
+        800,
+        -328
       ],
       "id": "d9424866-fee8-430b-8815-80961b338d00",
       "name": "set_body"
@@ -384,7 +384,7 @@
       "typeVersion": 2.2,
       "position": [
         128,
-        -256
+        -184
       ],
       "id": "d2463fd4-76e8-49b9-830c-1e78d33a48c6",
       "name": "if_medium"
@@ -407,8 +407,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        336,
-        -352
+        352,
+        -328
       ],
       "id": "2109e9be-f451-48af-ab8b-95859295e4f0",
       "name": "set_freedium"
@@ -419,7 +419,7 @@
       "typeVersion": 1,
       "position": [
         -544,
-        -80
+        -160
       ],
       "id": "c7bf634e-e6a1-4f73-abe4-68cfb3480cd8",
       "name": "click_trigger"
@@ -433,6 +433,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-05T12:22:29.141Z",
-  "versionId": "24d64b02-d95c-4c5e-9e44-cdd6cf52c71b"
+  "updatedAt": "2025-08-11T17:43:52.788Z",
+  "versionId": "42470c5d-5711-496f-a64b-db1c69109339"
 }
