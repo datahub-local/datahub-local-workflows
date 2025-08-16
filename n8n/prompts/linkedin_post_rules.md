@@ -1,10 +1,9 @@
 Strict Structure format:
-1. Hook: One sentence. No more than 20 words. Must feel personal, conversational, and engaging.
-2. Summary: 2–4 bullet points. Each one sentence, max 25 words. Max 1 emoji per bullet.
+1. Hook: One sentence. No more than 50 words. Must feel personal, conversational, and engaging.
+2. Summary: 4–5 bullet points. Each one sentence, max 25 words. Max 1 emoji per bullet.
 3. Reflection: End with a one-sentence question that invites engagement.
-4. Attribution: Sentence with "Read the original post here:" or "For more info:" followed by SOME_URL.
-5. CTA: One sentence inviting the reader to open the link.
-6. Hashtags: 3–6 relevant hashtags only.
+4. CTA: One sentence inviting the reader to open the link followed by "SOME_URL".
+5. Hashtags: 3–6 relevant hashtags only.
 
 Rules:
 - Never change the structure or order.
