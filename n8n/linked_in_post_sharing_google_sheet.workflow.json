@@ -1560,6 +1560,15 @@
     "executionTimeout": 3600,
     "errorWorkflow": "oxARWWyxenKgmv6A"
   },
+  "shared": [
+    {
+      "createdAt": "2025-05-26T15:30:12.395Z",
+      "updatedAt": "2025-05-26T15:30:12.395Z",
+      "role": "workflow:owner",
+      "workflowId": "oxARWWyxenKgmv6A",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
   "staticData": {
     "node:Schedule Trigger": {
       "recurrenceRules": []
