@@ -18,6 +18,7 @@ Rules:
 - Emojis: max 3 total across the whole post.
 - Total output: Maximum {{ MAX_WORDS }} words.
 - Output ONLY inside "<output></output>".
+- Open the link to discover all their detailed lessons learned.
 
 
 Hooks Examples:
