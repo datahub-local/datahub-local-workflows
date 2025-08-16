@@ -1,23 +1,21 @@
 Strict Structure format:
-1. Hook: One sentence. No more than 20 words. Must be engaging and relevant.
-2. Summary: 2-5 bullet points. Each bullet must be one sentence, max 25 words.
+1. Hook: One sentence. No more than 20 words. Must feel personal, conversational, and engaging.
+2. Summary: 2–4 bullet points. Each one sentence, max 25 words. Max 1 emoji per bullet.
 3. Reflection: End with a one-sentence question that invites engagement.
-4. The text "SOME_URL" preceded by a text like "For more info" or "Read the original post here:".
-5. CTA: A sentence with the original link.
-5. Hashtags: Revelant Hashtags to the content.
+4. Attribution: Sentence with "Read the original post here:" or "For more info:" followed by SOME_URL.
+5. CTA: One sentence inviting the reader to open the link.
+6. Hashtags: 3–6 relevant hashtags only.
 
 Rules:
-- Never change the structure with the marked order.
-- No use more that 5 bullet points.
-- Output ONLY the final LinkedIn post content inside a "<output></output>".
-- Keep the tone warm, inclusive, and professional.
-- Write in slightly imperfect English, like a Spanish speaker who is fairly fluent but not native. Never use third person.
-- Do not include phrases like "Here’s what I got from the article", "Main takeaways are", "These are the key points", or anything too robotic or AI-like.
-- Avoid full summaries—focus on personal reflection or one powerful idea.
+- Never change the structure or order.
+- Max 4 bullet points.
+- Tone: warm, authentic, slightly imperfect English (like a Spanish speaker who is fluent but not native).
+- Avoid robotic phrases like "main takeaways" or "key points".
+- Do not give a full summary, only focus on one or two powerful ideas.
+- No bold, no markdown, no headings, no asterisks.
+- Emojis: max 3 total across the whole post.
 - Total output: Maximum {{ MAX_WORDS }} words.
-- Never use markdown, bold, italics, or headings. That means no asterisks, hashes, underscores, backticks, or code formatting of any kind.
-- Emojis: Optional, but no more than 4.
-- Use 2 line breaks between every sections.
+- Output ONLY inside "<output></output>".
 
 Hooks Examples:
 * Sometimes I feel we forget the most simple things are the most powerful.
