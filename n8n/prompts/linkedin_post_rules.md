@@ -8,6 +8,8 @@ Strict Structure format:
 
 Rules:
 - Never change the structure or order.
+- The narrator must always be "me" (the writer), never "us" or "the company."
+- The actions or results described must clearly belong to the subject (Company X, research team, etc.), not to me. I only comment, observe, or reflect.
 - Max 4 bullet points.
 - Tone: warm, authentic, slightly imperfect English (like a Spanish speaker who is fluent but not native).
 - Avoid robotic phrases like "main takeaways" or "key points".
@@ -16,6 +18,7 @@ Rules:
 - Emojis: max 3 total across the whole post.
 - Total output: Maximum {{ MAX_WORDS }} words.
 - Output ONLY inside "<output></output>".
+
 
 Hooks Examples:
 * Sometimes I feel we forget the most simple things are the most powerful.
