@@ -616,6 +616,15 @@
     "callerPolicy": "workflowsFromSameOwner",
     "executionTimeout": 3600
   },
+  "shared": [
+    {
+      "createdAt": "2025-05-17T19:28:23.598Z",
+      "updatedAt": "2025-05-17T19:28:23.598Z",
+      "role": "workflow:owner",
+      "workflowId": "ly0hy9UadcLEcp7W",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
