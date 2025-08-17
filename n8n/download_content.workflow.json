@@ -78,18 +78,7 @@
         ],
         [
           {
-            "node": "set_freedium",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request": {
-      "main": [
-        [
-          {
-            "node": "set_body",
+            "node": "anti_captcha_service",
             "type": "main",
             "index": 0
           }
@@ -129,7 +118,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "anti_captcha_service",
             "type": "main",
             "index": 0
           }
@@ -141,6 +130,17 @@
         [
           {
             "node": "parse_input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "anti_captcha_service": {
+      "main": [
+        [
+          {
+            "node": "set_body",
             "type": "main",
             "index": 0
           }
@@ -213,7 +213,7 @@
             {
               "id": "f206b7cd-f84d-4ba3-bbf6-c20f5b13dd33",
               "name": "URL",
-              "value": "={{ $json.URL || 'https://codingplainenglish.medium.com/docker-is-dead-and-its-about-time-b457d14b0a72' }}",
+              "value": "={{ $json.URL || 'https://www.dremio.com/blog/disaster-recovery-for-apache-iceberg-tables-restoring-from-backup-and-getting-back-online/' }}",
               "type": "string"
             }
           ]
@@ -268,7 +268,7 @@
     },
     {
       "parameters": {
-        "jsCode": "for (const item of $input.all()) {\n  const body = item.json.original_body || item.json.body;\n\n  console.log(body);\n\n  const match = body.match(/property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']/i);\n  console.log(match);\n\n  const ogImageUrl = match ? match[1] : null;\n  \n  item.json.ogImageUrl = ogImageUrl;\n}\n\nreturn $input.all();"
+        "jsCode": "const regexList = [\n  /property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']/i,\n  /content=[\"']([^\"']+)[\"'][^>]*property=[\"']og:image[\"']/i\n]\n\nvar ogImageUrl = null;\n\nfor (const item of $input.all()) {\n  const body = item.json.original_body || item.json.body;\n\n  for (const regex of regexList) {\n    const match = body.match(regex);\n\n    if (match){\n      ogImageUrl = match[1];\n    \n      item.json.ogImageUrl = ogImageUrl;\n      break;\n    }\n  }\n  \n}\n\nreturn $input.all();"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -278,34 +278,6 @@
       ],
       "id": "a2eeff4f-bcd6-4c06-8d46-435e9ce892f5",
       "name": "find_og_image_url"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $env.CUSTOM_FLARESOLVERR_URL }}/v1",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"cmd\": \"request.get\",\n  \"url\": \"{{ $json.URL || $('parse_input').item.json.URL }}\",\n  \"maxTimeout\": 60000\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        576,
-        -328
-      ],
-      "id": "07dff05e-106d-4333-804b-ba61ccd83c97",
-      "name": "HTTP Request",
-      "retryOnFail": true
     },
     {
       "parameters": {
@@ -340,7 +312,13 @@
             {
               "id": "c970b0f3-d6c3-4f70-adfc-0359ffd595e8",
               "name": "original_body",
-              "value": "={{ $('set_freedium').item.json.body }}",
+              "value": "={{ $('Puppeteer').item.json.body }}",
+              "type": "string"
+            },
+            {
+              "id": "c2acfe43-a723-478a-8736-f6fd950fe412",
+              "name": "url",
+              "value": "={{ $json.solution.url }}",
               "type": "string"
             }
           ]
@@ -351,7 +329,7 @@
       "typeVersion": 3.4,
       "position": [
         800,
-        -328
+        -336
       ],
       "id": "d9424866-fee8-430b-8815-80961b338d00",
       "name": "set_body"
@@ -384,7 +362,7 @@
       "typeVersion": 2.2,
       "position": [
         128,
-        -184
+        -192
       ],
       "id": "d2463fd4-76e8-49b9-830c-1e78d33a48c6",
       "name": "if_medium"
@@ -395,7 +373,7 @@
           "assignments": [
             {
               "id": "2278967e-0cae-411d-8ec4-b0c61b5bd06a",
-              "name": "URL",
+              "name": "url",
               "value": "=https://freedium.cfd/{{ $('parse_input').item.json.URL }}",
               "type": "string"
             }
@@ -408,7 +386,7 @@
       "typeVersion": 3.4,
       "position": [
         352,
-        -328
+        -256
       ],
       "id": "2109e9be-f451-48af-ab8b-95859295e4f0",
       "name": "set_freedium"
@@ -423,6 +401,34 @@
       ],
       "id": "c7bf634e-e6a1-4f73-abe4-68cfb3480cd8",
       "name": "click_trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CUSTOM_FLARESOLVERR_URL }}/v1",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"cmd\": \"request.get\",\n  \"url\": \"{{ $json.url || $('parse_input').item.json.URL }}\",\n  \"maxTimeout\": 60000\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        576,
+        -336
+      ],
+      "id": "07dff05e-106d-4333-804b-ba61ccd83c97",
+      "name": "anti_captcha_service",
+      "retryOnFail": true
     }
   ],
   "pinData": {},
@@ -442,6 +448,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-11T17:43:52.788Z",
-  "versionId": "42470c5d-5711-496f-a64b-db1c69109339"
+  "updatedAt": "2025-08-16T17:28:14.236Z",
+  "versionId": "74666f4a-1b3e-40d9-9b51-fd0d3b551d22"
 }
