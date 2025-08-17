@@ -514,7 +514,8 @@
             "MAX_WORDS": "={{ $('parse_form_input').item.json.MAX_WORDS }}",
             "URL": "={{ $('parse_form_input').item.json.URL }}",
             "EXTRA_RULES": "={{ $('parse_form_input').item.json.EXTRA_RULES }}",
-            "CONTENT": "={{ $('download_content').item.json.contentMkdown }}"
+            "CONTENT": "={{ $('download_content').item.json.contentMkdown }}",
+            "ENABLE_CHECK": false
           },
           "matchingColumns": [],
           "schema": [
@@ -553,6 +554,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "number"
+            },
+            {
+              "id": "ENABLE_CHECK",
+              "displayName": "ENABLE_CHECK",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -628,6 +639,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-07-27T13:48:06.580Z",
-  "versionId": "ce59658e-af2a-4621-8890-db50035d3bc1"
+  "updatedAt": "2025-08-16T14:55:53.193Z",
+  "versionId": "e48867d0-ece5-4eb2-a0d7-5ae11eb301f3"
 }
