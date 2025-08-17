@@ -508,7 +508,8 @@
             "MAX_WORDS": "={{ $('select_article_to_post').item.json.MAX_WORDS || 300 }}",
             "URL": "={{ $('select_article_to_post').item.json.URL }}",
             "EXTRA_RULES": "={{ $('select_article_to_post').item.json.EXTRA_RULES }}",
-            "CONTENT": "={{ $('download_content').item.json.contentMkdown }}"
+            "CONTENT": "={{ $('download_content').item.json.contentMkdown }}",
+            "ENABLE_CHECK": false
           },
           "matchingColumns": [],
           "schema": [
@@ -547,6 +548,16 @@
               "display": true,
               "canBeUsedToMatch": true,
               "type": "number"
+            },
+            {
+              "id": "ENABLE_CHECK",
+              "displayName": "ENABLE_CHECK",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean",
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1579,6 +1590,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-04T18:32:22.621Z",
-  "versionId": "690cfb7b-93ee-4269-a1e5-8c4ee6185c73"
+  "updatedAt": "2025-08-16T15:21:27.830Z",
+  "versionId": "4dc0d241-92cc-47b2-b30b-0dcfd0e7ae4e"
 }
