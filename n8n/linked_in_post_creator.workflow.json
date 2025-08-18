@@ -367,7 +367,7 @@
             {
               "id": "45561a7c-0cb2-4bff-a5e2-a4bbe69d14e3",
               "name": "ENABLE_CHECK",
-              "value": "={{ $('main_trigger').item.json.ENABLE_CHECK.toBoolean() || false }}",
+              "value": "={{ $('main_trigger').item.json.ENABLE_CHECK || 'false' }}",
               "type": "string"
             }
           ]
@@ -392,6 +392,12 @@
               "id": "2b0bc19a-ed15-45a0-9022-a59e2c9e56d1",
               "name": "text",
               "value": "={{ $('parse_llm_output').item.json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "59d2348a-a3bb-49eb-b8f6-27faa0fe801f",
+              "name": "omImage ",
+              "value": "",
               "type": "string"
             }
           ]
@@ -720,6 +726,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-16T15:42:35.480Z",
-  "versionId": "942b3c06-b575-4350-b156-26aeb1b87fa8"
+  "updatedAt": "2025-08-17T18:30:45.739Z",
+  "versionId": "9d63c1dc-a76c-41dd-abf7-d187a2bd310a"
 }
