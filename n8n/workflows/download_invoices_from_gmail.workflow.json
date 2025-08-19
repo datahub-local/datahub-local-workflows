@@ -1,0 +1,463 @@
+{
+  "fileName": "download_invoices_from_gmail.workflow.json",
+  "workflow": {
+    "createdAt": "2025-07-26T06:44:56.881Z",
+    "updatedAt": "2025-07-26T14:38:49.248Z",
+    "id": "rbhcstYPTJtNQcH2",
+    "name": "DownloadInvoicesFromGmail",
+    "active": false,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -576,
+          -216
+        ],
+        "id": "4ae9ace7-618c-466c-9443-1dbd84bc9893",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d380dd6b-bd15-41c8-ae3b-9dec8ba61652",
+                "name": "MAX_DAYS",
+                "value": "={{ $json.MAX_DAYS || 10 }}",
+                "type": "number"
+              },
+              {
+                "id": "5efe1c2a-750f-4d59-a75b-5e91023f92bf",
+                "name": "INVOICE_TYPE",
+                "value": "={{ $json.INVOICE_TYPE || 'MERCADONA' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -352,
+          -288
+        ],
+        "id": "c35a4fd1-ad97-4809-a787-c13859a12822",
+        "name": "set_vars"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "MAX_DAYS",
+                "type": "number"
+              },
+              {
+                "name": "INVOICE_TYPE"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -576,
+          -408
+        ],
+        "id": "1edfde55-7718-4f16-80b5-9752059d88fa",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "filters": {
+            "q": "=from:{{ $json.FROM_FILTER }} newer_than:{{ $('switch_invoice_type').item.json.MAX_DAYS }}d "
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          320,
+          -288
+        ],
+        "id": "6861b434-1c9d-4789-a78a-5c395466cb1b",
+        "name": "get_messages",
+        "webhookId": "bcfe80f1-ed55-4ca0-8232-171b43bd6cd1",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GVSyKsDywK5nuwNG",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": []
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          768,
+          -480
+        ],
+        "id": "a507c090-37de-4146-b0e4-6ee7263124d7",
+        "name": "set_output"
+      },
+      {
+        "parameters": {
+          "jsCode": "let results = [];\n\nfor (item of items) {\n    for (key of Object.keys(item.binary)) {\n        results.push({\n            json: {\n                fileName: item.binary[key].fileName\n            },\n            binary: {\n                data: item.binary[key],\n            }\n        });\n    }\n}\n\nreturn results;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          992,
+          -288
+        ],
+        "id": "428c1ec1-34d2-448b-91c2-66fff5d56795",
+        "name": "parse_attachments"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "messageId": "={{ $json.id }}",
+          "simple": false,
+          "options": {
+            "downloadAttachments": true
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          768,
+          -288
+        ],
+        "id": "fe6ac92b-fc23-45b4-8cc3-f6646c75d0ec",
+        "name": "donwload_message",
+        "webhookId": "42a76ee5-fb83-43fa-8409-84f4468aea09",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GVSyKsDywK5nuwNG",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          544,
+          -288
+        ],
+        "id": "ef801d86-919a-451f-a543-561e1aa44947",
+        "name": "loop_messages"
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          1216,
+          -288
+        ],
+        "id": "b4a188a2-a797-4192-953d-9b55853ac218",
+        "name": "extract_data_from_pdf"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "dc0a7e30-9eb4-4add-ab08-51b14ed53ffb",
+                "name": "FROM_FILTER",
+                "value": "ticket_digital@mail.mercadona.com",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          96,
+          -288
+        ],
+        "id": "e051ffb5-91d9-4992-a975-213d3c685e4b",
+        "name": "set_mercadona_vars"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.INVOICE_TYPE }}",
+                      "rightValue": "MERCADONA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "5a99d316-851f-47e1-b7b6-611fa4eae0bb"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -128,
+          -288
+        ],
+        "id": "5f80ce6a-b662-4444-a5ac-cae5234aacda",
+        "name": "switch_invoice_type"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('set_vars').item.json.INVOICE_TYPE }}",
+                      "rightValue": "MERCADONA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "2bfab481-05a9-4281-b1bf-7acd15ecdb7c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "allMatchingOutputs": true
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1440,
+          -288
+        ],
+        "id": "254c7545-2c46-48e2-8b6c-0c6d3740816e",
+        "name": "switch_parse_invoice"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Invoice Example:\n/**\n * MERCADONA, S.A. A-46103834\n * C/ LOLO RICO 1\n * 28523 RIVAS-VACIAMADRID\n * TELÉFONO: 917578853\n * 16/07/2025 09:31 OP: 3436290\n * FACTURA SIMPLIFICADA: 4693-010-579596\n * Descripción P. Unit Importe\n * 1 200 SERVIL. BLANCAS 1,25\n * 1 Q. LONCHAS CREMOSO 3,00\n * 1 LONGANIZA MAGRO FRES 3,28\n * 1 FILETE CABEZA LOMO 3,60\n * 1 12 HUEVOS GRANDES-L 2,80\n * 2 POMADA PAÑAL 2,75 5,50\n * 1 BATIDO PROT CHOCO 1,20\n * 1 NAPOLITANA MIXTA 0,90\n * 1 PARAGUAYO\n * 0,886 kg 3,30 €/kg 2,92\n * TOTAL (€) 24,45\n * TARJETA BANCARIA 24,45\n * IVA BASE IMPONIBLE (€) CUOTA (€)\n * 4% 8,38 0,34\n * 10% 8,16 0,82\n * 21% 5,58 1,17\n * TOTAL 22,12 2,33\n * TARJ. BANCARIA: **** **** **** 6403\n * N.C: 036733442 AUT: 098898\n * AID: A0000000041010 ARC: 00\n * MASTERCARD\n * Importe: 24,45 € DEBIT MASTERCARD\n * SE ADMITEN DEVOLUCIONES CON TICKET\n */\nfunction parseInvoice(text) {\n\tconst lines = text.split('\\n').map(line => line.trim());\n\n    console.log(\"lines[6]: \" + lines[6]);\n\n    const nameVatRegex = /^(.+) ([A-Z]-\\d+)/;\n  \n\tconst store = {\n\t\tname: lines[0].match(nameVatRegex)[1],\n\t\tvat_id: lines[0].match(nameVatRegex)[2],\n\t\taddress: lines[1] + ', ' + lines[2],\n\t\tphone: lines[3].split(':')[1].trim()\n\t};\n\n\tconst dateLine = lines[4];\n\tconst [day, month, year] = dateLine.split(' ')[0].split('/');\n\tconst time = dateLine.split(' ')[1];\n\tconst invoice = {\n\t\tnumber: lines[5].split(':')[1].trim(),\n\t\toperator: dateLine.split('OP:')[1].trim(),\n\t\tdate: `${year}-${month}-${day}T${time}:00`\n\t};\n\n\tconst items = [];\n\tlet i = 6;\n\twhile (i < lines.length && !lines[i].startsWith('TOTAL (€)')) {\n\t\tlet line = lines[i];\n\n\t\t// Handle weighted product line\n\t\tif (line.includes('€/kg')) {\n\t\t\tconst prevLine = lines[i - 1];\n\t\t\tconst [qtyStr, ...descArr] = prevLine.split(' ');\n\t\t\tconst quantity = parseFloat(qtyStr.replace(',', '.'));\n\t\t\tconst description = descArr.join(' ');\n\t\t\tconst unit_price = parseFloat(line.match(/([\\d,.]+) €/)[1].replace(',', '.'));\n\t\t\tconst total = parseFloat(line.split(' ').pop().replace(',', '.'));\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\t// Handle multiple quantity items: (QTY) (DESC) (UNIT_PRICE) (TOTAL)\n\t\tlet multiMatch = line.match(/^(\\d+)\\s+(.+?)\\s+([\\d,.]+)\\s+([\\d,.]+)$/);\n\t\tif (multiMatch) {\n\t\t\tconst quantity = parseInt(multiMatch[1]);\n\t\t\tconst description = multiMatch[2].trim();\n\t\t\tconst unit_price = parseFloat(multiMatch[3].replace(',', '.'));\n\t\t\tconst total = parseFloat(multiMatch[4].replace(',', '.'));\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\t// Handle single quantity items: (1) (DESC) (PRICE)\n\t\tlet singleMatch = line.match(/^1\\s+(.+?)\\s+([\\d,.]+)$/);\n\t\tif (singleMatch) {\n\t\t\tconst quantity = 1;\n\t\t\tconst description = singleMatch[1].trim();\n\t\t\tconst unit_price = parseFloat(singleMatch[2].replace(',', '.'));\n\t\t\tconst total = unit_price;\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\ti++;\n\t}\n\n\tconst totalLine = lines.find(l => l.startsWith('TOTAL (€)'));\n\tconst totalAmount = parseFloat(totalLine.split(' ')[2].replace(',', '.'));\n\n\tconst taxesStart = lines.indexOf('IVA BASE IMPONIBLE (€) CUOTA (€)') + 1;\n\tconst taxes = lines.slice(taxesStart, taxesStart + 3).map(line => {\n\t\tconst parts = line.split(' ');\n\t\treturn {\n\t\t\trate: parts[0],\n\t\t\tbase: parseFloat(parts[1].replace(',', '.')),\n\t\t\ttax: parseFloat(parts[2].replace(',', '.')),\n\t\t};\n\t});\n\n\tconst cardLine = lines.find(l => l.startsWith('TARJ. BANCARIA:'));\n\tconst cardMatch = cardLine.match(/TARJ. BANCARIA:\\s(.+)/);\n\tconst cardNumber = cardMatch ? cardMatch[1] : 'unknown';\n\n\tconst creditCardTypeLine = lines.find(l => l.startsWith('Importe:'));\n    const creditCardMatch = creditCardTypeLine.match(/Importe:\\s*([\\d,.]+)\\s*€\\s*(.+)/);  \n\tconst cardType = creditCardMatch[2].trim() || 'UNKNOWN';\n\n\treturn {\n\t\tstore,\n\t\tinvoice,\n\t\titems,\n\t\ttotals: {\n\t\t\tamount: totalAmount,\n\t\t\tpayment_method: 'TARJETA BANCARIA',\n\t\t\tcard_type: cardType,\n\t\t\tcard_number: cardNumber\n\t\t},\n\t\ttaxes\n\t};\n}\n\nlet results = [];\n\nfor (item of items) {\n\tconst invoiceText = item.json.text;\n\n\tresults.push({\n\t\tjson: parseInvoice(invoiceText)\n\t});\n}\n\nreturn results;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1664,
+          -216
+        ],
+        "id": "163ecf8e-a228-4bda-bb8d-6f94231ffc67",
+        "name": "parse_mercadona_invoice"
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "set_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_vars": {
+        "main": [
+          [
+            {
+              "node": "switch_invoice_type",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "set_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_messages": {
+        "main": [
+          [
+            {
+              "node": "loop_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_output": {
+        "main": [
+          []
+        ]
+      },
+      "parse_attachments": {
+        "main": [
+          [
+            {
+              "node": "extract_data_from_pdf",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "donwload_message": {
+        "main": [
+          [
+            {
+              "node": "parse_attachments",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "loop_messages": {
+        "main": [
+          [
+            {
+              "node": "set_output",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "donwload_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "extract_data_from_pdf": {
+        "main": [
+          [
+            {
+              "node": "switch_parse_invoice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_mercadona_vars": {
+        "main": [
+          [
+            {
+              "node": "get_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "switch_invoice_type": {
+        "main": [
+          [
+            {
+              "node": "set_mercadona_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "switch_parse_invoice": {
+        "main": [
+          [
+            {
+              "node": "parse_mercadona_invoice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "parse_mercadona_invoice": {
+        "main": [
+          [
+            {
+              "node": "loop_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "staticData": null,
+    "meta": {
+      "templateCredsSetupCompleted": true
+    },
+    "pinData": {},
+    "versionId": "27f23cfd-14a4-4a24-939e-660f6b5adfd5",
+    "triggerCount": 0,
+    "shared": [
+      {
+        "createdAt": "2025-07-26T06:44:56.881Z",
+        "updatedAt": "2025-07-26T06:44:56.881Z",
+        "role": "workflow:owner",
+        "workflowId": "rbhcstYPTJtNQcH2",
+        "projectId": "zcGU09G6dy4Oah3l"
+      }
+    ],
+    "tags": []
+  }
+}
