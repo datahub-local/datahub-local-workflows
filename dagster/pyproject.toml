@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "datahub-local-dagster"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Alvaro Santos Andres", email = "alvsanand@gmail.com" }]
+requires-python = ">=3.13,<3.14"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = [ "../LICENSE.txt" ]
+dependencies = [
+    "dagster>=1.7.9,<2",
+    "dagster-aws>=0.23.9,<0.24",
+    "dagster-celery-k8s>=0.23.9,<0.24",
+    "dagster-celery>=0.23.9,<0.24",
+    "dagster-dbt>=0.23.9,<0.24",
+    "dagster-embedded-elt>=0.23.9,<0.24",
+    "dagster-graphql>=1.7.9,<2",
+    "dagster-k8s>=0.23.9,<0.24",
+    "dagster-postgres>=0.23.9,<0.24",
+    "dagster-pyspark>=0.23.9,<0.24",
+    "dagster-spark>=0.23.9,<0.24",
+    "dagster-ssh>=0.23.9,<0.24",
+]
+
+[dependency-groups]
+dev = ["dagster-webserver>=1.7.9,<2"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["datahub-local-dagster"]
