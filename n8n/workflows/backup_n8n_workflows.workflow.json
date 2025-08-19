@@ -293,7 +293,7 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Subworkflow",
+        "content": "## Sub workflow",
         "height": 592,
         "width": 2511,
         "color": 6
@@ -309,7 +309,7 @@
     },
     {
       "parameters": {
-        "content": "## Main workflow loop",
+        "content": "## Main workflow",
         "height": 680,
         "width": 1813,
         "color": 7
@@ -932,6 +932,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-19T16:35:22.057Z",
-  "versionId": "60b2d08e-8999-4e39-8ca0-c9bf721db57c"
+  "updatedAt": "2025-08-19T16:41:21.025Z",
+  "versionId": "fc2820a1-4c60-4d47-b1f7-99eafe5d9bfd"
 }
