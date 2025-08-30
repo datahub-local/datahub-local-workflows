@@ -16,14 +16,13 @@
 
 #### 3. CTA
 
-- Write a Reflection about the content.
+- Write a Reflection about the content, max 50 words.
 - Another one-sentence question that invites engagement and adding comments.
 
 #### 4. Footer
 
-- Hashtags: 3–6 relevant hashtags only.
 - Final sentence inviting the reader to open the link followed by "SOME_URL".
-
+- Hashtags: 3–6 relevant hashtags only.
 
 ### OBLIGATORY RULES
 
