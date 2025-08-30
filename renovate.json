@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    ":semanticCommits"
+  ],
+  "automerge": false,
+  "prCreation": "immediate",
+  "automergeStrategy": "squash",
+  "forkProcessing": "enabled",
+  "ignorePaths": [
+    "**/.github/**",
+    "**/Dockerfile"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "pypi"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "lockFileMaintenance": {
+        "enabled": true
+      },
+      "groupName": "all non-major Python dependencies",
+      "groupSlug": "all-minor-patch-python"
+    },
+    {
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
+    }
+  ]
+}

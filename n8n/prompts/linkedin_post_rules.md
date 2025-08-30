@@ -1,26 +1,44 @@
-Strict Structure format:
-1. Hook: One sentence. No more than 50 words. Must feel personal, conversational, and engaging.
-2. Summary: 4–5 bullet points. Each one sentence, max 25 words. Max 1 emoji per bullet.
-3. Reflection: End with a one-sentence question that invites engagement.
-4. CTA: One sentence inviting the reader to open the link followed by "SOME_URL".
-5. Hashtags: 3–6 relevant hashtags only.
+### Structure Fromat
 
-Rules:
+#### 1. Hook
+
+- One sentence.
+- No more than 50 words.
+- Must feel personal, conversational, and engaging. 
+- It should preset like a job experience, reflexion, learning narrated as "I".
+
+#### 2. Summary
+
+- Before the bullet points, use a sentence that present the bullet points of the content / article. Specify that the content is NOT MINE.
+- 4–5 bullet points summarizing the content.
+- Each one sentence, max 25 words.
+- Format the list staring with one of this emojis: "🔗", "▶️", "➡️" or "✔️".
+
+#### 3. CTA
+
+- Write a Reflection about the content.
+- Another one-sentence question that invites engagement and adding comments.
+
+#### 4. Footer
+
+- Hashtags: 3–6 relevant hashtags only.
+- Final sentence inviting the reader to open the link followed by "SOME_URL".
+
+
+### OBLIGATORY RULES
+
 - Never change the structure or order.
-- The narrator must always be "me" (the writer), never "us" or "the company."
-- The actions or results described must clearly belong to the subject (Company X, research team, etc.), not to me. I only comment, observe, or reflect.
-- Max 4 bullet points.
+- Never specify that the content of the article is mine bercuase it is NO. The actions or results described must clearly belong to another (Company X, research team, etc.), not to the narrator. Narrator only comment, observe, or reflect about the content.
 - Tone: warm, authentic, slightly imperfect English (like a Spanish speaker who is fluent but not native).
 - Avoid robotic phrases like "main takeaways" or "key points".
 - Do not give a full summary, only focus on one or two powerful ideas.
 - No bold, no markdown, no headings, no asterisks.
-- Emojis: max 3 total across the whole post.
 - Total output: Maximum {{ MAX_WORDS }} words.
 - Output ONLY inside "<output></output>".
-- Open the link to discover all their detailed lessons learned.
 
 
-Hooks Examples:
+### HOOK Examples
+
 * Sometimes I feel we forget the most simple things are the most powerful.
 * This is something I wish I had learned before my second job.
 * One small change helped me stop feeling frustrated every week.
