@@ -141,7 +141,7 @@
               "id": "ab94d0a1-ef3a-4fe9-9076-6882c6fda0ac",
               "name": "repo_path",
               "type": "string",
-              "value": "={{ $env[\"BACKUP_GITHUB_REPO_PATH\"].endsWith('/') ? $env[\"BACKUP_GITHUB_REPO_PATH\"].slice(0, -1) : $env[\"BACKUP_GITHUB_REPO_PATH\"]; }}"
+              "value": "=n8n"
             },
             {
               "id": "338bd03e-28a3-4fd7-9c38-a3db158bebe6",
@@ -385,6 +385,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-07-27T10:01:07.959Z",
-  "versionId": "1d3240ce-a23a-434b-948c-b9ed843ce65d"
+  "updatedAt": "2025-08-27T09:27:54.267Z",
+  "versionId": "bd1965b4-4673-4f3b-9c18-ea6aed991127"
 }
