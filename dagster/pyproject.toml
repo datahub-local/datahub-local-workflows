@@ -13,17 +13,17 @@ license = "Apache-2.0"
 license-files = [ "../LICENSE.txt" ]
 dependencies = [
     "dagster>=1.7.9,<2",
-    "dagster-aws>=0.23.9,<0.24",
-    "dagster-celery-k8s>=0.23.9,<0.24",
-    "dagster-celery>=0.23.9,<0.24",
-    "dagster-dbt>=0.23.9,<0.24",
-    "dagster-embedded-elt>=0.23.9,<0.24",
+    "dagster-aws>=0.27.8,<0.28",
+    "dagster-celery-k8s>=0.27.8,<0.28",
+    "dagster-celery>=0.27.8,<0.28",
+    "dagster-dbt>=0.27.8,<0.28",
+    "dagster-embedded-elt>=0.27.8,<0.28",
     "dagster-graphql>=1.7.9,<2",
-    "dagster-k8s>=0.23.9,<0.24",
-    "dagster-postgres>=0.23.9,<0.24",
-    "dagster-pyspark>=0.23.9,<0.24",
-    "dagster-spark>=0.23.9,<0.24",
-    "dagster-ssh>=0.23.9,<0.24",
+    "dagster-k8s>=0.27.8,<0.28",
+    "dagster-postgres>=0.27.8,<0.28",
+    "dagster-pyspark>=0.27.8,<0.28",
+    "dagster-spark>=0.27.8,<0.28",
+    "dagster-ssh>=0.27.8,<0.28",
 ]
 
 [dependency-groups]
