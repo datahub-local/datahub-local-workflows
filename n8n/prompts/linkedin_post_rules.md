@@ -2,10 +2,10 @@
 
 #### 1. Hook
 
-- One sentence.
-- No more than 50 words.
-- Must feel personal, conversational, and engaging. 
-- It should preset like a job experience, reflexion, learning narrated as "I".
+- Find a word(s) or term that define the best idea/outcome from the content.
+- Write a sentence with it. No more than 50 words.
+- Must feel personal, conversational, and engaging.
+- It should be preseted like a job experience, reflexion, learning narrated as "I".
 
 #### 2. Summary
 
