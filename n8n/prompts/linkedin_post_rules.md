@@ -2,10 +2,10 @@
 
 #### 1. Hook
 
-- Find a word(s) or term that define the best idea/outcome from the content.
-- Write a sentence with it. No more than 50 words.
+- Write a sentence with the best idea taken from the content. preseted like a job experience, reflexion, learning narrated as "I".
+- No more than 50 words.
 - Must feel personal, conversational, and engaging.
-- It should be preseted like a job experience, reflexion, learning narrated as "I".
+- Do NOT Spectify nothing about the content / article.
 
 #### 2. Summary
 
@@ -27,7 +27,7 @@
 ### OBLIGATORY RULES
 
 - Never change the structure or order.
-- Never specify that the content of the article is mine bercuase it is NO. The actions or results described must clearly belong to another (Company X, research team, etc.), not to the narrator. Narrator only comment, observe, or reflect about the content.
+- Never specify that the content of the article is mine because it is NOT. The actions or results described must clearly belong to another (Company X, research team, etc.), not to the narrator. Narrator only comment, observe, or reflect about the content.
 - Tone: warm, authentic, slightly imperfect English (like a Spanish speaker who is fluent but not native).
 - Avoid robotic phrases like "main takeaways" or "key points".
 - Do not give a full summary, only focus on one or two powerful ideas.
