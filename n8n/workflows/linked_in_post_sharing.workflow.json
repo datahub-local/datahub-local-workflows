@@ -266,6 +266,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "send_2_linkedin",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -487,7 +494,7 @@
       "typeVersion": 1.2,
       "position": [
         128,
-        -1080
+        -1088
       ],
       "id": "74d70931-55a5-43ce-9f15-c533072d52f8",
       "name": "download_content"
@@ -611,7 +618,7 @@
       "typeVersion": 1.2,
       "position": [
         352,
-        -1080
+        -1088
       ],
       "id": "bbb9075e-10fd-4ae2-a023-a95a8ec9c48b",
       "name": "execute_post_creator"
@@ -645,7 +652,7 @@
       "typeVersion": 4.6,
       "position": [
         -544,
-        -1176
+        -1184
       ],
       "id": "37f0e405-74e7-448c-bc27-a8764cb0f3b2",
       "name": "read_articles_sheet",
@@ -664,7 +671,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -1080
+        -1088
       ],
       "id": "8c22f52d-03e5-4958-a175-869d9e67b38d",
       "name": "select_article_to_post"
@@ -677,7 +684,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -1272
+        -1280
       ],
       "id": "4389ebaf-c191-4c68-90a8-6d3bb37db094",
       "name": "select_article_to_clean",
@@ -1347,7 +1354,7 @@
       "typeVersion": 4.6,
       "position": [
         -96,
-        -1080
+        -1088
       ],
       "id": "c2222ba2-20f4-4c2d-beaa-1cf3bf1037c5",
       "name": "update_status_in_progress",
@@ -1379,7 +1386,7 @@
       "typeVersion": 1,
       "position": [
         -768,
-        -1272
+        -1280
       ],
       "id": "4274b2df-ee1e-4bee-833b-c2a66adfb5bf",
       "name": "click_trigger"
@@ -1399,7 +1406,7 @@
       "typeVersion": 1.2,
       "position": [
         -768,
-        -1080
+        -1088
       ],
       "id": "f122c73e-d541-4c27-9ce3-f76e8ebc2c61",
       "name": "schedule_trigger"
@@ -1615,7 +1622,8 @@
         -1440
       ],
       "id": "d3ed4337-fc67-4096-8cf8-1f62a04acd8d",
-      "name": "download_omImage"
+      "name": "download_omImage",
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -1702,6 +1710,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-18T07:30:45.229Z",
-  "versionId": "f54c4038-ab0d-40db-80aa-e6d9f03aeac2"
+  "updatedAt": "2025-09-08T14:26:34.616Z",
+  "versionId": "4531f43b-b05d-4f0f-976c-d80d5cd73ab2"
 }
