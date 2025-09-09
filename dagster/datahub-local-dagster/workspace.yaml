@@ -1,4 +1,0 @@
-load_from:
-  - python_file:
-      relative_path: invoice_project/repo.py
-      location_name: invoice_project
