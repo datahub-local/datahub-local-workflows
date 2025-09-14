@@ -68,7 +68,7 @@ Operational notes & best practices
 # Development Roadmap  
 
 - Initial Project setup for every technology.
-- Projects 1 - PantryPulse (Grocery Invoice Ingestor):
+- Projects A - PantryPulse (Grocery Invoice Ingestor):
     - Data will come calling an n8n API that will generate data of invoices.
     - Generate data model with:
         - Invoice

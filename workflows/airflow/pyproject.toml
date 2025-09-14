@@ -1,0 +1,17 @@
+[project]
+name = "datahub-local-workflow-airflow"
+version = "0.1.0"
+description = "Airflow project skeleton for datahub-local-workflows"
+readme = "README.md"
+requires-python = ">=3.11"
+
+dependencies = [
+  "apache-airflow==3.0.6",
+  "apache-airflow-providers-postgres",
+  "apache-airflow-providers-http",
+  "apache-airflow-providers-amazon",
+  "pytest",
+]
+
+[tool.uv]
+# Optional uv settings for this project can be added here.
