@@ -434,7 +434,7 @@
           "mode": "list",
           "cachedResultName": "workflows"
         },
-        "text": "=Published Post ({{ $('select_article_to_post').item.json.URL }}) in LinkedIn (https://www.linkedin.com/feed/update/{{ $('send_2_linkedin').item.json.urn }})!",
+        "text": "=Published Post ({{ $('select_article_to_post').item.json.URL }}) in LinkedIn (https://www.linkedin.com/feed/update/{{ $('send_2_linkedin_omImage').item.json.urn | $('send_2_linkedin').item.json.urn }})!",
         "otherOptions": {
           "includeLinkToWorkflow": true
         }
@@ -1710,6 +1710,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-08T14:26:34.616Z",
-  "versionId": "4531f43b-b05d-4f0f-976c-d80d5cd73ab2"
+  "updatedAt": "2025-09-15T13:22:17.113Z",
+  "versionId": "ad116b1a-1cee-4a06-8de9-8bc0eaba2a41"
 }
