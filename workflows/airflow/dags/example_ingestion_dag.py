@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.decorators import task
-from dags.lib.sample_tasks import fetch_sample, process_sample
+from .lib.sample_tasks import fetch_sample, process_sample
 
 
 default_args = {
