@@ -1,8 +1,19 @@
+################################
+# Adjust path for local imports
+###############################
+import os
+import sys
+
+SCRIPT_DIR = os.path.realpath(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+print(f"Added {os.path.dirname(SCRIPT_DIR)} to sys.path")
+###############################
+
 from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.decorators import task
-from .tasks.sample_tasks import fetch_sample, process_sample
+from dags.tasks.sample_tasks import fetch_sample, process_sample
 
 
 default_args = {
