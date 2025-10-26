@@ -374,7 +374,7 @@
             {
               "id": "2278967e-0cae-411d-8ec4-b0c61b5bd06a",
               "name": "url",
-              "value": "=https://freedium.cfd/{{ $('parse_input').item.json.URL }}",
+              "value": "=https://freedium-mirror.cfd/{{ $('parse_input').item.json.URL }}",
               "type": "string"
             }
           ]
@@ -438,8 +438,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-05-21T13:55:57.395Z",
       "updatedAt": "2025-05-21T13:55:57.395Z",
+      "createdAt": "2025-05-21T13:55:57.395Z",
       "role": "workflow:owner",
       "workflowId": "qUfjfWLGEjV96ljf",
       "projectId": "zcGU09G6dy4Oah3l"
@@ -448,6 +448,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-16T17:28:14.236Z",
-  "versionId": "74666f4a-1b3e-40d9-9b51-fd0d3b551d22"
+  "updatedAt": "2025-10-25T17:35:11.222Z",
+  "versionId": "01655bf0-8430-4555-886c-d5b1c142905d"
 }
