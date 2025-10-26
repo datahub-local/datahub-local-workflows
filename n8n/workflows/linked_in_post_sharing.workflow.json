@@ -298,7 +298,7 @@
       "main": [
         [
           {
-            "node": "update_status_published",
+            "node": "update_status_published_b",
             "type": "main",
             "index": 0
           }
@@ -309,7 +309,7 @@
       "main": [
         [
           {
-            "node": "update_status_published",
+            "node": "update_status_published_a",
             "type": "main",
             "index": 0
           }
@@ -383,7 +383,7 @@
       "typeVersion": 3.2,
       "position": [
         1248,
-        -1256
+        -1272
       ],
       "id": "645093c0-7a43-484e-a3c3-788ff57b0167",
       "name": "switch_user_accept"
@@ -406,7 +406,7 @@
       "typeVersion": 3.4,
       "position": [
         2144,
-        -1040
+        -1056
       ],
       "id": "8d0270dd-64d0-4e93-a3b9-dce397f21a11",
       "name": "set_error_cancelled"
@@ -425,7 +425,7 @@
       "typeVersion": 1,
       "position": [
         1920,
-        -1256
+        -1272
       ],
       "id": "eb37ef86-8d69-4599-aeb5-b3003cfaa872",
       "name": "send_2_linkedin",
@@ -476,7 +476,7 @@
       "typeVersion": 1.2,
       "position": [
         128,
-        -1088
+        -1104
       ],
       "id": "74d70931-55a5-43ce-9f15-c533072d52f8",
       "name": "download_content"
@@ -518,7 +518,7 @@
       "typeVersion": 3.2,
       "position": [
         576,
-        -1160
+        -1176
       ],
       "id": "c1a5ef20-0aba-4b70-a901-4642a44589e7",
       "name": "check_subworkflow_error"
@@ -601,7 +601,7 @@
       "typeVersion": 1.2,
       "position": [
         352,
-        -1088
+        -1104
       ],
       "id": "bbb9075e-10fd-4ae2-a023-a95a8ec9c48b",
       "name": "execute_post_creator"
@@ -635,7 +635,7 @@
       "typeVersion": 4.6,
       "position": [
         -544,
-        -1184
+        -1200
       ],
       "id": "37f0e405-74e7-448c-bc27-a8764cb0f3b2",
       "name": "read_articles_sheet",
@@ -654,7 +654,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -1088
+        -1104
       ],
       "id": "8c22f52d-03e5-4958-a175-869d9e67b38d",
       "name": "select_article_to_post"
@@ -667,7 +667,7 @@
       "typeVersion": 2,
       "position": [
         -320,
-        -1280
+        -1296
       ],
       "id": "4389ebaf-c191-4c68-90a8-6d3bb37db094",
       "name": "select_article_to_clean",
@@ -691,7 +691,7 @@
       "typeVersion": 2.3,
       "position": [
         2368,
-        -944
+        -960
       ],
       "id": "82833b18-bc22-4574-8a88-0ce455fcf431",
       "name": "send_error_notification",
@@ -761,7 +761,7 @@
       "typeVersion": 3.2,
       "position": [
         1696,
-        -1040
+        -1056
       ],
       "id": "855fefce-3dcf-49c8-8a22-6dfc6ca3fd77",
       "name": "switch_user_retry"
@@ -790,7 +790,7 @@
       "typeVersion": 2.3,
       "position": [
         1472,
-        -1040
+        -1056
       ],
       "id": "fcfc0f50-17d8-41aa-95a1-8025fde13cb9",
       "name": "notification_retry_or_cancel",
@@ -824,7 +824,7 @@
       "typeVersion": 2.3,
       "position": [
         1024,
-        -1256
+        -1272
       ],
       "id": "1c9dd693-88dc-4f29-bd6e-1c8873d066c3",
       "name": "notification_accept",
@@ -833,134 +833,6 @@
         "slackApi": {
           "id": "DszMmPE7WwOjHQjz",
           "name": "Slack account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "documentId": {
-          "__rl": true,
-          "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
-          "mode": "list",
-          "cachedResultName": "content_planner",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "articles_2_linkedin",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "RELEASE_DATE": "={{ (new Date()).toISOString() }}",
-            "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
-            "STATUS": "PUBLISHED",
-            "row_number": "={{ $('select_article_to_post').item.json.row_number }}",
-            "LINKEDIN_URL": "=https://www.linkedin.com/feed/update/{{ $('send_2_linkedin').item.json.urn }}"
-          },
-          "matchingColumns": [
-            "row_number"
-          ],
-          "schema": [
-            {
-              "id": "URL",
-              "displayName": "URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "STATUS",
-              "displayName": "STATUS",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "PRIORITY",
-              "displayName": "PRIORITY",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "UPDATE_DATE",
-              "displayName": "UPDATE_DATE",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "RELEASE_DATE",
-              "displayName": "RELEASE_DATE",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "EXTRA_PROMPT",
-              "displayName": "EXTRA_PROMPT",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "LINKEDIN_URL",
-              "displayName": "LINKEDIN_URL",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "row_number",
-              "displayName": "row_number",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "readOnly": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.6,
-      "position": [
-        2368,
-        -1352
-      ],
-      "id": "33dcb552-400c-4549-aed8-f1b16b359e8a",
-      "name": "update_status_published",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "pGARJmt50qz64xOo",
-          "name": "Google Sheets account"
         }
       }
     },
@@ -1081,7 +953,7 @@
       "typeVersion": 4.6,
       "position": [
         800,
-        -1256
+        -1272
       ],
       "id": "ecab579e-be70-4192-b062-ec20a8f75427",
       "name": "update_status_waiting_approval",
@@ -1209,7 +1081,7 @@
       "typeVersion": 4.6,
       "position": [
         1920,
-        -1040
+        -1056
       ],
       "id": "eb40731c-a3ee-4290-aaaa-fc0d5c0ba38b",
       "name": "update_status_cancelled",
@@ -1337,7 +1209,7 @@
       "typeVersion": 4.6,
       "position": [
         -96,
-        -1088
+        -1104
       ],
       "id": "c2222ba2-20f4-4c2d-beaa-1cf3bf1037c5",
       "name": "update_status_in_progress",
@@ -1369,7 +1241,7 @@
       "typeVersion": 1,
       "position": [
         -768,
-        -1280
+        -1296
       ],
       "id": "4274b2df-ee1e-4bee-833b-c2a66adfb5bf",
       "name": "click_trigger"
@@ -1389,7 +1261,7 @@
       "typeVersion": 1.2,
       "position": [
         -768,
-        -1088
+        -1104
       ],
       "id": "f122c73e-d541-4c27-9ce3-f76e8ebc2c61",
       "name": "schedule_trigger"
@@ -1512,7 +1384,7 @@
       "typeVersion": 4.6,
       "position": [
         1920,
-        -848
+        -864
       ],
       "id": "73412927-f864-4d67-82d3-e7dd35356165",
       "name": "update_status_error",
@@ -1541,7 +1413,7 @@
       "typeVersion": 3.4,
       "position": [
         2144,
-        -848
+        -864
       ],
       "id": "40a0eda7-f8f2-4923-a6b6-3889547fbaa9",
       "name": "set_error_error"
@@ -1575,7 +1447,7 @@
       "typeVersion": 2.2,
       "position": [
         2592,
-        -944
+        -960
       ],
       "id": "6f5ce4a6-173a-4fd4-828b-3a911e41e632",
       "name": "If"
@@ -1588,7 +1460,7 @@
       "typeVersion": 1,
       "position": [
         2816,
-        -944
+        -960
       ],
       "id": "f5182d5f-b69c-469e-b950-d2decf51eddb",
       "name": "Stop and Error"
@@ -1602,7 +1474,7 @@
       "typeVersion": 4.2,
       "position": [
         1696,
-        -1424
+        -1440
       ],
       "id": "d3ed4337-fc67-4096-8cf8-1f62a04acd8d",
       "name": "download_omImage",
@@ -1637,7 +1509,7 @@
       "typeVersion": 2.2,
       "position": [
         1472,
-        -1352
+        -1368
       ],
       "id": "f2064fc3-e570-4d6a-bd9b-ddd9fc742c8b",
       "name": "if_omImage"
@@ -1655,7 +1527,7 @@
       "typeVersion": 1,
       "position": [
         1920,
-        -1472
+        -1488
       ],
       "id": "5560c591-f119-4e30-af95-d12a69e7111a",
       "name": "send_2_linkedin_omImage",
@@ -1684,7 +1556,7 @@
       "typeVersion": 2.3,
       "position": [
         2144,
-        -1256
+        -1272
       ],
       "id": "32d93a0e-1807-4dc8-a48e-7c4033bdcb88",
       "name": "send_published_notification_b",
@@ -1714,7 +1586,7 @@
       "typeVersion": 2.3,
       "position": [
         2144,
-        -1472
+        -1488
       ],
       "id": "f995a3c8-97f6-4f19-ac90-22b330bb0255",
       "name": "send_published_notification_a",
@@ -1723,6 +1595,262 @@
         "slackApi": {
           "id": "DszMmPE7WwOjHQjz",
           "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+          "mode": "list",
+          "cachedResultName": "content_planner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "articles_2_linkedin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RELEASE_DATE": "={{ (new Date()).toISOString() }}",
+            "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
+            "STATUS": "PUBLISHED",
+            "row_number": "={{ $('select_article_to_post').item.json.row_number }}",
+            "LINKEDIN_URL": "=https://www.linkedin.com/feed/update/{{ $('send_2_linkedin_omImage').item.json.urn }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PRIORITY",
+              "displayName": "PRIORITY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "UPDATE_DATE",
+              "displayName": "UPDATE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RELEASE_DATE",
+              "displayName": "RELEASE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EXTRA_PROMPT",
+              "displayName": "EXTRA_PROMPT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINKEDIN_URL",
+              "displayName": "LINKEDIN_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2368,
+        -1488
+      ],
+      "id": "33dcb552-400c-4549-aed8-f1b16b359e8a",
+      "name": "update_status_published_a",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGARJmt50qz64xOo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+          "mode": "list",
+          "cachedResultName": "content_planner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "articles_2_linkedin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "RELEASE_DATE": "={{ (new Date()).toISOString() }}",
+            "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
+            "STATUS": "PUBLISHED",
+            "row_number": "={{ $('select_article_to_post').item.json.row_number }}",
+            "LINKEDIN_URL": "=https://www.linkedin.com/feed/update/{{ $('send_2_linkedin').item.json.urn }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PRIORITY",
+              "displayName": "PRIORITY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "UPDATE_DATE",
+              "displayName": "UPDATE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RELEASE_DATE",
+              "displayName": "RELEASE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EXTRA_PROMPT",
+              "displayName": "EXTRA_PROMPT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINKEDIN_URL",
+              "displayName": "LINKEDIN_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2368,
+        -1272
+      ],
+      "id": "8f8ac66d-c92c-4c35-9a3f-65fcd8ab9d39",
+      "name": "update_status_published_b",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGARJmt50qz64xOo",
+          "name": "Google Sheets account"
         }
       }
     }
@@ -1736,8 +1864,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-05-26T15:30:12.395Z",
       "updatedAt": "2025-05-26T15:30:12.395Z",
+      "createdAt": "2025-05-26T15:30:12.395Z",
       "role": "workflow:owner",
       "workflowId": "oxARWWyxenKgmv6A",
       "projectId": "zcGU09G6dy4Oah3l"
@@ -1753,6 +1881,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-09-29T09:06:07.313Z",
-  "versionId": "c572b3de-a63b-4294-bc87-d0cf3ed41d5d"
+  "updatedAt": "2025-10-25T17:41:23.602Z",
+  "versionId": "a64e35df-fda7-4e7d-bade-a6664c8098dc"
 }
