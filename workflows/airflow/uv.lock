@@ -107,6 +107,15 @@ wheels = [
 ]
 
 [[package]]
+name = "aiosmtplib"
+version = "5.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/15/c2dc93a58d716bce64b53918d3cf667d86c96a56a9f3a239a9f104643637/aiosmtplib-5.0.0.tar.gz", hash = "sha256:514ac11c31cb767c764077eb3c2eb2ae48df6f63f1e847aeb36119c4fc42b52d", size = 61057, upload-time = "2025-10-19T19:12:31.426Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/99/42/b997c306dc54e6ac62a251787f6b5ec730797eea08e0336d8f0d7b899d5f/aiosmtplib-5.0.0-py3-none-any.whl", hash = "sha256:95eb0f81189780845363ab0627e7f130bca2d0060d46cd3eeb459f066eb7df32", size = 27048, upload-time = "2025-10-19T19:12:30.124Z" },
+]
+
+[[package]]
 name = "aiosqlite"
 version = "0.21.0"
 source = { registry = "https://pypi.org/simple" }
@@ -157,21 +166,20 @@ wheels = [
 
 [[package]]
 name = "apache-airflow"
-version = "3.1.0"
+version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow-core" },
     { name = "apache-airflow-task-sdk" },
-    { name = "natsort" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/66/12/65573254244d154a564dd4c67e0de1b85f242cd826fdf0675c150d5b84d1/apache_airflow-3.1.0.tar.gz", hash = "sha256:830eadf196f772f108e67fe2141576e93b06f82e9107b179287d1a5185a8e727", size = 28298, upload-time = "2025-09-25T20:31:42.843Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/5b/7501cf4b62e7c80bad403575d574f4e1a3aacf9c7671f983de3c32d931bd/apache_airflow-3.1.1.tar.gz", hash = "sha256:96a9b8aac5fe26ddf35eef5ae4db8f31207f80852719cfd3fbc2432c7796423a", size = 28258, upload-time = "2025-10-27T12:33:13.505Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/56/f2bea2df212d6ec8076fc559b1c4e7a2b783b725046ad87316ee655356b4/apache_airflow-3.1.0-py3-none-any.whl", hash = "sha256:4f51a6ad5617467ddb2a8d3a2bfb199f3d2788b45d71fac53a2f1de792274bce", size = 12322, upload-time = "2025-09-25T20:31:38.67Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/af/f24d7e82bbf66e30587ca43b26a182299c5ccd86cc89dbf82d2038696549/apache_airflow-3.1.1-py3-none-any.whl", hash = "sha256:22a343183dec4cb9511fa7f4c96e66ca61da8ea7ceb5707561b31d4cb288822b", size = 12303, upload-time = "2025-10-27T12:33:07.773Z" },
 ]
 
 [[package]]
 name = "apache-airflow-core"
-version = "3.1.0"
+version = "3.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "a2wsgi" },
@@ -205,6 +213,7 @@ dependencies = [
     { name = "lockfile" },
     { name = "methodtools" },
     { name = "msgspec" },
+    { name = "natsort" },
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-otlp" },
     { name = "opentelemetry-proto" },
@@ -237,9 +246,9 @@ dependencies = [
     { name = "universal-pathlib" },
     { name = "uuid6" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4d/3b/f3274490c1ddf861e2046379c701626e99a9255fb9902fff98971de6b150/apache_airflow_core-3.1.0.tar.gz", hash = "sha256:d98f0c1c9226041e23098cd27c7f0b215e3b59984070d9c339aa7f34504107fd", size = 4045917, upload-time = "2025-09-25T20:31:40.4Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/8d/d5fb01bd64c59b060928e07629fe3e358d0ed3ed801552a58bd97664ed79/apache_airflow_core-3.1.1.tar.gz", hash = "sha256:e2733c8046402820b8fc0d1b1a7828298226165bdcd6514c2eed0c2d37826892", size = 4129492, upload-time = "2025-10-27T12:33:09.897Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a9/0f/f02dd6719b0b98fc7100e62958568a61cffa5eb60473c8bc631f35db8536/apache_airflow_core-3.1.0-py3-none-any.whl", hash = "sha256:84d3d62d6a649fe85736a352d1a8ba133d9ca4a153a8e4575af2e11c1c86b8a0", size = 5252575, upload-time = "2025-09-25T20:31:34.97Z" },
+    { url = "https://files.pythonhosted.org/packages/3f/4e/7e279de93708944e95c57c475f6a33784663b270e29c982ead979c41f55b/apache_airflow_core-3.1.1-py3-none-any.whl", hash = "sha256:930b31c223eb4ad9aa81e0265fc498a6e30fc4a38bc69ae5e0eb7ece566d339c", size = 5358114, upload-time = "2025-10-27T12:33:05.005Z" },
 ]
 
 [[package]]
@@ -270,31 +279,31 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-common-compat"
-version = "1.7.3"
+version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e8/33/576d02e28dc6c41546749f3eff1b0d5e7c59506de37d9192e2b486a12927/apache_airflow_providers_common_compat-1.7.3.tar.gz", hash = "sha256:03438c75b01b18158689b78a2899b11066b3c453e0fd699d2055094341fc4551", size = 21005, upload-time = "2025-08-02T06:56:14.352Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/87/e840d4dea60d77b03f4e593936f4a2af13bde9047b59ce59a49b6dc1f1d8/apache_airflow_providers_common_compat-1.8.0.tar.gz", hash = "sha256:81218bfcd3f3c50f86df4bb265e0a38913829a7ce92c7de4a47c33b89c574d09", size = 28141, upload-time = "2025-10-26T07:05:00.73Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e3/9a/89a4b9470c42037fd0c91fa8947b01d543cc4480f84b45d9d871e7ac52eb/apache_airflow_providers_common_compat-1.7.3-py3-none-any.whl", hash = "sha256:3a6f25a020fe72ebe3bbd02c050f01f39fdd7ed9c40a72f98c2587505f688a8a", size = 30084, upload-time = "2025-08-02T06:54:29.684Z" },
+    { url = "https://files.pythonhosted.org/packages/7f/dc/df140b6356981b3cfabe299604a013c7e1286b1bed79ba5225b6b80b8b03/apache_airflow_providers_common_compat-1.8.0-py3-none-any.whl", hash = "sha256:eaeea70747b346dcd6aaf895ef81e58c71778fec69109071822c629bcdb45fc8", size = 35957, upload-time = "2025-10-26T07:03:45.465Z" },
 ]
 
 [[package]]
 name = "apache-airflow-providers-common-io"
-version = "1.6.2"
+version = "1.6.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3d/98/a63346e5a09de3e7ace264b2aa5cb7e5a2e4f390b03458a634d5d4479c89/apache_airflow_providers_common_io-1.6.2.tar.gz", hash = "sha256:f5c947fcbcc900d42af695e93df3b75dd4ff86253ece41871c5ce3b2d8b8b6d9", size = 23569, upload-time = "2025-08-02T06:56:15.066Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/67/ff/013cceae904f3a1b5189c0ab60aae17fc4650d8fe874ce9664eb80691bf9/apache_airflow_providers_common_io-1.6.4.tar.gz", hash = "sha256:0013269e3b4030ba6451cf92fe37da993838bf58fd4862733069f978569941cd", size = 24017, upload-time = "2025-10-26T07:05:01.756Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/3b/69f3701693384e4bd428595945801da99c9c755c07a196578294e8b94d4f/apache_airflow_providers_common_io-1.6.2-py3-none-any.whl", hash = "sha256:5f2f166048f0da268f1b384c4234334452fec2bd1aed14ef5953f76a240dab87", size = 19354, upload-time = "2025-08-02T06:54:30.606Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/27/e922fca7cb04c5a3a0b3bad3a4f3c78249c6ad034679a95ca811100deba6/apache_airflow_providers_common_io-1.6.4-py3-none-any.whl", hash = "sha256:f6ff2f8b7b1b140b0db4fa5f92ba00097e5088f1189289179aa007c534b4b0b8", size = 19324, upload-time = "2025-10-26T07:03:46.424Z" },
 ]
 
 [[package]]
 name = "apache-airflow-providers-common-sql"
-version = "1.28.0"
+version = "1.28.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow" },
@@ -302,9 +311,9 @@ dependencies = [
     { name = "more-itertools" },
     { name = "sqlparse" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/7c/fed36f70236a3ee15a830ceeb9c9b0b132225d9af7c753786c7abb591840/apache_airflow_providers_common_sql-1.28.0.tar.gz", hash = "sha256:e4ad77009caf447a1d6a67471b1153b4bc66ffe7c93844d96321c55ef30cee3e", size = 104496, upload-time = "2025-09-09T03:49:48.366Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/75/971dbad50f1a34dc16dfb5e04d888f947a56b0fb12fc590105951fe89297/apache_airflow_providers_common_sql-1.28.2.tar.gz", hash = "sha256:0df29f47116558d59f998b8236fbe3dc3d97e79995ad14b311bb5a7a6541da18", size = 105109, upload-time = "2025-10-26T07:05:02.559Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/72/5c642aff83a2f3d13cabc5243c7b3f85d2c034d28cb2ac3a6fdb5b46dafd/apache_airflow_providers_common_sql-1.28.0-py3-none-any.whl", hash = "sha256:c5ccf93b10acccc5a8c4c91e87b771351d706ed02c80e01a84156636093f907b", size = 66807, upload-time = "2025-09-09T03:49:06.634Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/21/38df03201907d29f759b5059a5855601ffc6b4f58efbbcd8623dad4de564/apache_airflow_providers_common_sql-1.28.2-py3-none-any.whl", hash = "sha256:6fbdac4bcdfa692d0e3164bfdec4e4bce147ad9f55487fe5ea2b473ffc9989fe", size = 66919, upload-time = "2025-10-26T07:03:47.375Z" },
 ]
 
 [[package]]
@@ -340,37 +349,40 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-smtp"
-version = "2.2.1"
+version = "2.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "aiosmtplib" },
+    { name = "apache-airflow" },
+    { name = "apache-airflow-providers-common-compat" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ce/c8/9118485a3ccf18f2a47311d3f2b6890b4d8564865375fd225e2ca7e3d2c8/apache_airflow_providers_smtp-2.3.1.tar.gz", hash = "sha256:45c9b0d4fd8f086568b0b8d263d48335c9ca2bd1cf72b566f1e68deee70007f9", size = 44685, upload-time = "2025-09-28T09:58:34.833Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/83/f9/07e60402759a00c337cf20d6a57dd50775b5979bff96d8ba48d5923ce4bb/apache_airflow_providers_smtp-2.3.1-py3-none-any.whl", hash = "sha256:d1302e83f4444be73e70fe4deacb3ccbac3f0da17bef53baa04f095f56e7d3a3", size = 24992, upload-time = "2025-09-28T09:58:21.94Z" },
+]
+
+[[package]]
+name = "apache-airflow-providers-standard"
+version = "1.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow" },
     { name = "apache-airflow-providers-common-compat" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4a/69/7492eb79157a43c47a05c33e6b93b51336d3cc3325f68534710632e05f54/apache_airflow_providers_smtp-2.2.1.tar.gz", hash = "sha256:0c3a7c12ea828f23640870337831c4ea7d51eed4019f565ecfbc47254096dd0d", size = 41269, upload-time = "2025-09-09T03:50:14.551Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/5a/7805b03dee2da2984cffcd493b38f1b151f193551c00337d181491256578/apache_airflow_providers_standard-1.9.1.tar.gz", hash = "sha256:74aa7e09183ec94487378a83f3799e0f12e481b3752f45eaab5c9e36fb128aea", size = 180643, upload-time = "2025-10-26T07:05:32.565Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/f7/afbc26ce609837cafc604cbf485699a0d2315f769c9e5b02f17ea316ceab/apache_airflow_providers_smtp-2.2.1-py3-none-any.whl", hash = "sha256:fa800ea945fa35640ab75bd30f5839e723a14a6fc0b0d5a3b9fe78482483b13f", size = 23848, upload-time = "2025-09-09T03:49:37.1Z" },
-]
-
-[[package]]
-name = "apache-airflow-providers-standard"
-version = "1.7.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "apache-airflow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/37/5d/292b7d1cf2fc95a6cfa2c2bd7b954b6929794b347370f5eb13074141a39c/apache_airflow_providers_standard-1.7.0.tar.gz", hash = "sha256:b36eb966701b8b86df659121da1e3d142ddbfdcd8b83c17d476e00625303f29b", size = 177154, upload-time = "2025-09-09T03:50:16.382Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/c4/f2/53dd302b83a7257768d8b68c5b4c951d2379b93d5509665f59497b2a7207/apache_airflow_providers_standard-1.7.0-py3-none-any.whl", hash = "sha256:478007f910ff6ebd7e4e1e548570fac53c2660e993379b91435bd72cc85d0a25", size = 142486, upload-time = "2025-09-09T03:49:39.438Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/d2/80727094156866c9a1eac68532164a634ee9d8ec41163e95a73c219333e9/apache_airflow_providers_standard-1.9.1-py3-none-any.whl", hash = "sha256:11d0394061003494780230e921427c5d66302ed95750087157842bb3e1e4ccbf", size = 143097, upload-time = "2025-10-26T07:04:30.658Z" },
 ]
 
 [[package]]
 name = "apache-airflow-task-sdk"
-version = "1.1.0"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow-core" },
     { name = "asgiref" },
     { name = "attrs" },
+    { name = "babel" },
     { name = "colorlog" },
     { name = "fsspec" },
     { name = "greenback" },
@@ -389,9 +401,9 @@ dependencies = [
     { name = "tenacity" },
     { name = "types-requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/a7/aae0a64578a73cf16df13d8af72119778df8093d15973453ce6f53c71c15/apache_airflow_task_sdk-1.1.0.tar.gz", hash = "sha256:81abc85d80dffb3331f99b1e064dab270b3a26d4bf9aad6b0ce4855742138af0", size = 1271374, upload-time = "2025-09-25T20:31:41.89Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3a/40/d0187042d8c1bdb5995578093cebdd38124291b2257317e09440e3031d4f/apache_airflow_task_sdk-1.1.1.tar.gz", hash = "sha256:105d058e0d3fd264245bafa799acd73fada121202fa2b800d0638f3ffac5660c", size = 1277704, upload-time = "2025-10-27T12:33:11.436Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/6b/1fc93e247b0286c3f7456b3847d76e5baecc6ce772cf5e2197f8093ac69e/apache_airflow_task_sdk-1.1.0-py3-none-any.whl", hash = "sha256:7d92021ceb7ccd4ab186b38b51c6269868f21fb5bdb00e40253463d76e31aefd", size = 297134, upload-time = "2025-09-25T20:31:36.771Z" },
+    { url = "https://files.pythonhosted.org/packages/1c/75/7b05fc6175f6c18dd0d5c26036dde01e16bc178724a9dec9f929961d0bc3/apache_airflow_task_sdk-1.1.1-py3-none-any.whl", hash = "sha256:cd979b279d78fed9c6cc71532bd3ffdfbbe8470532027b75af3bb4203efc746e", size = 300970, upload-time = "2025-10-27T12:33:06.532Z" },
 ]
 
 [[package]]
@@ -460,6 +472,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/5a/b0/1367933a8532ee6ff8d63537de4f1177af4bff9f3e829baf7331f595bb24/attrs-25.3.0.tar.gz", hash = "sha256:75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b", size = 812032, upload-time = "2025-03-13T11:10:22.779Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl", hash = "sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3", size = 63815, upload-time = "2025-03-13T11:10:21.14Z" },
+]
+
+[[package]]
+name = "babel"
+version = "2.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/7d/6b/d52e42361e1aa00709585ecc30b3f9684b3ab62530771402248b1b1d6240/babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d", size = 9951852, upload-time = "2025-02-01T15:17:41.026Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/b8/3fe70c75fe32afc4bb507f75563d39bc5642255d1d94f1f23604725780bf/babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2", size = 10182537, upload-time = "2025-02-01T15:17:37.39Z" },
 ]
 
 [[package]]
@@ -765,7 +786,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "apache-airflow", specifier = "==3.1.0" },
+    { name = "apache-airflow", specifier = "==3.1.1" },
     { name = "apache-airflow-providers-amazon" },
     { name = "apache-airflow-providers-http" },
     { name = "apache-airflow-providers-postgres" },
