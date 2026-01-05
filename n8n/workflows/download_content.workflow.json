@@ -1,7 +1,441 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-04T15:53:31.146Z",
+    "createdAt": "2026-01-04T15:53:31.146Z",
+    "versionId": "ec010687-8745-487d-a048-25a27b8fdd5e",
+    "workflowId": "qUfjfWLGEjV96ljf",
+    "nodes": [
+      {
+        "parameters": {
+          "html": "={{ $json.body }}"
+        },
+        "type": "CUSTOM.webpageContentExtractor",
+        "typeVersion": 1,
+        "position": [
+          1248,
+          -256
+        ],
+        "id": "2ef38eea-5a71-402c-a849-712834dd5702",
+        "name": "extract_content",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "URL"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -544,
+          -352
+        ],
+        "id": "4d141064-70a0-4d7e-8e28-79693871e0b7",
+        "name": "main_trigger"
+      },
+      {
+        "parameters": {
+          "html": "={{ $json.content }}",
+          "destinationKey": "contentMkdown",
+          "options": {
+            "maxConsecutiveNewlines": 2
+          }
+        },
+        "type": "n8n-nodes-base.markdown",
+        "typeVersion": 1,
+        "position": [
+          1696,
+          -256
+        ],
+        "id": "deb20501-bfe7-4a54-8b5e-b4c1c8ef5952",
+        "name": "convert_2_markdown"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "f206b7cd-f84d-4ba3-bbf6-c20f5b13dd33",
+                "name": "URL",
+                "value": "={{ $json.URL || 'https://www.dremio.com/blog/disaster-recovery-for-apache-iceberg-tables-restoring-from-backup-and-getting-back-online/' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -320,
+          -256
+        ],
+        "id": "8715e1c0-7f3d-42d6-8c6f-987b734e1b32",
+        "name": "parse_input"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.textContent = item.json.textContent.trim();\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1472,
+          -256
+        ],
+        "id": "10f80111-320a-4a3d-a3c9-a8a4dcb5e3e4",
+        "name": "normalize_content"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "c21c7b0f-da8f-40fc-9b35-6d6d3b3265fe",
+                "name": "ogImageUrl",
+                "value": "={{ $('find_og_image_url').item.json.ogImageUrl }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1920,
+          -256
+        ],
+        "id": "5915e4bb-64da-4ee1-bb56-408863fc38d7",
+        "name": "set_output"
+      },
+      {
+        "parameters": {
+          "jsCode": "const regexList = [\n  /property=[\"']og:image[\"'][^>]*content=[\"']([^\"']+)[\"']/i,\n  /content=[\"']([^\"']+)[\"'][^>]*property=[\"']og:image[\"']/i\n]\n\nvar ogImageUrl = null;\n\nfor (const item of $input.all()) {\n  const body = item.json.original_body || item.json.body;\n\n  for (const regex of regexList) {\n    const match = body.match(regex);\n\n    if (match){\n      ogImageUrl = match[1];\n    \n      item.json.ogImageUrl = ogImageUrl;\n      break;\n    }\n  }\n  \n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1024,
+          -256
+        ],
+        "id": "a2eeff4f-bcd6-4c06-8d46-435e9ce892f5",
+        "name": "find_og_image_url"
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.URL }}",
+          "options": {
+            "browserWSEndpoint": "ws://datahub-local-core-automation-n8n-chromium:3000?token=TOKEN-1234567890",
+            "headless": true,
+            "shell": true,
+            "stealth": true
+          }
+        },
+        "type": "CUSTOM.puppeteer",
+        "typeVersion": 1,
+        "position": [
+          -96,
+          -256
+        ],
+        "id": "a8aa2d9e-a02f-451b-a8e8-a3da7cce6fef",
+        "name": "Puppeteer",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "709a1488-1cd3-4e5a-8b26-3c181eb919e1",
+                "name": "body",
+                "value": "={{ $json.solution.response }}",
+                "type": "string"
+              },
+              {
+                "id": "c970b0f3-d6c3-4f70-adfc-0359ffd595e8",
+                "name": "original_body",
+                "value": "={{ $('Puppeteer').item.json.body }}",
+                "type": "string"
+              },
+              {
+                "id": "c2acfe43-a723-478a-8736-f6fd950fe412",
+                "name": "url",
+                "value": "={{ $json.solution.url }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          800,
+          -336
+        ],
+        "id": "d9424866-fee8-430b-8815-80961b338d00",
+        "name": "set_body"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "508568f6-ee44-4809-a496-2aa30e6d5f6a",
+                "leftValue": "={{ $json.body }}",
+                "rightValue": "https://medium.com/m/signin?actionUrl",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          128,
+          -192
+        ],
+        "id": "d2463fd4-76e8-49b9-830c-1e78d33a48c6",
+        "name": "if_medium"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "2278967e-0cae-411d-8ec4-b0c61b5bd06a",
+                "name": "url",
+                "value": "=https://freedium-mirror.cfd/{{ $('parse_input').item.json.URL }}",
+                "type": "string"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          352,
+          -256
+        ],
+        "id": "2109e9be-f451-48af-ab8b-95859295e4f0",
+        "name": "set_freedium"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -544,
+          -160
+        ],
+        "id": "c7bf634e-e6a1-4f73-abe4-68cfb3480cd8",
+        "name": "click_trigger",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $env.CUSTOM_FLARESOLVERR_URL }}/v1",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"cmd\": \"request.get\",\n  \"url\": \"{{ $json.url || $('parse_input').item.json.URL }}\",\n  \"maxTimeout\": 60000\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          576,
+          -336
+        ],
+        "id": "07dff05e-106d-4333-804b-ba61ccd83c97",
+        "name": "anti_captcha_service",
+        "retryOnFail": true
+      }
+    ],
+    "connections": {
+      "extract_content": {
+        "main": [
+          [
+            {
+              "node": "normalize_content",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "main_trigger": {
+        "main": [
+          [
+            {
+              "node": "parse_input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "parse_input": {
+        "main": [
+          [
+            {
+              "node": "Puppeteer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "convert_2_markdown": {
+        "main": [
+          [
+            {
+              "node": "set_output",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "normalize_content": {
+        "main": [
+          [
+            {
+              "node": "convert_2_markdown",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "find_og_image_url": {
+        "main": [
+          [
+            {
+              "node": "extract_content",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Puppeteer": {
+        "main": [
+          [
+            {
+              "node": "if_medium",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "anti_captcha_service",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_body": {
+        "main": [
+          [
+            {
+              "node": "find_og_image_url",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "if_medium": {
+        "main": [
+          [
+            {
+              "node": "set_freedium",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "find_og_image_url",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_freedium": {
+        "main": [
+          [
+            {
+              "node": "anti_captcha_service",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "click_trigger": {
+        "main": [
+          [
+            {
+              "node": "parse_input",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "anti_captcha_service": {
+        "main": [
+          [
+            {
+              "node": "set_body",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "ec010687-8745-487d-a048-25a27b8fdd5e",
   "connections": {
     "extract_content": {
       "main": [
@@ -402,7 +836,8 @@
         -160
       ],
       "id": "c7bf634e-e6a1-4f73-abe4-68cfb3480cd8",
-      "name": "click_trigger"
+      "name": "click_trigger",
+      "disabled": true
     },
     {
       "parameters": {
@@ -451,5 +886,5 @@
   "tags": [],
   "triggerCount": 0,
   "updatedAt": "2025-10-25T17:35:11.222Z",
-  "versionId": "01655bf0-8430-4555-886c-d5b1c142905d"
+  "versionId": "ec010687-8745-487d-a048-25a27b8fdd5e"
 }
