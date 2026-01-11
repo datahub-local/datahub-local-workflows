@@ -2,18 +2,18 @@
 
 #### 1. Hook
 
-- Write a sentence with the best idea taken from the content. Presented like a job experience, reflection, or learning narrated as "I".
-- No more than 50 words.
-- Must feel personal, conversational, and engaging.
-- VARY OPENINGS: Avoid starting every hook with "I think" or "Yesterday I...". Use realizations, time markers, or contrasting opinions to keep it fresh.
-- Do NOT mention the article or any source here. Keep it purely about your own feeling/experience.
+- Write a sentence with the best idea taken from the content, but hide it behind a personal moment or an "unpopular" opinion.
+- Must feel like a message you'd send to a friend on WhatsApp, not a post for a "Personal Brand."
+- VARY OPENINGS & TONE: Start with a doubt, a mistake, a specific time of day, or a feeling (e.g., "I used to hate...", "It's 8 AM and I'm still thinking about...", "I was wrong about...").
+- NO GURU TONE: Avoid sounding like you are teaching a lesson. Just share something that happened in your head.
+- Do NOT mention the article or any source here. Keep it 100% personal.
 
 #### 2. Summary
 
 - Before the bullet points, use a sentence that presents the key points of the content. Specify that the content is NOT MINE.
 - 4–5 bullet points summarizing the content.
 - Each one sentence, max 25 words.
-- Format the list starting with one of these emojis: "🔗", "▶️", "➡️" or "✔️".
+- Format the list starting with one a "-".
 
 #### 3. CTA
 
@@ -42,19 +42,19 @@
 
 ### HOOK Examples
 
-* Sometimes I feel we forget the most simple things are the most powerful.
-* It took me three years in this role to finally understand why this matters.
-* Most people focus on the grand strategy, but I’ve always found the small details more interesting.
-* In my country, we have a saying for this, and it perfectly explains my mistake last week.
-* This is something I wish I had learned before my second job.
-* Maybe it's just me, but I think we overcomplicate this way too much.
-* I’ve spent the morning thinking about a conversation I had back in 2019.
-* Last week I had a realization that changed how I approach my daily tasks.
-* In Spain we say: ‘lo sencillo es lo genial’ — and I think this applies here too.
-* Honestly, I wasn't expecting this to be the solution to my biggest headache.
-* I don’t have perfect English, but I have this specific experience that might help someone.
-* Not everything I learned at school was useful, but this one principle stayed with me.
-* For a long time, I thought I was doing this right, until I saw the results from another team.
-* It’s not about being perfect; it's about being clear and honest with the team.
-* Someone smarter than me once said this, and it’s taken me years to see they were right.
-* I used to be afraid of making this mistake, but now I see it as a necessary step.
+* I used to be convinced that more tools meant more productivity, but I was completely wrong.
+* It’s Monday morning and I’m still thinking about how much time we waste on things that don't move the needle.
+* Maybe it's just me, but I'm starting to get tired of the "perfect" processes that never work in real life.
+* I had a coffee with an old colleague yesterday and he told me something that really made me question my current workflow.
+* In Spain we say ‘dar palos de ciego’ — and that’s exactly how I felt before I understood this one thing.
+* Honestly, I didn't want to admit it, but this approach is actually better than what I've been doing for years.
+* This is not what they teach you in the certifications, but it's what actually happens when the servers go down.
+* I’ve been staring at this problem for three days and the solution was way more simple than I thought.
+* I don't have the perfect English or the perfect strategy, but I have a lot of questions about how we handle this.
+* I always thought this was a "big company problem" until it hit my small team last week.
+* Someone told me once that "less is more," and I finally understood what they meant while looking at my Todo list today.
+* I’m not a fan of following every trend, but I have to say this one caught my attention for a good reason.
+* I wish someone had told me this when I started; it would have saved me so many late nights.
+* It's funny how we overcomplicate things just because we are afraid of looking "too simple."
+* I was reading something earlier and it clicked: we are looking at the wrong metrics.
+* To be fair, I didn't believe this was possible until I saw the actual numbers.
