@@ -1,5 +1,379 @@
 {
-  "active": false,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-04T15:53:31.139Z",
+    "createdAt": "2026-01-04T15:53:31.139Z",
+    "versionId": "6a32e4c9-7e85-49a3-97f5-56bf264fe528",
+    "workflowId": "09xEuVQj207pjK4x",
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "22e8a3b0-bd53-485c-b971-7f1dd0686f0e",
+                "name": "repo_owner",
+                "type": "string",
+                "value": "={{ $env[\"BACKUP_GITHUB_REPO_OWNER\"] }}"
+              },
+              {
+                "id": "150618c5-09b1-4f8b-a7b4-984662bf3381",
+                "name": "repo_name",
+                "type": "string",
+                "value": "={{ $env[\"BACKUP_GITHUB_REPO_NAME\"] }}"
+              },
+              {
+                "id": "ab94d0a1-ef3a-4fe9-9076-6882c6fda0ac",
+                "name": "repo_path",
+                "type": "string",
+                "value": "=n8n"
+              },
+              {
+                "id": "338bd03e-28a3-4fd7-9c38-a3db158bebe6",
+                "name": "template_name",
+                "value": "={{ $json.template_name || 'prompts/linkedin_post_review.md' }}",
+                "type": "string"
+              },
+              {
+                "id": "d8be99d5-516c-496a-9138-39704db8b53c",
+                "name": "template_vars",
+                "value": "={{ $json.template_vars || {\"RULES\":\"SOME_RULES\",\"EXTRA_RULES\":\"SDOME_EXTRA_RULES\",\"URL\":\"SOME_URL\",\"TEXT\":\"SOME_TEXT\"} }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b8f892ca-d0b9-4932-963c-e0b23f851e30",
+        "name": "setVars",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -1984,
+          112
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "combinator": "and",
+            "conditions": [
+              {
+                "id": "2717a7e5-095a-42bf-8b5b-8050c3389ec5",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                },
+                "leftValue": "={{ $json.success }}",
+                "rightValue": "={{ $('check_template_vars_present').item.json.keys()}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8c693d6c-ed6c-43ae-a34c-e175bedcd40c",
+        "name": "If",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          -864,
+          112
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "57a9625b-adea-4ee7-a72a-2be8db15f3d4",
+                "name": "output",
+                "type": "string",
+                "value": "={{ $json.output }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "39933ac6-a60a-4830-8a72-1b279806d468",
+        "name": "set_output",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -416,
+          16
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "jsCode": "// Fetch the template text\nconst template = $('set_template').first().json.data;  // Ensure the template contains placeholders like {{ some.node.value }}\n\n// Function to replace placeholders dynamically\nconst replaceVariables = (text, vars) => {\n  return text.replace(/{{(.*?)}}/g, (match, key) => {\n    const trimmedKey = key.trim();\n    \n    // Extract last part after the last dot\n    const finalKey = trimmedKey.split('.').pop();\n\n    // Replace if key exists, otherwise leave placeholder unchanged\n    return vars.hasOwnProperty(finalKey) ? vars[finalKey] : match;\n  });\n};\n\n// Replace and return result\nreturn [{\n  output: replaceVariables(template, $('setVars').first().json.template_vars)\n}];\n"
+        },
+        "id": "233255a4-addb-464f-8bf6-98800a651d60",
+        "name": "replace_variables",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          -640,
+          16
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get template text\nconst template = $json.data;\n\n// Extract variables inside {{ }} dynamically\nconst matches = [...template.matchAll(/{{(.*?)}}/g)];\nconst uniqueVars = [...new Set(matches.map(match => match[1].trim().split('.').pop()))];\n\n// Get variables from the Set Node\nconst setNodeVariables = $('setVars').first().json.template_vars;\n\n// Log extracted variables and Set Node keys\nconsole.log(\"Extracted Variables:\", uniqueVars);\nconsole.log(\"Set Node Keys:\", Object.keys(setNodeVariables));\n\n// Check if all required variables are present in the Set Node\nconst missingKeys = uniqueVars.filter(varName => !setNodeVariables.hasOwnProperty(varName));\n\nconsole.log(\"Missing Keys:\", missingKeys);\n\n// Return false if any required variable is missing, otherwise return true\nreturn [{\n  success: missingKeys.length === 0,\n  missingKeys: missingKeys\n}];\n"
+        },
+        "id": "e57af650-e752-4a06-a2ea-709cda976bbd",
+        "name": "check_template_vars_present",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          -1088,
+          112
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "335b450d-542a-4714-83d8-ccc237188fc5",
+                "name": "data",
+                "type": "string",
+                "value": "={{ $json.data }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "4cc8885b-1e37-432d-97b5-7a59bcdde505",
+        "name": "set_template",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -1312,
+          112
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "operation": "text",
+          "options": {}
+        },
+        "id": "2a3c3ef6-93d5-4028-81f3-9608c714f9f7",
+        "name": "extract_template",
+        "type": "n8n-nodes-base.extractFromFile",
+        "position": [
+          -1536,
+          112
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "resource": "file",
+          "operation": "get",
+          "owner": {
+            "__rl": true,
+            "value": "={{ $json.repo_owner }}",
+            "mode": "name"
+          },
+          "repository": {
+            "__rl": true,
+            "value": "={{ $json.repo_name }}",
+            "mode": "name"
+          },
+          "filePath": "={{ $json.repo_path }}/{{ $json.template_name }}",
+          "additionalParameters": {}
+        },
+        "id": "9e110d79-8081-4d52-8dc2-6d1e55eb7171",
+        "name": "download_template",
+        "type": "n8n-nodes-base.github",
+        "position": [
+          -1760,
+          112
+        ],
+        "typeVersion": 1,
+        "webhookId": "c46af261-581d-4c60-899e-48ca96011a25",
+        "credentials": {
+          "githubApi": {
+            "id": "x1DjxYsMLFm3vUiv",
+            "name": "GitHub account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Missing Prompt Variables : {{ $('check_template_vars_present').item.json.missingKeys }}\n"
+        },
+        "id": "6325bcd2-9ccf-4cb1-9be6-40cf6ae0c810",
+        "name": "stop_and_error",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          -640,
+          208
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "id": "5f96637f-0870-4306-97d0-3139c03e3e51",
+        "name": "click_trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "position": [
+          -2208,
+          16
+        ],
+        "typeVersion": 1,
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "template_name"
+              },
+              {
+                "name": "template_vars",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -2208,
+          208
+        ],
+        "id": "2feb9add-676d-4fbd-875b-a87781860a0b",
+        "name": "main_trigger"
+      }
+    ],
+    "connections": {
+      "setVars": {
+        "main": [
+          [
+            {
+              "node": "download_template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "replace_variables",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "stop_and_error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_output": {
+        "main": [
+          []
+        ]
+      },
+      "replace_variables": {
+        "main": [
+          [
+            {
+              "node": "set_output",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "check_template_vars_present": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_template": {
+        "main": [
+          [
+            {
+              "node": "check_template_vars_present",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "extract_template": {
+        "main": [
+          [
+            {
+              "node": "set_template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "download_template": {
+        "main": [
+          [
+            {
+              "node": "extract_template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "click_trigger": {
+        "main": [
+          [
+            {
+              "node": "setVars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "main_trigger": {
+        "main": [
+          [
+            {
+              "node": "setVars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "6a32e4c9-7e85-49a3-97f5-56bf264fe528",
   "connections": {
     "setVars": {
       "main": [
@@ -343,7 +717,8 @@
         -2208,
         16
       ],
-      "typeVersion": 1
+      "typeVersion": 1,
+      "disabled": true
     },
     {
       "parameters": {
@@ -375,8 +750,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-07-27T08:56:10.305Z",
       "updatedAt": "2025-07-27T08:56:10.305Z",
+      "createdAt": "2025-07-27T08:56:10.305Z",
       "role": "workflow:owner",
       "workflowId": "09xEuVQj207pjK4x",
       "projectId": "zcGU09G6dy4Oah3l"
@@ -386,5 +761,5 @@
   "tags": [],
   "triggerCount": 0,
   "updatedAt": "2025-08-27T09:27:54.267Z",
-  "versionId": "bd1965b4-4673-4f3b-9c18-ea6aed991127"
+  "versionId": "6a32e4c9-7e85-49a3-97f5-56bf264fe528"
 }
