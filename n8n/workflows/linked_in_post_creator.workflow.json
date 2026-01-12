@@ -1069,13 +1069,13 @@
             {
               "id": "8b1c6021-99ec-4daa-9f4a-f5d583ac2daf",
               "name": "URL",
-              "value": "={{ $('main_trigger').item.json.URL || \"https://datahub-local.alvsanand.com/\" }}",
+              "value": "={{ $('main_trigger').item.json.URL || \"https://www.alvsanand.com\" }}",
               "type": "string"
             },
             {
               "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
               "name": "MODEL",
-              "value": "models/gemini-2.5-flash",
+              "value": "models/gemini-3-flash-preview",
               "type": "string"
             },
             {
@@ -1442,6 +1442,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-08-30T16:39:16.457Z",
-  "versionId": "4c6600e7-2da2-4d29-9b43-58db9a3ce1de"
+  "updatedAt": "2026-01-11T21:09:01.980Z",
+  "versionId": "6ad13f79-8499-40cd-bbfc-393ae8f4a7ff"
 }
