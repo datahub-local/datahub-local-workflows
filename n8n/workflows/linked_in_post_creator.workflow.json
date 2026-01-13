@@ -1075,7 +1075,7 @@
             {
               "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
               "name": "MODEL",
-              "value": "models/gemini-3-flash-preview",
+              "value": "models/gemini-2.5-flash",
               "type": "string"
             },
             {
@@ -1442,6 +1442,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-01-11T21:09:01.980Z",
-  "versionId": "6ad13f79-8499-40cd-bbfc-393ae8f4a7ff"
+  "updatedAt": "2026-01-12T13:38:59.818Z",
+  "versionId": "4f4e9e8b-1ca0-4eae-9fd6-d03c8ea84fdd"
 }
