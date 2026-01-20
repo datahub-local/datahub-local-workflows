@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-11-22T06:13:27.499Z",
-    "createdAt": "2025-11-22T06:13:27.499Z",
-    "versionId": "4c6600e7-2da2-4d29-9b43-58db9a3ce1de",
+    "updatedAt": "2026-01-19T14:41:52.967Z",
+    "createdAt": "2026-01-19T14:41:22.103Z",
+    "versionId": "9f5d08fb-1888-401d-9980-8018bf186985",
     "workflowId": "PaeHFdCsdoVbQx11",
     "nodes": [
       {
@@ -182,7 +182,7 @@
               {
                 "id": "8b1c6021-99ec-4daa-9f4a-f5d583ac2daf",
                 "name": "URL",
-                "value": "={{ $('main_trigger').item.json.URL || \"https://datahub-local.alvsanand.com/\" }}",
+                "value": "={{ $('main_trigger').item.json.URL || \"https://www.alvsanand.com\" }}",
                 "type": "string"
               },
               {
@@ -253,6 +253,9 @@
         ],
         "id": "00ed08b6-9d7b-480f-a6bf-ab1e15102a79",
         "name": "ai_model_gemini",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "notesInFlow": false,
         "credentials": {
           "googlePalmApi": {
             "id": "ohBCg8rvjDPWEVQT",
@@ -708,12 +711,12 @@
         ]
       }
     },
-    "authors": "system migration",
-    "name": null,
-    "description": null,
-    "autosaved": false
+    "authors": "no name",
+    "name": "Version 9f5d08fb",
+    "description": "",
+    "autosaved": true
   },
-  "activeVersionId": "4c6600e7-2da2-4d29-9b43-58db9a3ce1de",
+  "activeVersionId": "9f5d08fb-1888-401d-9980-8018bf186985",
   "connections": {
     "create_post_ai": {
       "main": [
@@ -1140,6 +1143,9 @@
       ],
       "id": "00ed08b6-9d7b-480f-a6bf-ab1e15102a79",
       "name": "ai_model_gemini",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "notesInFlow": false,
       "credentials": {
         "googlePalmApi": {
           "id": "ohBCg8rvjDPWEVQT",
@@ -1442,6 +1448,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-01-12T13:38:59.818Z",
-  "versionId": "4f4e9e8b-1ca0-4eae-9fd6-d03c8ea84fdd"
+  "updatedAt": "2026-01-19T14:41:22.102Z",
+  "versionId": "9f5d08fb-1888-401d-9980-8018bf186985"
 }
