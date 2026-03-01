@@ -6,30 +6,49 @@ Extra Rules:
 
 {{ EXTRA_RULES }}
 
-## Example
+## Examples of Variety
 
-### Example Input
+Pay attention to how the examples differ in formatting (bullets vs. paragraph reflection, different hook styles):
 
+### Example 1 (Technical Deep Dive style with bullets)
 <content>
-While the world is obsessed with big data, some researchers and companies are making huge strides by focusing on small data—more curated, higher quality datasets. These lean datasets are improving training efficiency and model explainability. This shift is especially important for businesses that can't afford massive infrastructure but still want to leverage AI responsibly.
+While the world is obsessed with big data, some researchers and companies are making huge strides by focusing on small data—more curated, higher quality datasets. These lean datasets are improving training efficiency and model explainability. This shift is especially important for businesses that can't afford massive infrastructure but still want to leverage AI responsibly in production environments.
 </content>
 
-### Example Output
+<output>
+A common misconception about machine learning is that scaling the compute is the only way forward. What if we shifted the focus completely to small, curated data instead?
+
+Found an interesting analysis from a research team proving exactly that. They argue that heavily filtered, high-quality datasets are driving serious efficiency gains.
+
+A couple of architectural observations:
+- You dramatically lower compute costs and infrastructure overhead.
+- You get better explainability out-of-the-box compared to black-box massive models.
+- It is a much more realistic path to production for companies managing tight cloud budgets.
+
+Have you seen better ROI deploying small curated models vs dumping unstructured text into massive LLMs?
+
+Source here: SOME_LINK
+
+#MachineLearning #DataEngineering #CloudArchitecture
+</output>
+
+### Example 2 (Opinion/Best Practices style as a reflection)
+<content>
+A new report highlights that 70% of digital transformation initiatives fail to meet their goals. The primary reason is not choosing the wrong technology stack, but rather a failure to align IT with overarching business strategy. Stakeholders are often left out of the architecture planning phases, resulting in data lakes that provide no actionable insights or reporting capabilities the business actually needs.
+</content>
 
 <output>
-Big data gets all the attention—but what if small, well-crafted datasets could drive smarter, faster AI innovation?
+The hardest part of migrating to the cloud isn't always the technology—it's aligning the stakeholders. 
 
-The other day I read an Article from Company X that could be an real example of that. Here's what stood out to me:
+I've spent years standing up modern data stacks using Spark, Snowflake, and Kafka. But no amount of performance optimization matters if the business analysts are left out of the design phase. A recent report confirmed this bias again: 70% of tech initiatives fail because they miss the business context.
 
-🔍 Small, curated datasets improve model accuracy and explainability
-⚡ They're faster and more efficient to train on—no need for massive compute
-💡 Ideal for organizations with limited resources that still want real AI impact
+If your data lake is perfectly architected but your business users can't query the schema to get actionable insights, you haven't built a solution—you've built an expensive storage bucket. 
 
-Do you think we're overvaluing data quantity at the expense of quality?
+How often are your technical teams meeting directly with the business stakeholders before defining the architecture? Let me know your thoughts.
 
-👉 Read the full post: SOME_LINK
+Source here: SOME_LINK
 
-#AIethics #SmallData #DataScience
+#DataGovernance #ModernDataStack #DataArchitecture
 </output>
 
 ## Actual Input
