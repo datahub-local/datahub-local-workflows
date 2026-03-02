@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-11-22T06:13:27.499Z",
-    "createdAt": "2025-11-22T06:13:27.499Z",
-    "versionId": "a64e35df-fda7-4e7d-bade-a6664c8098dc",
+    "updatedAt": "2026-03-01T14:57:44.551Z",
+    "createdAt": "2026-03-01T14:57:41.381Z",
+    "versionId": "a0963d1d-1810-4bbc-a33b-ec2255a84fb8",
     "workflowId": "oxARWWyxenKgmv6A",
     "nodes": [
       {
@@ -63,8 +63,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          1248,
-          -1272
+          1216,
+          -1280
         ],
         "id": "645093c0-7a43-484e-a3c3-788ff57b0167",
         "name": "switch_user_accept"
@@ -86,7 +86,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          2144,
+          2112,
           -1056
         ],
         "id": "8d0270dd-64d0-4e93-a3b9-dce397f21a11",
@@ -105,8 +105,8 @@
         "type": "n8n-nodes-base.linkedIn",
         "typeVersion": 1,
         "position": [
-          1920,
-          -1272
+          1888,
+          -1280
         ],
         "id": "eb37ef86-8d69-4599-aeb5-b3003cfaa872",
         "name": "send_2_linkedin",
@@ -156,7 +156,7 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          128,
+          96,
           -1104
         ],
         "id": "74d70931-55a5-43ce-9f15-c533072d52f8",
@@ -198,8 +198,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          576,
-          -1176
+          544,
+          -1184
         ],
         "id": "c1a5ef20-0aba-4b70-a901-4642a44589e7",
         "name": "check_subworkflow_error"
@@ -220,7 +220,7 @@
               "URL": "={{ $('select_article_to_post').item.json.URL }}",
               "EXTRA_RULES": "={{ $('select_article_to_post').item.json.EXTRA_RULES }}",
               "CONTENT": "={{ $('download_content').item.json.contentMkdown }}",
-              "ENABLE_CHECK": false
+              "ENABLE_CHECK": true
             },
             "matchingColumns": [],
             "schema": [
@@ -281,11 +281,12 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          352,
+          320,
           -1104
         ],
         "id": "bbb9075e-10fd-4ae2-a023-a95a8ec9c48b",
-        "name": "execute_post_creator"
+        "name": "execute_post_creator",
+        "notesInFlow": false
       },
       {
         "parameters": {
@@ -315,8 +316,8 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          -544,
-          -1200
+          -576,
+          -1104
         ],
         "id": "37f0e405-74e7-448c-bc27-a8764cb0f3b2",
         "name": "read_articles_sheet",
@@ -329,30 +330,16 @@
       },
       {
         "parameters": {
-          "jsCode": "const priorityOrder = {\n  HIGH: 0,\n  MEDIUM: 1,\n  LOW: 2\n};\n\nconst filteredEntries = $input.all().map(item=>item.json).filter(item => item.URL && /^(QUEUE)$/.test(item.STATUS)).toSorted((a, b) => {\n  const aPriority = priorityOrder[a.PRIORITY] ?? 3;\n  const bPriority = priorityOrder[b.PRIORITY] ?? 3;\n\n  if (aPriority !== bPriority) {\n    return aPriority - bPriority; // sort by priority\n  }\n\n  return a.row_number - b.row_number; // sort by row_number ascending\n});\n\n//console.log(filteredEntries.slice(0))\n\nreturn filteredEntries.slice(0, 1);"
+          "jsCode": "const priorityOrder = {\n  HIGH: 0,\n  MEDIUM: 1,\n  LOW: 2\n};\nconst filteredEntries = $input.all().map(item=>item.json).filter(item => item.URL && /^(QUEUE)$/.test(item.STATUS)).toSorted((a, b) => {\n  const aPriority = priorityOrder[a.PRIORITY] ?? 3;\n  const bPriority = priorityOrder[b.PRIORITY] ?? 3;\n\n  if (aPriority !== bPriority) {\n    return aPriority - bPriority; // sort by priority\n  }\n\n  return a.row_number - b.row_number; // sort by row_number ascending\n});\n\n//console.log(filteredEntries.slice(0))\n\nreturn filteredEntries.slice(0, 1);"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -320,
+          -352,
           -1104
         ],
         "id": "8c22f52d-03e5-4958-a175-869d9e67b38d",
         "name": "select_article_to_post"
-      },
-      {
-        "parameters": {
-          "jsCode": "const timeThreshold = 10 * 24 * 60 * 60 * 1000;\n\nconst now = new Date();\nconst thresholdDate = new Date(now.getTime() - timeThreshold);\n\nconst filteredEntries = $input.all().map(item=>item.json)\n  .filter(item => item.URL && /^(IN_PROGRESS|WAITING_APPROVAL)$/.test(item.STATUS))\n  .filter(item => {\n    if (!item.UPDATE_DATE) return false;\n    const updateDate = new Date(item.UPDATE_DATE);\n    return !isNaN(updateDate) && updateDate < thresholdDate;\n  })\n\n//console.log(filteredEntries)\n\nreturn filteredEntries;"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -320,
-          -1296
-        ],
-        "id": "4389ebaf-c191-4c68-90a8-6d3bb37db094",
-        "name": "select_article_to_clean",
-        "disabled": true
       },
       {
         "parameters": {
@@ -363,7 +350,7 @@
             "mode": "list",
             "cachedResultName": "workflows"
           },
-          "text": "=Error Publishing Post ({{ $('select_article_to_post').item.json.URL }}) in LinkedIn: {{ $json.ERROR }}",
+          "text": "=Error Publishing Post ({{ $execution.url }}) in LinkedIn: {{ $json.ERROR }}",
           "otherOptions": {
             "includeLinkToWorkflow": true
           }
@@ -371,7 +358,7 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          2368,
+          2336,
           -960
         ],
         "id": "82833b18-bc22-4574-8a88-0ce455fcf431",
@@ -441,7 +428,7 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          1696,
+          1664,
           -1056
         ],
         "id": "855fefce-3dcf-49c8-8a22-6dfc6ca3fd77",
@@ -470,7 +457,7 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          1472,
+          1440,
           -1056
         ],
         "id": "fcfc0f50-17d8-41aa-95a1-8025fde13cb9",
@@ -504,8 +491,8 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          1024,
-          -1272
+          992,
+          -1280
         ],
         "id": "1c9dd693-88dc-4f29-bd6e-1c8873d066c3",
         "name": "notification_accept",
@@ -633,8 +620,8 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          800,
-          -1272
+          768,
+          -1280
         ],
         "id": "ecab579e-be70-4192-b062-ec20a8f75427",
         "name": "update_status_waiting_approval",
@@ -761,7 +748,7 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          1920,
+          1888,
           -1056
         ],
         "id": "eb40731c-a3ee-4290-aaaa-fc0d5c0ba38b",
@@ -795,7 +782,8 @@
             "value": {
               "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
               "STATUS": "IN_PROGRESS",
-              "row_number": "={{ $json.row_number }}"
+              "row_number": "={{ $json.row_number }}",
+              "EXECUTION_ID": "={{ $execution.id }}"
             },
             "matchingColumns": [
               "row_number"
@@ -850,14 +838,14 @@
                 "removed": true
               },
               {
-                "id": "EXTRA_PROMPT",
-                "displayName": "EXTRA_PROMPT",
+                "id": "EXTRA_RULES",
+                "displayName": "EXTRA_RULES",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
                 "type": "string",
                 "canBeUsedToMatch": true,
-                "removed": true
+                "removed": false
               },
               {
                 "id": "LINKEDIN_URL",
@@ -870,12 +858,22 @@
                 "removed": true
               },
               {
+                "id": "EXECUTION_ID",
+                "displayName": "EXECUTION_ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
                 "id": "row_number",
                 "displayName": "row_number",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
-                "type": "string",
+                "type": "number",
                 "canBeUsedToMatch": true,
                 "readOnly": true,
                 "removed": false
@@ -889,7 +887,7 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          -96,
+          -128,
           -1104
         ],
         "id": "c2222ba2-20f4-4c2d-beaa-1cf3bf1037c5",
@@ -904,14 +902,14 @@
       {
         "parameters": {
           "content": "## Link to the [Google Sheet](https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI)",
-          "height": 280,
-          "width": 760
+          "height": 376,
+          "width": 852
         },
         "type": "n8n-nodes-base.stickyNote",
         "typeVersion": 1,
         "position": [
-          176,
-          -1824
+          -656,
+          -1696
         ],
         "id": "829c548e-3346-48b4-aba0-7a279af974f0",
         "name": "Sticky Note"
@@ -921,8 +919,8 @@
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
         "position": [
-          -768,
-          -1296
+          -800,
+          -1200
         ],
         "id": "4274b2df-ee1e-4bee-833b-c2a66adfb5bf",
         "name": "click_trigger"
@@ -933,7 +931,7 @@
             "interval": [
               {
                 "field": "cronExpression",
-                "expression": "0 0 12 * * 1"
+                "expression": "0 0 13 * * 1,4"
               }
             ]
           }
@@ -941,8 +939,8 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
         "position": [
-          -768,
-          -1104
+          -800,
+          -1008
         ],
         "id": "f122c73e-d541-4c27-9ce3-f76e8ebc2c61",
         "name": "schedule_trigger"
@@ -1064,7 +1062,7 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          1920,
+          1888,
           -864
         ],
         "id": "73412927-f864-4d67-82d3-e7dd35356165",
@@ -1093,58 +1091,11 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          2144,
+          2112,
           -864
         ],
         "id": "40a0eda7-f8f2-4923-a6b6-3889547fbaa9",
         "name": "set_error_error"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "aaa4a285-bddd-46ed-ace4-96e9a65926b8",
-                "leftValue": "={{ $('set_error_error').item.json.ERROR || \"\" }}",
-                "rightValue": "=ERROR",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals",
-                  "name": "filter.operator.equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          2592,
-          -960
-        ],
-        "id": "6f5ce4a6-173a-4fd4-828b-3a911e41e632",
-        "name": "If"
-      },
-      {
-        "parameters": {
-          "errorMessage": "ERROR"
-        },
-        "type": "n8n-nodes-base.stopAndError",
-        "typeVersion": 1,
-        "position": [
-          2816,
-          -960
-        ],
-        "id": "f5182d5f-b69c-469e-b950-d2decf51eddb",
-        "name": "Stop and Error"
       },
       {
         "parameters": {
@@ -1154,7 +1105,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          1696,
+          1664,
           -1440
         ],
         "id": "d3ed4337-fc67-4096-8cf8-1f62a04acd8d",
@@ -1189,8 +1140,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1472,
-          -1368
+          1440,
+          -1376
         ],
         "id": "f2064fc3-e570-4d6a-bd9b-ddd9fc742c8b",
         "name": "if_omImage"
@@ -1207,7 +1158,7 @@
         "type": "n8n-nodes-base.linkedIn",
         "typeVersion": 1,
         "position": [
-          1920,
+          1888,
           -1488
         ],
         "id": "5560c591-f119-4e30-af95-d12a69e7111a",
@@ -1236,8 +1187,8 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          2144,
-          -1272
+          2112,
+          -1280
         ],
         "id": "32d93a0e-1807-4dc8-a48e-7c4033bdcb88",
         "name": "send_published_notification_b",
@@ -1266,7 +1217,7 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          2144,
+          2112,
           -1488
         ],
         "id": "f995a3c8-97f6-4f19-ac90-22b330bb0255",
@@ -1395,7 +1346,7 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          2368,
+          2336,
           -1488
         ],
         "id": "33dcb552-400c-4549-aed8-f1b16b359e8a",
@@ -1523,8 +1474,8 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.6,
         "position": [
-          2368,
-          -1272
+          2336,
+          -1280
         ],
         "id": "8f8ac66d-c92c-4c35-9a3f-65fcd8ab9d39",
         "name": "update_status_published_b",
@@ -1624,11 +1575,6 @@
               "node": "select_article_to_post",
               "type": "main",
               "index": 0
-            },
-            {
-              "node": "select_article_to_clean",
-              "type": "main",
-              "index": 0
             }
           ]
         ]
@@ -1697,13 +1643,7 @@
       },
       "send_error_notification": {
         "main": [
-          [
-            {
-              "node": "If",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "update_status_in_progress": {
@@ -1766,17 +1706,6 @@
           [
             {
               "node": "send_error_notification",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Stop and Error",
               "type": "main",
               "index": 0
             }
@@ -1853,12 +1782,12 @@
         ]
       }
     },
-    "authors": "system migration",
-    "name": null,
-    "description": null,
-    "autosaved": false
+    "authors": "no name",
+    "name": "Version a0963d1d",
+    "description": "",
+    "autosaved": true
   },
-  "activeVersionId": "a64e35df-fda7-4e7d-bade-a6664c8098dc",
+  "activeVersionId": "a0963d1d-1810-4bbc-a33b-ec2255a84fb8",
   "connections": {
     "switch_user_accept": {
       "main": [
@@ -1947,11 +1876,6 @@
             "node": "select_article_to_post",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "select_article_to_clean",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -2020,13 +1944,7 @@
     },
     "send_error_notification": {
       "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "update_status_in_progress": {
@@ -2089,17 +2007,6 @@
         [
           {
             "node": "send_error_notification",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Stop and Error",
             "type": "main",
             "index": 0
           }
@@ -2241,7 +2148,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1248,
+        1216,
         -1280
       ],
       "id": "645093c0-7a43-484e-a3c3-788ff57b0167",
@@ -2264,7 +2171,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2144,
+        2112,
         -1056
       ],
       "id": "8d0270dd-64d0-4e93-a3b9-dce397f21a11",
@@ -2283,7 +2190,7 @@
       "type": "n8n-nodes-base.linkedIn",
       "typeVersion": 1,
       "position": [
-        1920,
+        1888,
         -1280
       ],
       "id": "eb37ef86-8d69-4599-aeb5-b3003cfaa872",
@@ -2334,7 +2241,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        128,
+        96,
         -1104
       ],
       "id": "74d70931-55a5-43ce-9f15-c533072d52f8",
@@ -2376,7 +2283,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        576,
+        544,
         -1184
       ],
       "id": "c1a5ef20-0aba-4b70-a901-4642a44589e7",
@@ -2398,7 +2305,7 @@
             "URL": "={{ $('select_article_to_post').item.json.URL }}",
             "EXTRA_RULES": "={{ $('select_article_to_post').item.json.EXTRA_RULES }}",
             "CONTENT": "={{ $('download_content').item.json.contentMkdown }}",
-            "ENABLE_CHECK": false
+            "ENABLE_CHECK": true
           },
           "matchingColumns": [],
           "schema": [
@@ -2459,11 +2366,12 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        352,
+        320,
         -1104
       ],
       "id": "bbb9075e-10fd-4ae2-a023-a95a8ec9c48b",
-      "name": "execute_post_creator"
+      "name": "execute_post_creator",
+      "notesInFlow": false
     },
     {
       "parameters": {
@@ -2493,8 +2401,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        -544,
-        -1200
+        -576,
+        -1104
       ],
       "id": "37f0e405-74e7-448c-bc27-a8764cb0f3b2",
       "name": "read_articles_sheet",
@@ -2507,30 +2415,16 @@
     },
     {
       "parameters": {
-        "jsCode": "const priorityOrder = {\n  HIGH: 0,\n  MEDIUM: 1,\n  LOW: 2\n};\n\nconst filteredEntries = $input.all().map(item=>item.json).filter(item => item.URL && /^(QUEUE)$/.test(item.STATUS)).toSorted((a, b) => {\n  const aPriority = priorityOrder[a.PRIORITY] ?? 3;\n  const bPriority = priorityOrder[b.PRIORITY] ?? 3;\n\n  if (aPriority !== bPriority) {\n    return aPriority - bPriority; // sort by priority\n  }\n\n  return a.row_number - b.row_number; // sort by row_number ascending\n});\n\n//console.log(filteredEntries.slice(0))\n\nreturn filteredEntries.slice(0, 1);"
+        "jsCode": "const priorityOrder = {\n  HIGH: 0,\n  MEDIUM: 1,\n  LOW: 2\n};\nconst filteredEntries = $input.all().map(item=>item.json).filter(item => item.URL && /^(QUEUE)$/.test(item.STATUS)).toSorted((a, b) => {\n  const aPriority = priorityOrder[a.PRIORITY] ?? 3;\n  const bPriority = priorityOrder[b.PRIORITY] ?? 3;\n\n  if (aPriority !== bPriority) {\n    return aPriority - bPriority; // sort by priority\n  }\n\n  return a.row_number - b.row_number; // sort by row_number ascending\n});\n\n//console.log(filteredEntries.slice(0))\n\nreturn filteredEntries.slice(0, 1);"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -320,
+        -352,
         -1104
       ],
       "id": "8c22f52d-03e5-4958-a175-869d9e67b38d",
       "name": "select_article_to_post"
-    },
-    {
-      "parameters": {
-        "jsCode": "const timeThreshold = 10 * 24 * 60 * 60 * 1000;\n\nconst now = new Date();\nconst thresholdDate = new Date(now.getTime() - timeThreshold);\n\nconst filteredEntries = $input.all().map(item=>item.json)\n  .filter(item => item.URL && /^(IN_PROGRESS|WAITING_APPROVAL)$/.test(item.STATUS))\n  .filter(item => {\n    if (!item.UPDATE_DATE) return false;\n    const updateDate = new Date(item.UPDATE_DATE);\n    return !isNaN(updateDate) && updateDate < thresholdDate;\n  })\n\n//console.log(filteredEntries)\n\nreturn filteredEntries;"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -320,
-        -1296
-      ],
-      "id": "4389ebaf-c191-4c68-90a8-6d3bb37db094",
-      "name": "select_article_to_clean",
-      "disabled": true
     },
     {
       "parameters": {
@@ -2541,7 +2435,7 @@
           "mode": "list",
           "cachedResultName": "workflows"
         },
-        "text": "=Error Publishing Post ({{ $('select_article_to_post').item.json.URL }}) in LinkedIn: {{ $json.ERROR }}",
+        "text": "=Error Publishing Post ({{ $execution.url }}) in LinkedIn: {{ $json.ERROR }}",
         "otherOptions": {
           "includeLinkToWorkflow": true
         }
@@ -2549,7 +2443,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        2368,
+        2336,
         -960
       ],
       "id": "82833b18-bc22-4574-8a88-0ce455fcf431",
@@ -2619,7 +2513,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1696,
+        1664,
         -1056
       ],
       "id": "855fefce-3dcf-49c8-8a22-6dfc6ca3fd77",
@@ -2648,7 +2542,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1472,
+        1440,
         -1056
       ],
       "id": "fcfc0f50-17d8-41aa-95a1-8025fde13cb9",
@@ -2682,7 +2576,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1024,
+        992,
         -1280
       ],
       "id": "1c9dd693-88dc-4f29-bd6e-1c8873d066c3",
@@ -2811,7 +2705,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        800,
+        768,
         -1280
       ],
       "id": "ecab579e-be70-4192-b062-ec20a8f75427",
@@ -2939,7 +2833,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        1920,
+        1888,
         -1056
       ],
       "id": "eb40731c-a3ee-4290-aaaa-fc0d5c0ba38b",
@@ -2973,7 +2867,8 @@
           "value": {
             "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
             "STATUS": "IN_PROGRESS",
-            "row_number": "={{ $json.row_number }}"
+            "row_number": "={{ $json.row_number }}",
+            "EXECUTION_ID": "={{ $execution.id }}"
           },
           "matchingColumns": [
             "row_number"
@@ -3028,14 +2923,14 @@
               "removed": true
             },
             {
-              "id": "EXTRA_PROMPT",
-              "displayName": "EXTRA_PROMPT",
+              "id": "EXTRA_RULES",
+              "displayName": "EXTRA_RULES",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "LINKEDIN_URL",
@@ -3048,12 +2943,22 @@
               "removed": true
             },
             {
+              "id": "EXECUTION_ID",
+              "displayName": "EXECUTION_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
               "id": "row_number",
               "displayName": "row_number",
               "required": false,
               "defaultMatch": false,
               "display": true,
-              "type": "string",
+              "type": "number",
               "canBeUsedToMatch": true,
               "readOnly": true,
               "removed": false
@@ -3067,7 +2972,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        -96,
+        -128,
         -1104
       ],
       "id": "c2222ba2-20f4-4c2d-beaa-1cf3bf1037c5",
@@ -3082,14 +2987,14 @@
     {
       "parameters": {
         "content": "## Link to the [Google Sheet](https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI)",
-        "height": 280,
-        "width": 760
+        "height": 376,
+        "width": 852
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1984,
-        -5760
+        -656,
+        -1696
       ],
       "id": "829c548e-3346-48b4-aba0-7a279af974f0",
       "name": "Sticky Note"
@@ -3099,8 +3004,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -768,
-        -1296
+        -800,
+        -1200
       ],
       "id": "4274b2df-ee1e-4bee-833b-c2a66adfb5bf",
       "name": "click_trigger"
@@ -3111,7 +3016,7 @@
           "interval": [
             {
               "field": "cronExpression",
-              "expression": "0 0 12 * * 1"
+              "expression": "0 0 13 * * 1,4"
             }
           ]
         }
@@ -3119,8 +3024,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -768,
-        -1104
+        -800,
+        -1008
       ],
       "id": "f122c73e-d541-4c27-9ce3-f76e8ebc2c61",
       "name": "schedule_trigger"
@@ -3242,7 +3147,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        1920,
+        1888,
         -864
       ],
       "id": "73412927-f864-4d67-82d3-e7dd35356165",
@@ -3271,58 +3176,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2144,
+        2112,
         -864
       ],
       "id": "40a0eda7-f8f2-4923-a6b6-3889547fbaa9",
       "name": "set_error_error"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "aaa4a285-bddd-46ed-ace4-96e9a65926b8",
-              "leftValue": "={{ $('set_error_error').item.json.ERROR || \"\" }}",
-              "rightValue": "=ERROR",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        2592,
-        -960
-      ],
-      "id": "6f5ce4a6-173a-4fd4-828b-3a911e41e632",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "errorMessage": "ERROR"
-      },
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [
-        2816,
-        -960
-      ],
-      "id": "f5182d5f-b69c-469e-b950-d2decf51eddb",
-      "name": "Stop and Error"
     },
     {
       "parameters": {
@@ -3332,7 +3190,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1696,
+        1664,
         -1440
       ],
       "id": "d3ed4337-fc67-4096-8cf8-1f62a04acd8d",
@@ -3367,7 +3225,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1472,
+        1440,
         -1376
       ],
       "id": "f2064fc3-e570-4d6a-bd9b-ddd9fc742c8b",
@@ -3385,7 +3243,7 @@
       "type": "n8n-nodes-base.linkedIn",
       "typeVersion": 1,
       "position": [
-        1920,
+        1888,
         -1488
       ],
       "id": "5560c591-f119-4e30-af95-d12a69e7111a",
@@ -3414,7 +3272,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        2144,
+        2112,
         -1280
       ],
       "id": "32d93a0e-1807-4dc8-a48e-7c4033bdcb88",
@@ -3444,7 +3302,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        2144,
+        2112,
         -1488
       ],
       "id": "f995a3c8-97f6-4f19-ac90-22b330bb0255",
@@ -3573,7 +3431,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        2368,
+        2336,
         -1488
       ],
       "id": "33dcb552-400c-4549-aed8-f1b16b359e8a",
@@ -3701,7 +3559,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        2368,
+        2336,
         -1280
       ],
       "id": "8f8ac66d-c92c-4c35-9a3f-65fcd8ab9d39",
@@ -3714,12 +3572,36 @@
       }
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "schedule_trigger": [
+      {
+        "json": {
+          "timestamp": "2026-03-01T10:57:09.356+00:00",
+          "Readable date": "March 1st 2026, 10:57:09 am",
+          "Readable time": "10:57:09 am",
+          "Day of week": "Sunday",
+          "Year": "2026",
+          "Month": "March",
+          "Day of month": "01",
+          "Hour": "10",
+          "Minute": "57",
+          "Second": "09",
+          "Timezone": "UTC (UTC+00:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
     "executionTimeout": 3600,
-    "errorWorkflow": "fejq5nN6LP3F820w"
+    "errorWorkflow": "yOLSrRQsp4rv1Wjv",
+    "timeSavedMode": "fixed",
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
   "shared": [
     {
@@ -3740,6 +3622,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-02-22T14:57:27.229Z",
-  "versionId": "5c8033da-dc4a-4a0b-84c5-b908c154e90c"
+  "updatedAt": "2026-03-01T14:57:41.375Z",
+  "versionId": "a0963d1d-1810-4bbc-a33b-ec2255a84fb8"
 }
