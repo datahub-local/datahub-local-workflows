@@ -1,0 +1,847 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-03-01T14:56:56.524Z",
+    "createdAt": "2026-03-01T14:56:54.275Z",
+    "versionId": "a2bc292b-36ac-4ffa-9381-3a9254bd3cdc",
+    "workflowId": "yOLSrRQsp4rv1Wjv",
+    "nodes": [
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+            "mode": "list",
+            "cachedResultName": "content_planner",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "articles_2_linkedin",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+          },
+          "options": {
+            "dataLocationOnSheet": {
+              "values": {
+                "rangeDefinition": "detectAutomatically",
+                "readRowsUntil": "firstEmptyRow"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          656,
+          0
+        ],
+        "id": "900eb6e4-243f-453f-a90a-6e8345107e47",
+        "name": "read_articles_sheet_error",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "pGARJmt50qz64xOo",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const filteredEntries = $input.all().map(item=>item.json).filter(item => item.EXECUTION_ID.toString() === $('set_workflow_vars').first().json.workflowId.toString()\n);\n\nconsole.log(filteredEntries)\n\nreturn filteredEntries.slice(0, 1);"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          0
+        ],
+        "id": "f3f06a29-eef6-47aa-8117-c9926c341dc2",
+        "name": "select_article_with_error"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "f626e2b9-244e-4721-b7b4-e37f37cd9d06",
+        "name": "error_trigger"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+            "mode": "list",
+            "cachedResultName": "content_planner",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "articles_2_linkedin",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
+              "STATUS": "ERROR",
+              "row_number": "={{ $('select_article_with_error').item.json.row_number }}",
+              "ERROR": "={{ $('error_trigger').item.json.execution.error.message }}"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "URL",
+                "displayName": "URL",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "STATUS",
+                "displayName": "STATUS",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "PRIORITY",
+                "displayName": "PRIORITY",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "UPDATE_DATE",
+                "displayName": "UPDATE_DATE",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RELEASE_DATE",
+                "displayName": "RELEASE_DATE",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "EXTRA_RULES",
+                "displayName": "EXTRA_RULES",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "LINKEDIN_URL",
+                "displayName": "LINKEDIN_URL",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "EXECUTION_ID",
+                "displayName": "EXECUTION_ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ERROR",
+                "displayName": "ERROR",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "readOnly": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          1104,
+          0
+        ],
+        "id": "15c95223-64f0-40ae-8fbe-98f7c3829706",
+        "name": "update_status_error_trigger",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "pGARJmt50qz64xOo",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "6a77a0ee-e904-467b-9f9f-e04aa3ddf203",
+                "name": "ERROR",
+                "value": "={{ $('error_trigger').item.json.execution.error.message }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1328,
+          0
+        ],
+        "id": "f5c14645-b11c-4fb7-aa6e-8d069788d3ad",
+        "name": "set_error_trigger"
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "C08RQNXQV3P",
+            "mode": "list",
+            "cachedResultName": "workflows"
+          },
+          "text": "=Unkown Error Publishing Post in LinkedIn({{ $json.execution.url }}): {{ $json.ERROR }}",
+          "otherOptions": {
+            "includeLinkToWorkflow": true
+          }
+        },
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.3,
+        "position": [
+          1536,
+          176
+        ],
+        "id": "644856cc-3908-4cbd-9a49-7dfeb0a3182c",
+        "name": "send_error_trigger_notification",
+        "webhookId": "faa5f272-06d5-4d4d-ad75-e17f49c6fbc8",
+        "credentials": {
+          "slackApi": {
+            "id": "DszMmPE7WwOjHQjz",
+            "name": "Slack account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4aedb9d3-9e5c-4788-8c8d-a88e0c3008a8",
+                "name": "workflowId",
+                "value": "={{ $json.execution.parentExecutionId | $json.execution.id }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "9caea1cb-f9d4-4bfd-868d-77bdee7974bc",
+        "name": "set_workflow_vars"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "ca5ec2a2-2500-423f-87af-e857881437c5",
+                "leftValue": "={{ $json.workflowId }}",
+                "rightValue": "FORCED_ERROR",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          432,
+          0
+        ],
+        "id": "007a9f62-f1f8-45ea-9f32-4da4bdd7928c",
+        "name": "if_workfowId"
+      }
+    ],
+    "connections": {
+      "read_articles_sheet_error": {
+        "main": [
+          [
+            {
+              "node": "select_article_with_error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "select_article_with_error": {
+        "main": [
+          [
+            {
+              "node": "update_status_error_trigger",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "error_trigger": {
+        "main": [
+          [
+            {
+              "node": "set_workflow_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "update_status_error_trigger": {
+        "main": [
+          [
+            {
+              "node": "set_error_trigger",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_error_trigger": {
+        "main": [
+          [
+            {
+              "node": "send_error_trigger_notification",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_workflow_vars": {
+        "main": [
+          [
+            {
+              "node": "if_workfowId",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "if_workfowId": {
+        "main": [
+          [
+            {
+              "node": "read_articles_sheet_error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "no name",
+    "name": "Version a2bc292b",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "a2bc292b-36ac-4ffa-9381-3a9254bd3cdc",
+  "connections": {
+    "read_articles_sheet_error": {
+      "main": [
+        [
+          {
+            "node": "select_article_with_error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "select_article_with_error": {
+      "main": [
+        [
+          {
+            "node": "update_status_error_trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "error_trigger": {
+      "main": [
+        [
+          {
+            "node": "set_workflow_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update_status_error_trigger": {
+      "main": [
+        [
+          {
+            "node": "set_error_trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_error_trigger": {
+      "main": [
+        [
+          {
+            "node": "send_error_trigger_notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_workflow_vars": {
+      "main": [
+        [
+          {
+            "node": "if_workfowId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if_workfowId": {
+      "main": [
+        [
+          {
+            "node": "read_articles_sheet_error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-01T10:53:59.383Z",
+  "id": "yOLSrRQsp4rv1Wjv",
+  "isArchived": false,
+  "meta": null,
+  "name": "LinkedIn Post Sharing Error",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+          "mode": "list",
+          "cachedResultName": "content_planner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "articles_2_linkedin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "detectAutomatically",
+              "readRowsUntil": "firstEmptyRow"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        656,
+        0
+      ],
+      "id": "900eb6e4-243f-453f-a90a-6e8345107e47",
+      "name": "read_articles_sheet_error",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGARJmt50qz64xOo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const filteredEntries = $input.all().map(item=>item.json).filter(item => item.EXECUTION_ID.toString() === $('set_workflow_vars').first().json.workflowId.toString()\n);\n\nconsole.log(filteredEntries)\n\nreturn filteredEntries.slice(0, 1);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "f3f06a29-eef6-47aa-8117-c9926c341dc2",
+      "name": "select_article_with_error"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f626e2b9-244e-4721-b7b4-e37f37cd9d06",
+      "name": "error_trigger"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI",
+          "mode": "list",
+          "cachedResultName": "content_planner",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "articles_2_linkedin",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1HdJsvIaWuWu8_dDtoU-lql3ZLgbFMAe0xZ4AnYnMgPI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "UPDATE_DATE": "={{ (new Date()).toISOString() }}",
+            "STATUS": "ERROR",
+            "row_number": "={{ $('select_article_with_error').item.json.row_number }}",
+            "ERROR": "={{ $('error_trigger').item.json.execution.error.message }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "STATUS",
+              "displayName": "STATUS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PRIORITY",
+              "displayName": "PRIORITY",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "UPDATE_DATE",
+              "displayName": "UPDATE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RELEASE_DATE",
+              "displayName": "RELEASE_DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "EXTRA_RULES",
+              "displayName": "EXTRA_RULES",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "LINKEDIN_URL",
+              "displayName": "LINKEDIN_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "EXECUTION_ID",
+              "displayName": "EXECUTION_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ERROR",
+              "displayName": "ERROR",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "15c95223-64f0-40ae-8fbe-98f7c3829706",
+      "name": "update_status_error_trigger",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "pGARJmt50qz64xOo",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6a77a0ee-e904-467b-9f9f-e04aa3ddf203",
+              "name": "ERROR",
+              "value": "={{ $('error_trigger').item.json.execution.error.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1328,
+        0
+      ],
+      "id": "f5c14645-b11c-4fb7-aa6e-8d069788d3ad",
+      "name": "set_error_trigger"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C08RQNXQV3P",
+          "mode": "list",
+          "cachedResultName": "workflows"
+        },
+        "text": "=Unkown Error Publishing Post in LinkedIn({{ $json.execution.url }}): {{ $json.ERROR }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1536,
+        176
+      ],
+      "id": "644856cc-3908-4cbd-9a49-7dfeb0a3182c",
+      "name": "send_error_trigger_notification",
+      "webhookId": "faa5f272-06d5-4d4d-ad75-e17f49c6fbc8",
+      "credentials": {
+        "slackApi": {
+          "id": "DszMmPE7WwOjHQjz",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4aedb9d3-9e5c-4788-8c8d-a88e0c3008a8",
+              "name": "workflowId",
+              "value": "={{ $json.execution.parentExecutionId | $json.execution.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9caea1cb-f9d4-4bfd-868d-77bdee7974bc",
+      "name": "set_workflow_vars"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ca5ec2a2-2500-423f-87af-e857881437c5",
+              "leftValue": "={{ $json.workflowId }}",
+              "rightValue": "FORCED_ERROR",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        0
+      ],
+      "id": "007a9f62-f1f8-45ea-9f32-4da4bdd7928c",
+      "name": "if_workfowId"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-01T10:53:59.383Z",
+      "createdAt": "2026-03-01T10:53:59.383Z",
+      "role": "workflow:owner",
+      "workflowId": "yOLSrRQsp4rv1Wjv",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-01T14:56:54.272Z",
+  "versionId": "a2bc292b-36ac-4ffa-9381-3a9254bd3cdc"
+}
