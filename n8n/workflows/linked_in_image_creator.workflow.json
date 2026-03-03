@@ -1,0 +1,463 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "set_workflow_vars": {
+      "main": [
+        [
+          {
+            "node": "download_image_prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "main_trigger": {
+      "main": [
+        [
+          {
+            "node": "set_workflow_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_image_prompt": {
+      "main": [
+        [
+          {
+            "node": "create_image_prompt_ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate_content_image": {
+      "main": [
+        [
+          {
+            "node": "set_output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "generate_content_image_fallback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ai_model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "create_image_prompt_ai",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_llm_output": {
+      "main": [
+        [
+          {
+            "node": "generate_content_image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ai_model_fallback": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "create_image_prompt_ai",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "create_image_prompt_ai": {
+      "main": [
+        [
+          {
+            "node": "parse_llm_output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate_content_image_fallback": {
+      "main": [
+        [
+          {
+            "node": "set_output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-02T21:20:32.904Z",
+  "id": "a9tFFs8qkRu8taC2",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "LinkedIn Image Creator",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ccca262b-f5ad-4784-88a6-36ac5077ccf8",
+              "name": "POST_CONTENT",
+              "value": "={{ $json.POST_CONTENT || \"I've spent enough time debugging data pipelines to know that the role of a data engineer is shifting faster than most are willing to admit. \\n\\nI saw this post from Joe Reis regarding his concept of the Great Data Reckoning. He argues that we have moved past the demo phase of AI. Models are now capable of generating production-quality pipelines, SQL, and infrastructure configurations that previously took weeks of manual effort.\\n\\nWhat caught my eye in his reflection is the distinction between configuration knowledge and business judgment. Many of us built careers on knowing exactly which YAML parameters to tweak in a dbt project or how to tune a specific Kafka connector. While that technical depth was a moat five years ago, it is quickly becoming a commodity.\\n\\nIn my experience building Enterprise AI platforms, the actual code is rarely the hardest part. The difficulty lies in the institutional knowledge—knowing why a specific warehouse schema was designed that way or how to handle data quality issues that AI cannot perceive without deep context.\\n\\nIf your daily work is mostly following documented procedures to move data, the automation risk is real. The shift is moving away from being a tool expert toward being a domain expert who uses these models to eliminate toil. We have to move from being cost centers to being directly tied to revenue-generating activities.\\n\\nAre you already using the latest models to handle your boilerplate infrastructure code, or is your team still doing the heavy lifting manually?\" }}",
+              "type": "string"
+            },
+            {
+              "id": "b072d171-1af0-407c-8b16-ee61278bbd52",
+              "name": "ERROR",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
+              "name": "IMAGE_MODEL",
+              "value": "models/gemini-3.1-flash-image-preview",
+              "type": "string"
+            },
+            {
+              "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
+              "name": "IMAGE_MODEL_FALLBACK",
+              "value": "models/gemini-2.5-flash-image",
+              "type": "string"
+            },
+            {
+              "id": "2f650b34-52f6-4aec-9375-8aa7abcb7d8b",
+              "name": "TEXT_MODEL_FALLBACK",
+              "value": "models/gemini-2.5-flash",
+              "type": "string"
+            },
+            {
+              "id": "c5c01700-e75b-4be5-afd4-bba2e2324bea",
+              "name": "TEXT_MODEL",
+              "value": "models/gemini-3-flash-preview",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        -112
+      ],
+      "id": "2e74e9d9-ad49-4610-bb5b-9c5d9f43f4ae",
+      "name": "set_workflow_vars"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2b0bc19a-ed15-45a0-9022-a59e2c9e56d1",
+              "name": "text",
+              "value": "=",
+              "type": "binary"
+            },
+            {
+              "id": "59d2348a-a3bb-49eb-b8f6-27faa0fe801f",
+              "name": "omImage ",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1888,
+        -192
+      ],
+      "id": "9e1a9794-c629-45b1-b804-57c1f0f9aaa7",
+      "name": "set_output"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "POST_CONTENT"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        -112
+      ],
+      "id": "ced30e9d-063e-4a26-bb4a-d4ce6c48d829",
+      "name": "main_trigger"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {\n\"POST_CONTENT\": $('set_workflow_vars').item.json.POST_CONTENT\n} }}",
+            "template_name": "prompts/linkedin_image_prompt.md"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        528,
+        -112
+      ],
+      "id": "8f5e6ae1-0f1a-4a8d-931c-4dc00a03780d",
+      "name": "download_image_prompt"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "={{ $('set_workflow_vars').item.json.IMAGE_MODEL }}",
+          "mode": "id"
+        },
+        "prompt": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        -112
+      ],
+      "id": "e7faaf1e-2d72-40e4-80b7-e86153857597",
+      "name": "generate_content_image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelName": "={{ $('set_workflow_vars').item.json.TEXT_MODEL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        768,
+        112
+      ],
+      "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
+      "name": "ai_model",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "notesInFlow": false,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
+              "name": "text",
+              "value": "={{ /.*<diagram_prompt>(([\\s\\S]+)*)<\\/diagram_prompt>.*/.exec($json.text)?.[1].trim() || $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1104,
+        -112
+      ],
+      "id": "70e6737b-ae4f-4bca-b178-50013b5c05a6",
+      "name": "parse_llm_output"
+    },
+    {
+      "parameters": {
+        "modelName": "={{ $('set_workflow_vars').item.json.TEXT_MODEL_FALLBACK }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        896,
+        112
+      ],
+      "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
+      "name": "ai_model_fallback",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "notesInFlow": false,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('download_image_prompt').item.json.output }}",
+        "needsFallback": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        752,
+        -112
+      ],
+      "id": "f0f76413-53cd-4587-9dff-014e78f48941",
+      "name": "create_image_prompt_ai"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "={{ $('set_workflow_vars').item.json.IMAGE_MODEL_FALLBACK }}",
+          "mode": "id"
+        },
+        "prompt": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        16
+      ],
+      "id": "158a6c45-b7cb-48c4-8757-e6b7d9257860",
+      "name": "generate_content_image_fallback",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {}
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGeminiTool",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c08ed3af-484e-4e3b-a0e3-ad41a3d5bf75",
+      "name": "Message a model in Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedMode": "fixed",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-02T21:20:32.904Z",
+      "createdAt": "2026-03-02T21:20:32.904Z",
+      "role": "workflow:owner",
+      "workflowId": "a9tFFs8qkRu8taC2",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-02T22:11:38.429Z",
+  "versionId": "b49dc756-6952-4ff8-86f9-1bb19a9e2f0f"
+}
