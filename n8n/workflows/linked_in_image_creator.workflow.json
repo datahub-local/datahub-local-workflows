@@ -36,24 +36,6 @@
         ]
       ]
     },
-    "generate_content_image": {
-      "main": [
-        [
-          {
-            "node": "set_output",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "generate_content_image_fallback",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "ai_model": {
       "ai_languageModel": [
         [
@@ -69,7 +51,7 @@
       "main": [
         [
           {
-            "node": "generate_content_image",
+            "node": "Generate an image",
             "type": "main",
             "index": 0
           }
@@ -98,7 +80,7 @@
         ]
       ]
     },
-    "generate_content_image_fallback": {
+    "Generate an image": {
       "main": [
         [
           {
@@ -137,13 +119,13 @@
             {
               "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
               "name": "IMAGE_MODEL",
-              "value": "models/gemini-3.1-flash-image-preview",
+              "value": "dall-e-3",
               "type": "string"
             },
             {
               "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
               "name": "IMAGE_MODEL_FALLBACK",
-              "value": "models/gemini-2.5-flash-image",
+              "value": "dall-e-2",
               "type": "string"
             },
             {
@@ -272,33 +254,6 @@
     },
     {
       "parameters": {
-        "resource": "image",
-        "modelId": {
-          "__rl": true,
-          "value": "={{ $('set_workflow_vars').item.json.IMAGE_MODEL }}",
-          "mode": "id"
-        },
-        "prompt": "={{ $json.text }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1.1,
-      "position": [
-        1328,
-        -112
-      ],
-      "id": "e7faaf1e-2d72-40e4-80b7-e86153857597",
-      "name": "generate_content_image",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "ohBCg8rvjDPWEVQT",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      },
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
         "modelName": "={{ $('set_workflow_vars').item.json.TEXT_MODEL }}",
         "options": {}
       },
@@ -384,56 +339,29 @@
     {
       "parameters": {
         "resource": "image",
-        "modelId": {
-          "__rl": true,
-          "value": "={{ $('set_workflow_vars').item.json.IMAGE_MODEL_FALLBACK }}",
-          "mode": "id"
-        },
+        "model": "=@az-openai/dall-e-3",
         "prompt": "={{ $json.text }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1.1,
-      "position": [
-        1568,
-        16
-      ],
-      "id": "158a6c45-b7cb-48c4-8757-e6b7d9257860",
-      "name": "generate_content_image_fallback",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "ohBCg8rvjDPWEVQT",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "mode": "list",
-          "value": ""
+        "options": {
+          "returnImageUrls": false
         },
-        "messages": {
+        "images": {
           "values": [
             {}
           ]
-        },
-        "builtInTools": {},
-        "options": {}
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.googleGeminiTool",
-      "typeVersion": 1.1,
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
       "position": [
-        0,
-        0
+        1488,
+        -320
       ],
-      "id": "c08ed3af-484e-4e3b-a0e3-ad41a3d5bf75",
-      "name": "Message a model in Google Gemini",
+      "id": "474a8924-80e1-4970-ae16-7f9a73eed4b6",
+      "name": "Generate an image",
       "credentials": {
-        "googlePalmApi": {
-          "id": "ohBCg8rvjDPWEVQT",
-          "name": "Google Gemini(PaLM) Api account"
+        "openAiApi": {
+          "id": "hFmSQLMTWS0eCi1z",
+          "name": "OpenAi account"
         }
       }
     }
@@ -458,6 +386,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-02T22:11:38.429Z",
-  "versionId": "b49dc756-6952-4ff8-86f9-1bb19a9e2f0f"
+  "updatedAt": "2026-03-03T22:06:27.854Z",
+  "versionId": "79a93e01-518d-4d96-9af4-6cf31b91b9e3"
 }
