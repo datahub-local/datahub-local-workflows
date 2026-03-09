@@ -51,7 +51,7 @@
       "main": [
         [
           {
-            "node": "Generate an image",
+            "node": "generate_image",
             "type": "main",
             "index": 0
           }
@@ -80,7 +80,7 @@
         ]
       ]
     },
-    "Generate an image": {
+    "generate_image": {
       "main": [
         [
           {
@@ -89,6 +89,11 @@
             "index": 0
           }
         ]
+      ]
+    },
+    "generate_image_portkey": {
+      "main": [
+        []
       ]
     }
   },
@@ -149,7 +154,7 @@
       "typeVersion": 3.4,
       "position": [
         304,
-        -112
+        -224
       ],
       "id": "2e74e9d9-ad49-4610-bb5b-9c5d9f43f4ae",
       "name": "set_workflow_vars"
@@ -177,8 +182,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1888,
-        -192
+        1552,
+        -224
       ],
       "id": "9e1a9794-c629-45b1-b804-57c1f0f9aaa7",
       "name": "set_output"
@@ -197,7 +202,7 @@
       "typeVersion": 1.1,
       "position": [
         80,
-        -112
+        -224
       ],
       "id": "ced30e9d-063e-4a26-bb4a-d4ce6c48d829",
       "name": "main_trigger"
@@ -247,7 +252,7 @@
       "typeVersion": 1.2,
       "position": [
         528,
-        -112
+        -224
       ],
       "id": "8f5e6ae1-0f1a-4a8d-931c-4dc00a03780d",
       "name": "download_image_prompt"
@@ -260,8 +265,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        768,
-        112
+        760,
+        0
       ],
       "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
       "name": "ai_model",
@@ -293,7 +298,7 @@
       "typeVersion": 3.4,
       "position": [
         1104,
-        -112
+        -224
       ],
       "id": "70e6737b-ae4f-4bca-b178-50013b5c05a6",
       "name": "parse_llm_output"
@@ -306,8 +311,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        896,
-        112
+        888,
+        0
       ],
       "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
       "name": "ai_model_fallback",
@@ -331,10 +336,37 @@
       "typeVersion": 1.6,
       "position": [
         752,
-        -112
+        -224
       ],
       "id": "f0f76413-53cd-4587-9dff-014e78f48941",
       "name": "create_image_prompt_ai"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-image",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-image (Nano Banana)"
+        },
+        "prompt": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        -128
+      ],
+      "id": "0c1f32bb-4128-4543-b25b-bb421dddeba7",
+      "name": "generate_image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
     },
     {
       "parameters": {
@@ -353,20 +385,32 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2.1,
       "position": [
-        1488,
+        1328,
         -320
       ],
       "id": "474a8924-80e1-4970-ae16-7f9a73eed4b6",
-      "name": "Generate an image",
+      "name": "generate_image_portkey",
       "credentials": {
         "openAiApi": {
           "id": "hFmSQLMTWS0eCi1z",
-          "name": "OpenAi account"
+          "name": "OpenAi account [portkey]"
         }
-      }
+      },
+      "disabled": true
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "main_trigger": [
+      {
+        "json": {
+          "POST_CONTENT": null
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
@@ -386,6 +430,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-03T22:06:27.854Z",
-  "versionId": "79a93e01-518d-4d96-9af4-6cf31b91b9e3"
+  "updatedAt": "2026-03-08T09:22:39.400Z",
+  "versionId": "a10d992d-1116-4d49-96cb-0f0e181dbbd5"
 }
