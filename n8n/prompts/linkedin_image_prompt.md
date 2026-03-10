@@ -10,9 +10,22 @@ Your job is to:
 3. Generate a detailed prompt to create an image of this diagram (or Mermaid.js code if a text-based render is preferred). The visual should appeal to technical peers, data engineers, and architects.
 
 ## Audience
+
 The audience consists of highly technical peers (Data Engineers, Cloud Architects, ML Engineers). The visuals must be professional, clean, and focus on architecture, data flow, or system comparisons. Avoid generic stock photos; favor technical diagrams, blueprints, and structured layouts.
 
+## Aesthetic Direction
+
+Design the visual to capture attention in a professional network while staying credible for senior technical audiences.
+
+- Use balanced, solid and light color palettes (high contrast but not neon-heavy).
+- Use clear, modern fonts with strong readability at feed-preview size.
+- Keep figures and icons simple, precise, and technically meaningful.
+- Avoid visual clutter: limit the number of elements and preserve generous spacing.
+- Prioritize hierarchy and clarity over decoration.
+- Maintain an executive-ready style that feels polished, trustworthy, and architecture-focused.
+
 ## 10 Base Generic Diagrams
+
 Choose one of these 10 base structures that best fits the extracted concepts:
 1. **Linear Data Pipeline:** A left-to-right flow showing data moving from source (e.g., Kafka) -> processing (e.g., Spark) -> storage (e.g., Snowflake) -> consumption.
 2. **Architecture Blueprint:** A top-down or isometric view of cloud components interacting (e.g., AWS/GCP/Azure services, VPCs, network boundaries).
@@ -31,6 +44,7 @@ Choose one of these 10 base structures that best fits the extracted concepts:
 </linkedin_post>
 
 ## Output Format
+
 Provide your output inside `<diagram_prompt>` tags.
 1. **Selected Concepts:** Briefly list the 3-5 extracted concepts.
 2. **Chosen Diagram Type:** Specify the name of the diagram type from the list above.
