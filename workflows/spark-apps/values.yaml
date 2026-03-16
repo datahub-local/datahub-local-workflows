@@ -1,0 +1,66 @@
+commonLabels: {}
+commonAnnotations: {}
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: false
+  name: spark
+  annotations: {}
+  labels: {}
+
+scripts:
+  enabled: false
+  configMapName: ""
+  mountPath: /opt/spark/scripts
+  defaultMode: 493
+
+sharedConfigMaps: []
+sharedSecrets: []
+
+sparkApplications:
+  - name: example-spark-app
+    enabled: false
+    labels: {}
+    annotations: {}
+    type: Python
+    mode: cluster
+    sparkVersion: "3.5.1"
+    image: ghcr.io/example/spark-app:latest
+    imagePullPolicy: IfNotPresent
+    mainApplicationFile: local:///opt/spark/app.py
+    arguments: []
+    restartPolicy:
+      type: Never
+    sparkConf: {}
+    hadoopConf: {}
+    volumes: []
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    batchScheduler: ""
+    deps: {}
+    monitoring: {}
+    timeToLiveSeconds: null
+    sharedConfigMapRefs: []
+    sharedSecretRefs: []
+    driver:
+      cores: 1
+      coreLimit: 1200m
+      memory: 512m
+      serviceAccount: ""
+      labels: {}
+      annotations: {}
+      env: []
+      envFrom: []
+      volumeMounts: []
+
+    executor:
+      instances: 1
+      cores: 1
+      memory: 512m
+      labels: {}
+      annotations: {}
+      env: []
+      envFrom: []
+      volumeMounts: []

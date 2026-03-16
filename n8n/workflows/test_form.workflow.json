@@ -90,7 +90,7 @@
       "typeVersion": 2.2,
       "position": [
         160,
-        260
+        272
       ],
       "id": "0556a41f-299d-439f-b8e6-823e1cdace5c",
       "name": "On form submission",
@@ -155,8 +155,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        380,
-        260
+        384,
+        272
       ],
       "id": "5e55e642-5bd8-424f-abc6-6fe786550cf0",
       "name": "Switch"
@@ -176,8 +176,8 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
       "position": [
-        600,
-        460
+        608,
+        464
       ],
       "id": "cf5efc9d-06b2-4092-a4d4-291c84e51e70",
       "name": "If not recommended",
@@ -192,8 +192,8 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
       "position": [
-        820,
-        60
+        832,
+        64
       ],
       "id": "4c8c9219-6362-455f-9009-52114904b1fa",
       "name": "Thanks for the review",
@@ -208,8 +208,8 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
       "position": [
-        820,
-        460
+        832,
+        464
       ],
       "id": "400fa4f1-55bd-442a-8471-b2c97d4a1e91",
       "name": "Thanks for the feedback",
@@ -236,8 +236,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        600,
-        260
+        608,
+        272
       ],
       "typeVersion": 1,
       "id": "18b72550-5679-433f-9ee0-7b7863d4bfba",
@@ -258,8 +258,8 @@
       "type": "n8n-nodes-base.form",
       "typeVersion": 1,
       "position": [
-        600,
-        60
+        608,
+        64
       ],
       "id": "613cc4df-41ef-40b8-83be-316964b8a639",
       "name": "If recommended",
@@ -268,7 +268,8 @@
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -282,6 +283,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-05-22T14:37:57.659Z",
-  "versionId": "c7d50250-b971-491a-afd5-95903df8be0a"
+  "updatedAt": "2026-03-15T21:09:04.058Z",
+  "versionId": "d680ccd2-c14c-4cab-84b3-2a855a7c1014"
 }

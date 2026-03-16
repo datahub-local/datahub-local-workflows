@@ -1,0 +1,19 @@
+suite: app resources template
+templates:
+  - templates/app-resources.yaml
+tests:
+  - it: renders shared configmaps and secrets once
+    values:
+      - fixtures/selection-values.yaml
+    asserts:
+      - hasDocuments:
+          count: 4
+        documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: common-env
+        documentIndex: 0
+      - equal:
+          path: metadata.name
+          value: tls-secret
+        documentIndex: 3

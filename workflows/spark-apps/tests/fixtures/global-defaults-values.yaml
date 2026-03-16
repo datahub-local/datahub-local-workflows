@@ -1,0 +1,36 @@
+imagePullSecrets:
+  - registry-prod
+
+serviceAccount:
+  create: true
+  name: spark-runtime
+  annotations:
+    test-annotation: enabled
+  labels:
+    test-label: runtime
+
+sharedConfigMaps:
+  - enabled: true
+    id: runtime-config
+    name: runtime-config
+    envFrom: true
+    data:
+      APP_ENV: production
+
+sparkApplications:
+  - name: global-defaults
+    enabled: true
+    type: Python
+    mode: cluster
+    sparkVersion: "3.5.1"
+    image: ghcr.io/example/spark-py:3.5.1
+    imagePullPolicy: IfNotPresent
+    mainApplicationFile: local:///opt/spark/app.py
+    driver:
+      cores: 1
+      memory: 512m
+      coreLimit: 1200m
+    executor:
+      instances: 1
+      cores: 1
+      memory: 512m

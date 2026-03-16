@@ -1,0 +1,65 @@
+imagePullSecrets:
+  - registry-prod
+
+serviceAccount:
+  create: true
+  name: spark-runtime
+  annotations:
+    iam-role: spark-prod-runtime
+  labels:
+    app.kubernetes.io/component: runtime
+
+scripts:
+  enabled: true
+  mountPath: /opt/spark/scripts
+
+sharedConfigMaps:
+  - enabled: true
+    id: runtime-config
+    name: spark-runtime-config
+    envFrom: true
+    mountPath: /opt/spark/conf/runtime
+    data:
+      APP_ENV: production
+      SPARK_LOG_LEVEL: WARN
+      PYSPARK_PYTHON: python3
+
+sharedSecrets:
+  - enabled: true
+    id: warehouse-creds
+    name: spark-warehouse-secret
+    envFrom: true
+    stringData:
+      WAREHOUSE_USERNAME: change-me
+      WAREHOUSE_PASSWORD: change-me
+
+sparkApplications:
+  - name: prod-etl
+    enabled: true
+    type: Python
+    mode: cluster
+    sparkVersion: "3.5.1"
+    image: ghcr.io/example/spark-py:3.5.1
+    imagePullPolicy: IfNotPresent
+    mainApplicationFile: local:///opt/spark/scripts/example_job.py
+    arguments:
+      - "--message"
+      - "hello from prod"
+    restartPolicy:
+      type: OnFailure
+      onFailureRetries: 3
+      onFailureRetryInterval: 10
+      onSubmissionFailureRetries: 5
+      onSubmissionFailureRetryInterval: 20
+    sharedConfigMapRefs:
+      - runtime-config
+    sharedSecretRefs:
+      - warehouse-creds
+    driver:
+      cores: 1
+      coreLimit: 1500m
+      memory: 1g
+    executor:
+      instances: 2
+      cores: 1
+      memory: 1g

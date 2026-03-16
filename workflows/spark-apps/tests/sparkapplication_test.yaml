@@ -1,0 +1,51 @@
+suite: sparkapplication template
+templates:
+  - templates/sparkapplication.yaml
+tests:
+  - it: attaches only selected shared resources and chart defaults
+    values:
+      - fixtures/selection-values.yaml
+    asserts:
+      - equal:
+          path: spec.driver.serviceAccount
+          value: chart-sa
+      - contains:
+          path: spec.imagePullSecrets
+          content: regcred
+      - contains:
+          path: spec.driver.envFrom
+          content:
+            configMapRef:
+              name: common-env
+      - contains:
+          path: spec.driver.envFrom
+          content:
+            secretRef:
+              name: api-secret
+      - notContains:
+          path: spec.driver.volumeMounts
+          content:
+            name: shared-config-1
+            mountPath: /opt/spark/conf/shared
+            readOnly: true
+      - notContains:
+          path: spec.driver.volumeMounts
+          content:
+            name: shared-secret-1
+            mountPath: /etc/tls
+            readOnly: true
+  - it: applies chart-level image pull secrets
+    values:
+      - fixtures/global-defaults-values.yaml
+    asserts:
+      - equal:
+          path: spec.driver.serviceAccount
+          value: spark-runtime
+      - contains:
+          path: spec.imagePullSecrets
+          content: registry-prod
+      - contains:
+          path: spec.driver.envFrom
+          content:
+            configMapRef:
+              name: runtime-config
