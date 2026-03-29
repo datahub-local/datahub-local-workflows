@@ -491,7 +491,13 @@
     },
     "set_output": {
       "main": [
-        []
+        [
+          {
+            "node": "Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "parse_attachments": {
@@ -604,11 +610,10 @@
       "typeVersion": 1,
       "position": [
         -576,
-        -216
+        -224
       ],
       "id": "4ae9ace7-618c-466c-9443-1dbd84bc9893",
-      "name": "When clicking ‘Execute workflow’",
-      "disabled": true
+      "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
@@ -657,7 +662,7 @@
       "typeVersion": 1.1,
       "position": [
         -576,
-        -408
+        -416
       ],
       "id": "1edfde55-7718-4f16-80b5-9752059d88fa",
       "name": "When Executed by Another Workflow"
@@ -878,15 +883,29 @@
       "typeVersion": 2,
       "position": [
         1664,
-        -216
+        -224
       ],
       "id": "163ecf8e-a228-4bda-bb8d-6f94231ffc67",
       "name": "parse_mercadona_invoice"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.kafka",
+      "typeVersion": 1,
+      "position": [
+        976,
+        -480
+      ],
+      "id": "ce67f048-2a55-4493-af70-a74e156badfd",
+      "name": "Kafka"
     }
   ],
   "pinData": {},
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -900,6 +919,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-07-26T14:38:49.248Z",
-  "versionId": "3251db52-380f-4a60-93f1-f83a339aa7b5"
+  "updatedAt": "2026-03-28T08:39:52.942Z",
+  "versionId": "1f289cab-b2bd-419e-b0dd-32a2659cc31e"
 }
