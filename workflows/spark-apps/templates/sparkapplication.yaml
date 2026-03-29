@@ -1,0 +1,301 @@
+{{- $root := . -}}
+{{- range $index, $app := .Values.sparkApplications }}
+{{- if $app.enabled }}
+{{- $appName := default (printf "%s-%d" (include "spark-apps.fullname" $root) $index) $app.name -}}
+{{- $selectedConfigRefs := default (list) $app.sharedConfigMapRefs -}}
+{{- $selectedSecretRefs := default (list) $app.sharedSecretRefs -}}
+{{- $selectAllConfigs := eq (len $selectedConfigRefs) 0 -}}
+{{- $selectAllSecrets := eq (len $selectedSecretRefs) 0 -}}
+{{- $hasAutoVolumes := dict "value" $root.Values.scripts.enabled -}}
+{{- $hasDriverAutoEnvFrom := dict "value" false -}}
+{{- $hasExecutorAutoEnvFrom := dict "value" false -}}
+{{- $hasDriverAutoVolumeMounts := dict "value" $root.Values.scripts.enabled -}}
+{{- $hasExecutorAutoVolumeMounts := dict "value" $root.Values.scripts.enabled -}}
+{{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+{{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+{{- $selected := or $selectAllConfigs (has $configRefKey $selectedConfigRefs) -}}
+{{- $attachToDriver := or (not (hasKey $config "attachToDriver")) $config.attachToDriver -}}
+{{- $attachToExecutor := or (not (hasKey $config "attachToExecutor")) $config.attachToExecutor -}}
+{{- if and $selected $config.enabled $config.mountPath }}
+{{- $_ := set $hasAutoVolumes "value" true -}}
+{{- if $attachToDriver }}{{- $_ := set $hasDriverAutoVolumeMounts "value" true -}}{{- end }}
+{{- if $attachToExecutor }}{{- $_ := set $hasExecutorAutoVolumeMounts "value" true -}}{{- end }}
+{{- end }}
+{{- if and $selected $config.enabled $config.envFrom $attachToDriver }}{{- $_ := set $hasDriverAutoEnvFrom "value" true -}}{{- end }}
+{{- if and $selected $config.enabled $config.envFrom $attachToExecutor }}{{- $_ := set $hasExecutorAutoEnvFrom "value" true -}}{{- end }}
+{{- end }}
+{{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+{{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+{{- $selected := or $selectAllSecrets (has $secretRefKey $selectedSecretRefs) -}}
+{{- $attachToDriver := or (not (hasKey $secret "attachToDriver")) $secret.attachToDriver -}}
+{{- $attachToExecutor := or (not (hasKey $secret "attachToExecutor")) $secret.attachToExecutor -}}
+{{- if and $selected $secret.enabled $secret.mountPath }}
+{{- $_ := set $hasAutoVolumes "value" true -}}
+{{- if $attachToDriver }}{{- $_ := set $hasDriverAutoVolumeMounts "value" true -}}{{- end }}
+{{- if $attachToExecutor }}{{- $_ := set $hasExecutorAutoVolumeMounts "value" true -}}{{- end }}
+{{- end }}
+{{- if and $selected $secret.enabled $secret.envFrom $attachToDriver }}{{- $_ := set $hasDriverAutoEnvFrom "value" true -}}{{- end }}
+{{- if and $selected $secret.enabled $secret.envFrom $attachToExecutor }}{{- $_ := set $hasExecutorAutoEnvFrom "value" true -}}{{- end }}
+{{- end }}
+---
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: {{ $appName }}
+  namespace: {{ include "spark-apps.namespace" $root }}
+  labels:
+    {{- include "spark-apps.labels" $root | nindent 4 }}
+    {{- with $root.Values.commonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $app.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- $hasAnnotations := or $root.Values.commonAnnotations $app.annotations }}
+  {{- if $hasAnnotations }}
+  annotations:
+    {{- with $root.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $app.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  type: {{ $app.type }}
+  mode: {{ $app.mode }}
+  sparkVersion: {{ $app.sparkVersion | quote }}
+  image: {{ $app.image | quote }}
+  imagePullPolicy: {{ $app.imagePullPolicy }}
+  mainApplicationFile: {{ $app.mainApplicationFile | quote }}
+  {{- with $root.Values.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.mainClass }}
+  mainClass: {{ . | quote }}
+  {{- end }}
+  {{- with $app.arguments }}
+  arguments:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.sparkConf }}
+  sparkConf:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.hadoopConf }}
+  hadoopConf:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if or $app.volumes $hasAutoVolumes.value }}
+  volumes:
+    {{- with $app.volumes }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- if $root.Values.scripts.enabled }}
+    - name: spark-scripts
+      configMap:
+        name: {{ include "spark-apps.scriptsConfigMapName" $root }}
+        defaultMode: {{ $root.Values.scripts.defaultMode }}
+    {{- end }}
+    {{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+    {{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+    {{- if and (or $selectAllConfigs (has $configRefKey $selectedConfigRefs)) $config.enabled $config.mountPath }}
+    - name: {{ default (printf "shared-config-%d" $configIndex) $config.volumeName }}
+      configMap:
+        name: {{ include "spark-apps.sharedConfigMapName" (dict "root" $root "index" $configIndex "config" $config) }}
+        {{- with $config.items }}
+        items:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- if hasKey $config "optional" }}
+        optional: {{ $config.optional }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+    {{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+    {{- if and (or $selectAllSecrets (has $secretRefKey $selectedSecretRefs)) $secret.enabled $secret.mountPath }}
+    - name: {{ default (printf "shared-secret-%d" $secretIndex) $secret.volumeName }}
+      secret:
+        secretName: {{ include "spark-apps.sharedSecretName" (dict "root" $root "index" $secretIndex "secret" $secret) }}
+        {{- with $secret.items }}
+        items:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- if hasKey $secret "optional" }}
+        optional: {{ $secret.optional }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- with $app.deps }}
+  deps:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.restartPolicy }}
+  restartPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.monitoring }}
+  monitoring:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.batchScheduler }}
+  batchScheduler: {{ . }}
+  {{- end }}
+  {{- with $app.timeToLiveSeconds }}
+  timeToLiveSeconds: {{ . }}
+  {{- end }}
+  {{- with $app.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $app.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  driver:
+    cores: {{ $app.driver.cores }}
+    {{- with $app.driver.coreLimit }}
+    coreLimit: {{ . | quote }}
+    {{- end }}
+    memory: {{ $app.driver.memory | quote }}
+    serviceAccount: {{ default (include "spark-apps.serviceAccountName" $root) $app.driver.serviceAccount }}
+    {{- with $app.driver.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $app.driver.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $app.driver.env }}
+    env:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if or $app.driver.envFrom $hasDriverAutoEnvFrom.value }}
+    envFrom:
+      {{- with $app.driver.envFrom }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+      {{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+      {{- if and (or $selectAllConfigs (has $configRefKey $selectedConfigRefs)) $config.enabled $config.envFrom (or (not (hasKey $config "attachToDriver")) $config.attachToDriver) }}
+      {{- $configRef := dict "name" (include "spark-apps.sharedConfigMapName" (dict "root" $root "index" $configIndex "config" $config)) }}
+      {{- if hasKey $config "optional" }}{{- $_ := set $configRef "optional" $config.optional -}}{{- end }}
+      - configMapRef:
+{{- toYaml $configRef | nindent 10 }}
+      {{- end }}
+      {{- end }}
+      {{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+      {{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+      {{- if and (or $selectAllSecrets (has $secretRefKey $selectedSecretRefs)) $secret.enabled $secret.envFrom (or (not (hasKey $secret "attachToDriver")) $secret.attachToDriver) }}
+      {{- $secretRef := dict "name" (include "spark-apps.sharedSecretName" (dict "root" $root "index" $secretIndex "secret" $secret)) }}
+      {{- if hasKey $secret "optional" }}{{- $_ := set $secretRef "optional" $secret.optional -}}{{- end }}
+      - secretRef:
+{{- toYaml $secretRef | nindent 10 }}
+      {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if or $app.driver.volumeMounts $hasDriverAutoVolumeMounts.value }}
+    volumeMounts:
+      {{- with $app.driver.volumeMounts }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- if $root.Values.scripts.enabled }}
+      - name: spark-scripts
+        mountPath: {{ $root.Values.scripts.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+      {{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+      {{- if and (or $selectAllConfigs (has $configRefKey $selectedConfigRefs)) $config.enabled $config.mountPath (or (not (hasKey $config "attachToDriver")) $config.attachToDriver) }}
+      - name: {{ default (printf "shared-config-%d" $configIndex) $config.volumeName }}
+        mountPath: {{ $config.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- end }}
+      {{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+      {{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+      {{- if and (or $selectAllSecrets (has $secretRefKey $selectedSecretRefs)) $secret.enabled $secret.mountPath (or (not (hasKey $secret "attachToDriver")) $secret.attachToDriver) }}
+      - name: {{ default (printf "shared-secret-%d" $secretIndex) $secret.volumeName }}
+        mountPath: {{ $secret.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- end }}
+    {{- end }}
+  executor:
+    instances: {{ $app.executor.instances }}
+    cores: {{ $app.executor.cores }}
+    memory: {{ $app.executor.memory | quote }}
+    {{- with $app.executor.labels }}
+    labels:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $app.executor.annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $app.executor.env }}
+    env:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if or $app.executor.envFrom $hasExecutorAutoEnvFrom.value }}
+    envFrom:
+      {{- with $app.executor.envFrom }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+      {{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+      {{- if and (or $selectAllConfigs (has $configRefKey $selectedConfigRefs)) $config.enabled $config.envFrom (or (not (hasKey $config "attachToExecutor")) $config.attachToExecutor) }}
+      {{- $configRef := dict "name" (include "spark-apps.sharedConfigMapName" (dict "root" $root "index" $configIndex "config" $config)) }}
+      {{- if hasKey $config "optional" }}{{- $_ := set $configRef "optional" $config.optional -}}{{- end }}
+      - configMapRef:
+{{- toYaml $configRef | nindent 10 }}
+      {{- end }}
+      {{- end }}
+      {{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+      {{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+      {{- if and (or $selectAllSecrets (has $secretRefKey $selectedSecretRefs)) $secret.enabled $secret.envFrom (or (not (hasKey $secret "attachToExecutor")) $secret.attachToExecutor) }}
+      {{- $secretRef := dict "name" (include "spark-apps.sharedSecretName" (dict "root" $root "index" $secretIndex "secret" $secret)) }}
+      {{- if hasKey $secret "optional" }}{{- $_ := set $secretRef "optional" $secret.optional -}}{{- end }}
+      - secretRef:
+{{- toYaml $secretRef | nindent 10 }}
+      {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if or $app.executor.volumeMounts $hasExecutorAutoVolumeMounts.value }}
+    volumeMounts:
+      {{- with $app.executor.volumeMounts }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- if $root.Values.scripts.enabled }}
+      - name: spark-scripts
+        mountPath: {{ $root.Values.scripts.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- range $configIndex, $config := $root.Values.sharedConfigMaps }}
+      {{- $configRefKey := coalesce $config.id $config.name (printf "%s-config-%d" (include "spark-apps.fullname" $root) $configIndex) -}}
+      {{- if and (or $selectAllConfigs (has $configRefKey $selectedConfigRefs)) $config.enabled $config.mountPath (or (not (hasKey $config "attachToExecutor")) $config.attachToExecutor) }}
+      - name: {{ default (printf "shared-config-%d" $configIndex) $config.volumeName }}
+        mountPath: {{ $config.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- end }}
+      {{- range $secretIndex, $secret := $root.Values.sharedSecrets }}
+      {{- $secretRefKey := coalesce $secret.id $secret.name (printf "%s-secret-%d" (include "spark-apps.fullname" $root) $secretIndex) -}}
+      {{- if and (or $selectAllSecrets (has $secretRefKey $selectedSecretRefs)) $secret.enabled $secret.mountPath (or (not (hasKey $secret "attachToExecutor")) $secret.attachToExecutor) }}
+      - name: {{ default (printf "shared-secret-%d" $secretIndex) $secret.volumeName }}
+        mountPath: {{ $secret.mountPath | quote }}
+        readOnly: true
+      {{- end }}
+      {{- end }}
+    {{- end }}
+{{- end }}
+{{- end }}
+

@@ -1,0 +1,73 @@
+{{- $root := . -}}
+{{- range $configIndex, $config := .Values.sharedConfigMaps }}
+{{- if $config.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "spark-apps.sharedConfigMapName" (dict "root" $root "index" $configIndex "config" $config) }}
+  namespace: {{ include "spark-apps.namespace" $root }}
+  labels:
+    {{- include "spark-apps.labels" $root | nindent 4 }}
+    {{- with $root.Values.commonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $config.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $root.Values.commonAnnotations $config.annotations }}
+  annotations:
+    {{- with $root.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $config.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+{{- with $config.data }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with $config.binaryData }}
+binaryData:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- range $secretIndex, $secret := .Values.sharedSecrets }}
+{{- if $secret.enabled }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "spark-apps.sharedSecretName" (dict "root" $root "index" $secretIndex "secret" $secret) }}
+  namespace: {{ include "spark-apps.namespace" $root }}
+  labels:
+    {{- include "spark-apps.labels" $root | nindent 4 }}
+    {{- with $root.Values.commonLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $secret.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $root.Values.commonAnnotations $secret.annotations }}
+  annotations:
+    {{- with $root.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $secret.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+type: {{ default "Opaque" $secret.type }}
+{{- with $secret.stringData }}
+stringData:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with $secret.data }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end }}
+

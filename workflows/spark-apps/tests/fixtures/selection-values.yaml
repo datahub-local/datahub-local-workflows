@@ -1,0 +1,58 @@
+namespaceOverride: analytics
+
+imagePullSecrets:
+  - name: regcred
+
+serviceAccount:
+  create: false
+  name: chart-sa
+
+sharedConfigMaps:
+  - enabled: true
+    id: common-env
+    name: common-env
+    envFrom: true
+    data:
+      APP_ENV: dev
+  - enabled: true
+    id: mounted-config
+    name: mounted-config
+    mountPath: /opt/spark/conf/shared
+    data:
+      app.conf: test=true
+
+sharedSecrets:
+  - enabled: true
+    id: api-secret
+    name: api-secret
+    envFrom: true
+    stringData:
+      API_TOKEN: token
+  - enabled: true
+    id: tls-secret
+    name: tls-secret
+    mountPath: /etc/tls
+    stringData:
+      ca.crt: data
+
+sparkApplications:
+  - name: selective-app
+    enabled: true
+    type: Python
+    mode: cluster
+    sparkVersion: "3.5.1"
+    image: ghcr.io/example/spark-py:3.5.1
+    imagePullPolicy: IfNotPresent
+    mainApplicationFile: local:///opt/spark/app.py
+    sharedConfigMapRefs:
+      - common-env
+    sharedSecretRefs:
+      - api-secret
+    driver:
+      cores: 1
+      memory: 512m
+      coreLimit: 1200m
+    executor:
+      instances: 1
+      cores: 1
+      memory: 512m
