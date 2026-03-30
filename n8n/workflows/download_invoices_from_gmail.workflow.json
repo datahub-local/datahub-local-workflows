@@ -899,7 +899,13 @@
         -480
       ],
       "id": "ce67f048-2a55-4493-af70-a74e156badfd",
-      "name": "Kafka"
+      "name": "Kafka",
+      "credentials": {
+        "kafka": {
+          "id": "jPUm18ZiZfwpvoma",
+          "name": "Kafka account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -919,6 +925,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-28T08:39:52.942Z",
-  "versionId": "1f289cab-b2bd-419e-b0dd-32a2659cc31e"
+  "updatedAt": "2026-03-29T10:16:55.660Z",
+  "versionId": "6447cac7-9c6f-4d05-b3c5-ac8cc344132b"
 }
