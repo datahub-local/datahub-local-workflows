@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-14T09:03:10.447Z",
-    "createdAt": "2026-03-14T09:03:08.982Z",
-    "versionId": "4ec28107-987b-4fe5-a562-474a9230507c",
+    "updatedAt": "2026-04-06T13:43:41.030Z",
+    "createdAt": "2026-04-06T13:43:36.976Z",
+    "versionId": "40b0a696-fe8d-4011-a32f-589157bd437d",
     "workflowId": "a9tFFs8qkRu8taC2",
     "nodes": [
       {
@@ -166,7 +166,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          760,
+          768,
           0
         ],
         "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
@@ -212,7 +212,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          888,
+          896,
           0
         ],
         "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
@@ -261,6 +261,9 @@
         ],
         "id": "fa257e83-9962-4f3e-a284-139ff3dd8a62",
         "name": "generate_image",
+        "retryOnFail": true,
+        "maxTries": 2,
+        "waitBetweenTries": 5000,
         "credentials": {
           "httpBearerAuth": {
             "id": "w1lsvBaScdYqzahC",
@@ -360,11 +363,11 @@
       }
     },
     "authors": "no name",
-    "name": "Version 4ec28107",
+    "name": "Version 40b0a696",
     "description": "",
-    "autosaved": false
+    "autosaved": true
   },
-  "activeVersionId": "4ec28107-987b-4fe5-a562-474a9230507c",
+  "activeVersionId": "40b0a696-fe8d-4011-a32f-589157bd437d",
   "connections": {
     "set_workflow_vars": {
       "main": [
@@ -623,7 +626,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        760,
+        768,
         0
       ],
       "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
@@ -669,7 +672,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        888,
+        896,
         0
       ],
       "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
@@ -718,6 +721,9 @@
       ],
       "id": "fa257e83-9962-4f3e-a284-139ff3dd8a62",
       "name": "generate_image",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
       "credentials": {
         "httpBearerAuth": {
           "id": "w1lsvBaScdYqzahC",
@@ -746,6 +752,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-14T09:03:08.979Z",
-  "versionId": "4ec28107-987b-4fe5-a562-474a9230507c"
+  "updatedAt": "2026-04-06T13:43:36.972Z",
+  "versionId": "40b0a696-fe8d-4011-a32f-589157bd437d"
 }
