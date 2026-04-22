@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-03-08T21:39:25.439Z",
-    "createdAt": "2026-03-08T21:39:14.675Z",
-    "versionId": "f53b19a5-7241-4ab2-840f-4f49ff72b71d",
+    "updatedAt": "2026-04-21T19:52:09.711Z",
+    "createdAt": "2026-04-21T19:52:05.648Z",
+    "versionId": "fe280799-cbff-4b5c-b4ac-aa3498542ed2",
     "workflowId": "PaeHFdCsdoVbQx11",
     "nodes": [
       {
@@ -196,13 +196,13 @@
               {
                 "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
                 "name": "MODEL",
-                "value": "models/gemini-3-flash-preview",
+                "value": "models/gemini-3.1-pro-preview",
                 "type": "string"
               },
               {
                 "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
                 "name": "MODEL_FALLBACK",
-                "value": "models/gemini-2.5-flash",
+                "value": "models/gemini-3-flash-preview",
                 "type": "string"
               },
               {
@@ -767,11 +767,11 @@
       }
     },
     "authors": "no name",
-    "name": "Version f53b19a5",
+    "name": "Version fe280799",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "f53b19a5-7241-4ab2-840f-4f49ff72b71d",
+  "activeVersionId": "fe280799-cbff-4b5c-b4ac-aa3498542ed2",
   "connections": {
     "create_post_ai": {
       "main": [
@@ -1157,13 +1157,13 @@
             {
               "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
               "name": "MODEL",
-              "value": "models/gemini-3-flash-preview",
+              "value": "models/gemini-3.1-pro-preview",
               "type": "string"
             },
             {
               "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
               "name": "MODEL_FALLBACK",
-              "value": "models/gemini-2.5-flash",
+              "value": "models/gemini-3-flash-preview",
               "type": "string"
             },
             {
@@ -1560,6 +1560,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-03-08T21:39:14.668Z",
-  "versionId": "f53b19a5-7241-4ab2-840f-4f49ff72b71d"
+  "updatedAt": "2026-04-21T19:52:05.646Z",
+  "versionId": "fe280799-cbff-4b5c-b4ac-aa3498542ed2"
 }
