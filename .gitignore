@@ -224,3 +224,4 @@ node_modules/
 # Task files
 # tasks.json
 # tasks/ 
+workflows/spark/charts/spark-apps-0.1.2.tgz
