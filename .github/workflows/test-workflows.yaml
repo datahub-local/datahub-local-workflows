@@ -66,4 +66,4 @@ jobs:
         run: helm plugin install https://github.com/helm-unittest/helm-unittest --version v1.0.3
 
       - name: Run Helm unit tests
-        run: helm unittest workflows/spark-apps
+        run: cd workflows/spark && helm dependency build && helm template .

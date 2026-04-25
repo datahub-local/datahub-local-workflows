@@ -1,0 +1,28 @@
+spark-apps:
+  enabled: true
+
+  scripts:
+    enabled: true
+    mountPath: /opt/spark/scripts
+
+  sharedConfigMaps: []
+  sharedSecrets: []
+
+  sparkApplications:
+    - name: python-py
+      type: Python
+      mode: cluster
+      mainApplicationFile: local:///opt/spark/scripts/py.py
+      arguments:
+        - "--partitions"
+        - "10000"
+      restartPolicy:
+        type: Never
+      driver:
+        cores: 1
+        coreLimit: "1200m"
+        memory: 512m
+      executor:
+        instances: 2
+        cores: 1
+        memory: 512m
