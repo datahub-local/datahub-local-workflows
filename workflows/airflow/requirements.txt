@@ -1,4 +1,4 @@
-apache-airflow==3.2.0
+apache-airflow==3.2.1
 apache-airflow-providers-postgres
 apache-airflow-providers-http
 apache-airflow-providers-amazon
