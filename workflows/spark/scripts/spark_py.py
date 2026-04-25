@@ -27,7 +27,7 @@ def parse_args():
     parser.add_argument(
         "--partitions",
         type=int,
-        default=1000,
+        default=5000,
     )
     return parser.parse_args()
 
@@ -35,7 +35,7 @@ def parse_args():
 def main():
     args = parse_args()
 
-    spark = SparkSession.builder.appName("PythonPi Job").getOrCreate()
+    spark = SparkSession.builder.appName("Spark Pi").getOrCreate()
 
     partitions = args.partitions
     n = 100000 * partitions

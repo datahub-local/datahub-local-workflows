@@ -10,6 +10,7 @@ dependencies = [
   "apache-airflow-providers-postgres",
   "apache-airflow-providers-http",
   "apache-airflow-providers-amazon",
+  "kubernetes>=30.0.0",
   "pytest",
 ]
 
