@@ -12,9 +12,9 @@ print(f"Added {os.path.dirname(SCRIPT_DIR)} to sys.path")
 from datetime import datetime, timedelta
 
 from airflow import DAG
-from airflow.decorators import task
-from dags.tasks.sample_tasks import fetch_sample, process_sample
+from airflow.sdk import task
 
+from dags.tasks.sample_tasks import fetch_sample, process_sample
 
 default_args = {
     "owner": "datahub-local",

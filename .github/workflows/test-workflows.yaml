@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Airflow tests
         working-directory: workflows/airflow
-        run: uv run -- python run_tests.py
+        run: uv run -- pytest
 
   spark:
     name: Spark Helmfile checks

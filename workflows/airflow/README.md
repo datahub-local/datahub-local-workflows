@@ -39,7 +39,5 @@ and should be committed for reproducible installs.
 
     ```bash
     # run the small unit test suite via uv (uses the project's venv)
-    uv run -- python run_tests.py
-    # or run pytest directly inside the venv after `uv sync`
-    uv run -- pytest -q
+    uv run -- pytest
     ```

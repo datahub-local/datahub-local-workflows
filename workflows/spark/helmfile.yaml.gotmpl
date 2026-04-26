@@ -1,10 +1,12 @@
+#{{ $release_name := "datahub-local-core" }}
+
 repositories:
   - name: datahub-local
     url: ghcr.io/datahub-local
     oci: true
 
 releases:
-  - name: spark-apps
+  - name: "{{ $release_name }}-data-spark-apps"
     chart: oci://ghcr.io/datahub-local/spark-apps/spark-apps
     version: 0.3.0
     values:

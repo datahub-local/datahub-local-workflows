@@ -16,3 +16,11 @@ dependencies = [
 
 [tool.uv]
 # Optional uv settings for this project can be added here.
+
+[tool.ruff]
+# Ruff configuration for linting
+
+[tool.ruff.lint]
+# Ignore E402 (Module level import not at top of file)
+# This is necessary for Airflow DAGs that need to adjust sys.path first
+ignore = ["E402"]
