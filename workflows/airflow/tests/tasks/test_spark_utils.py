@@ -14,6 +14,7 @@ import pytest
 from kubernetes.client.rest import ApiException
 
 from dags.tasks.spark_utils import (
+    K8S_API_REQUEST_TIMEOUT,
     clone_and_wait_for_spark_app,
     clone_spark_app,
     generate_random_name,
@@ -206,6 +207,16 @@ class TestCloneSparkApp:
         mock_gen_name.assert_called_once_with(base_name="python-py")
         mock_api.get_namespaced_custom_object.assert_called_once()
         mock_api.create_namespaced_custom_object.assert_called_once()
+        assert (
+            mock_api.get_namespaced_custom_object.call_args.kwargs["_request_timeout"]
+            == K8S_API_REQUEST_TIMEOUT
+        )
+        assert (
+            mock_api.create_namespaced_custom_object.call_args.kwargs[
+                "_request_timeout"
+            ]
+            == K8S_API_REQUEST_TIMEOUT
+        )
 
     @patch("dags.tasks.spark_utils.load_k8s_client")
     def test_clone_with_explicit_name(self, mock_load_client):
@@ -455,6 +466,10 @@ class TestWaitForSparkAppCompletion:
 
         assert success is True
         mock_api.get_namespaced_custom_object.assert_called_once()
+        assert (
+            mock_api.get_namespaced_custom_object.call_args.kwargs["_request_timeout"]
+            == K8S_API_REQUEST_TIMEOUT
+        )
         mock_sleep.assert_not_called()
 
     @patch("dags.tasks.spark_utils.time.sleep")

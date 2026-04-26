@@ -15,6 +15,9 @@ from kubernetes.client.rest import ApiException
 from .. import SPARK_JOB_PREFIX
 
 
+K8S_API_REQUEST_TIMEOUT = (5, 30)
+
+
 def generate_random_name(base_name: str = "spark-job", length: int = 8) -> str:
     """Generate a random name for a SparkApplication resource.
 
@@ -176,6 +179,7 @@ def clone_spark_app(
             namespace=source_namespace,
             plural=plural,
             name=source_app_name,
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
         )
     except ApiException as e:
         raise ApiException(
@@ -216,6 +220,7 @@ def clone_spark_app(
             namespace=target_namespace,
             plural=plural,
             body=cloned_app,
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
         )
         print(
             f"Successfully created SparkApplication '{new_app_name}' in namespace '{target_namespace}'"
@@ -277,6 +282,7 @@ def wait_for_spark_app_completion(
                 namespace=namespace,
                 plural=plural,
                 name=app_name,
+                _request_timeout=K8S_API_REQUEST_TIMEOUT,
             )
         except ApiException as e:
             raise ApiException(
