@@ -1,0 +1,282 @@
+[
+  {
+    "id": "clean-tech",
+    "icon": "🧹",
+    "name": "Clean Tech / Flat Design",
+    "description": "Flat icons, bold color-coded sections, crisp edges, white background, sans-serif labels. Minimal shadows. Best for documentation and technical audiences.",
+    "compatible_types": [
+      "linear-data-flow",
+      "architecture-blueprint",
+      "comparison-matrix",
+      "tech-stack-pyramid",
+      "hub-and-spoke",
+      "node-edge-graph",
+      "decision-tree-flowchart",
+      "chevron-process-slide",
+      "kpi-dashboard-slide",
+      "title-slide-hero-layout",
+      "icon-set-grid",
+      "logo-generator"
+    ]
+  },
+  {
+    "id": "isometric-3d",
+    "icon": "📦",
+    "name": "Isometric 3D",
+    "description": "3D perspective with depth, shadows, and gradient fills. Isometric grid alignment. High visual impact for presentations and executive decks.",
+    "compatible_types": [
+      "linear-data-flow",
+      "architecture-blueprint",
+      "tech-stack-pyramid",
+      "continuous-loop-cycle",
+      "hub-and-spoke",
+      "node-edge-graph",
+      "decision-tree-flowchart",
+      "kpi-dashboard-slide",
+      "title-slide-hero-layout",
+      "logo-generator"
+    ]
+  },
+  {
+    "id": "blueprint",
+    "icon": "📐",
+    "name": "Blueprint / Engineering",
+    "description": "Dark navy background, white or cyan technical lines, engineering/schematic aesthetic. Monochromatic with accent highlights. Great for infrastructure and network diagrams.",
+    "compatible_types": [
+      "linear-data-flow",
+      "architecture-blueprint",
+      "tech-stack-pyramid",
+      "hub-and-spoke",
+      "node-edge-graph",
+      "continuous-loop-cycle",
+      "decision-tree-flowchart"
+    ]
+  },
+  {
+    "id": "infographic",
+    "icon": "🎨",
+    "name": "Infographic / Presentation",
+    "description": "Colorful sections, large illustrative icons, banner-style labels, presentation-ready layout. Best for non-technical stakeholders and slide decks.",
+    "compatible_types": [
+      "linear-data-flow",
+      "comparison-matrix",
+      "tech-stack-pyramid",
+      "continuous-loop-cycle",
+      "decision-tree-flowchart",
+      "chevron-process-slide",
+      "title-slide-hero-layout",
+      "icon-set-grid",
+      "venn-diagram-tradeoffs",
+      "hub-and-spoke",
+      "before-after-sequence",
+      "node-edge-graph"
+    ]
+  },
+  {
+    "id": "hand-drawn",
+    "icon": "✏️",
+    "name": "Hand-Drawn / Whiteboard",
+    "description": "Rough sketch aesthetic, pencil-style or marker lines, sticky-note colors, informal and brainstorming feel. Ideal for workshops and early-stage ideation.",
+    "compatible_types": [
+      "architecture-blueprint",
+      "decision-tree-flowchart",
+      "before-after-sequence",
+      "venn-diagram-tradeoffs",
+      "node-edge-graph",
+      "continuous-loop-cycle",
+      "comparison-matrix",
+      "hub-and-spoke",
+      "tech-stack-pyramid"
+    ]
+  },
+  {
+    "id": "neon-dark",
+    "icon": "💜",
+    "name": "Neon Dark / Cyberpunk",
+    "description": "Dark background, glowing neon-colored elements, bright edge lines. Cyberpunk or data-mesh aesthetic. High contrast, suitable for tech conferences and digital media.",
+    "compatible_types": [
+      "node-edge-graph",
+      "venn-diagram-tradeoffs",
+      "architecture-blueprint",
+      "hub-and-spoke",
+      "linear-data-flow",
+      "kpi-dashboard-slide",
+      "title-slide-hero-layout",
+      "chevron-process-slide",
+      "logo-generator",
+      "icon-set-grid",
+      "tech-stack-pyramid",
+      "continuous-loop-cycle",
+      "decision-tree-flowchart",
+      "before-after-sequence"
+    ]
+  },
+  {
+    "id": "minimal-outline",
+    "icon": "⬜",
+    "name": "Minimal Outline / Editorial",
+    "description": "Black-and-white or two-tone, thin outlines only, clean editorial or documentation style. No fills, maximum readability in print or monochrome contexts.",
+    "compatible_types": [
+      "comparison-matrix",
+      "venn-diagram-tradeoffs",
+      "decision-tree-flowchart",
+      "tech-stack-pyramid",
+      "before-after-sequence",
+      "logo-generator",
+      "icon-set-grid",
+      "kpi-dashboard-slide",
+      "title-slide-hero-layout",
+      "chevron-process-slide",
+      "hub-and-spoke",
+      "continuous-loop-cycle"
+    ]
+  },
+  {
+    "id": "split-screen",
+    "icon": "🪟",
+    "name": "Split Screen / Before & After",
+    "description": "Full-bleed two-panel layout with strong visual contrast between panels. Left side in muted/dark/messy style, right side in clean/bright/modern style.",
+    "compatible_types": [
+      "before-after-sequence",
+      "comparison-matrix"
+    ]
+  },
+  {
+    "id": "circular-gradient",
+    "icon": "🌀",
+    "name": "Circular Gradient / Flow Loop",
+    "description": "Smooth color gradient along a circular or elliptical path, pill-shaped stage labels. Ideal for conveying continuous, iterative processes.",
+    "compatible_types": [
+      "continuous-loop-cycle",
+      "hub-and-spoke",
+      "venn-diagram-tradeoffs"
+    ]
+  },
+  {
+    "id": "radar-chart",
+    "icon": "🕷️",
+    "name": "Radar / Spider Chart",
+    "description": "Overlapping polygon radar chart showing multi-dimensional comparison across criteria axes. Best for comparing 3+ options across 4+ dimensions simultaneously.",
+    "compatible_types": [
+      "comparison-matrix",
+      "venn-diagram-tradeoffs"
+    ]
+  },
+  {
+    "id": "conference-whiteboard-room",
+    "icon": "🏫",
+    "name": "Conference Room Whiteboard",
+    "description": "Diagram drawn on a large office whiteboard inside a modern meeting room, with realistic dry-erase marker strokes, subtle reflections, pinned notes, and natural presentation context.",
+    "compatible_types": [
+      "linear-data-flow",
+      "architecture-blueprint",
+      "hub-and-spoke",
+      "decision-tree-flowchart",
+      "before-after-sequence",
+      "venn-diagram-tradeoffs",
+      "comparison-matrix",
+      "tech-stack-pyramid",
+      "continuous-loop-cycle",
+      "node-edge-graph"
+    ]
+  },
+  {
+    "id": "glass-board-workshop",
+    "icon": "🔮",
+    "name": "Glass Board Workshop",
+    "description": "Semi-transparent glass wall board style with layered marker lines, sticky notes, workshop annotations, and a creative studio atmosphere. Slight parallax and hand-drawn energy.",
+    "compatible_types": [
+      "architecture-blueprint",
+      "node-edge-graph",
+      "decision-tree-flowchart",
+      "before-after-sequence",
+      "icon-set-grid",
+      "venn-diagram-tradeoffs",
+      "hub-and-spoke",
+      "comparison-matrix",
+      "tech-stack-pyramid",
+      "continuous-loop-cycle",
+      "linear-data-flow",
+      "chevron-process-slide"
+    ]
+  },
+  {
+    "id": "macos-window-showcase",
+    "icon": "🖥️",
+    "name": "macOS Window Showcase",
+    "description": "Diagram presented inside a polished macOS application window with traffic-light controls, soft shadows, rounded corners, sidebar or toolbar chrome, and clean Apple-inspired UI framing.",
+    "compatible_types": [
+      "comparison-matrix",
+      "node-edge-graph",
+      "icon-set-grid",
+      "title-slide-hero-layout",
+      "kpi-dashboard-slide",
+      "architecture-blueprint",
+      "decision-tree-flowchart",
+      "linear-data-flow",
+      "chevron-process-slide"
+    ]
+  },
+  {
+    "id": "control-panel-console",
+    "icon": "🎛️",
+    "name": "Control Panel / Console",
+    "description": "Futuristic panel or operations console aesthetic with segmented modules, indicator lights, tactical lines, dark surfaces, and precision UI framing around the diagram.",
+    "compatible_types": [
+      "linear-data-flow",
+      "architecture-blueprint",
+      "continuous-loop-cycle",
+      "node-edge-graph",
+      "kpi-dashboard-slide",
+      "chevron-process-slide",
+      "hub-and-spoke",
+      "tech-stack-pyramid",
+      "decision-tree-flowchart"
+    ]
+  },
+  {
+    "id": "macbook-desk-mockup",
+    "icon": "💻",
+    "name": "MacBook Desk Mockup",
+    "description": "Diagram displayed on a MacBook screen in a premium desk setup, with device bezel, keyboard edge, subtle perspective, ambient lighting, and a refined product mockup presentation feel.",
+    "compatible_types": [
+      "comparison-matrix",
+      "title-slide-hero-layout",
+      "logo-generator",
+      "icon-set-grid",
+      "kpi-dashboard-slide",
+      "chevron-process-slide",
+      "architecture-blueprint",
+      "node-edge-graph",
+      "linear-data-flow"
+    ]
+  },
+  {
+    "id": "brand-style-guide",
+    "icon": "🖌️",
+    "name": "Brand Style Guide",
+    "description": "Mood-board layout with color swatches, typeface specimens, logo lockup previews, and usage examples arranged on a clean editorial canvas. Ideal for branding presentations and design system documentation.",
+    "compatible_types": [
+      "logo-generator",
+      "icon-set-grid",
+      "title-slide-hero-layout",
+      "comparison-matrix"
+    ]
+  },
+  {
+    "id": "notebook-sketchpad",
+    "icon": "📓",
+    "name": "Notebook / Sketchpad",
+    "description": "Lined or dotted notebook paper texture with pencil or ink sketch aesthetic, hand-lettered labels, and margin annotations. Ideal for concept ideation, logo exploration, and early-stage diagram drafts.",
+    "compatible_types": [
+      "logo-generator",
+      "icon-set-grid",
+      "decision-tree-flowchart",
+      "venn-diagram-tradeoffs",
+      "hub-and-spoke",
+      "linear-data-flow",
+      "comparison-matrix",
+      "before-after-sequence"
+    ]
+  }
+]

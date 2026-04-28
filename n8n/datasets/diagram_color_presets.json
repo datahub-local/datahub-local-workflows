@@ -1,0 +1,50 @@
+[
+  {
+    "id": "light",
+    "icon": "☀️",
+    "name": "Light",
+    "description": "White or very light gray background with dark text and colored accents. Maximum readability for documentation and presentations."
+  },
+  {
+    "id": "dark",
+    "icon": "🌙",
+    "name": "Dark",
+    "description": "Deep gray or near-black background with light-colored elements and bright accents. High contrast for digital-first or dark-mode contexts."
+  },
+  {
+    "id": "neutral",
+    "icon": "⚪",
+    "name": "Neutral",
+    "description": "Muted mid-tone palette with soft grays, beige, and slate. Understated and professional for formal reports and internal documentation."
+  },
+  {
+    "id": "vibrant",
+    "icon": "🌈",
+    "name": "Vibrant",
+    "description": "Saturated, high-energy color palette with bold fills and bright contrasts. Ideal for presentations targeting non-technical or executive audiences."
+  },
+  {
+    "id": "monochrome",
+    "icon": "⬛",
+    "name": "Monochrome",
+    "description": "Single hue or pure black-and-white palette. Clean and print-friendly, best for minimal, editorial, or high-contrast accessibility contexts."
+  },
+  {
+    "id": "brand-blue",
+    "icon": "🔵",
+    "name": "Brand Blue",
+    "description": "Corporate blue-dominant palette with white and gray supporting tones. Conveys trust, technology, and professionalism."
+  },
+  {
+    "id": "warm",
+    "icon": "🔥",
+    "name": "Warm",
+    "description": "Warm orange, amber, and soft red tones with light neutral backgrounds. Energetic and approachable for workshop and team-facing materials."
+  },
+  {
+    "id": "cool",
+    "icon": "🧊",
+    "name": "Cool",
+    "description": "Cool cyan, teal, and lavender tones with white or dark backgrounds. Calm, modern feel suited for technical and data-heavy diagrams."
+  }
+]

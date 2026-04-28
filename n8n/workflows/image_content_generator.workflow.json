@@ -1,0 +1,1165 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Init: Diagram Generator Form": {
+      "main": [
+        [
+          {
+            "node": "Init: Set GitHub Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init: Set GitHub Config": {
+      "main": [
+        [
+          {
+            "node": "Fetch: Diagram Types Dataset",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch: Prompt Template",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch: Visual Styles Dataset",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch: Color Presets Dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch: Diagram Types Dataset": {
+      "main": [
+        [
+          {
+            "node": "Merge Github",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse: Dataset & Template": {
+      "main": [
+        [
+          {
+            "node": "Select: Diagram Type & Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build: Diagram Prompt": {
+      "main": [
+        [
+          {
+            "node": "Select: Visual Style",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit: Review Generated Prompt": {
+      "main": [
+        [
+          {
+            "node": "Retry Prompt?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry Prompt?": {
+      "main": [
+        [
+          {
+            "node": "Prepare: Prompt Retry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Set: Generation Params",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare: Prompt Retry": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set: Generation Params": {
+      "main": [
+        [
+          {
+            "node": "Merge Prompts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate: Image via Portkey": {
+      "main": [
+        [
+          {
+            "node": "Extract: Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Show: Image & Retry Option": {
+      "main": [
+        [
+          {
+            "node": "Retry?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retry?": {
+      "main": [
+        [
+          {
+            "node": "Prepare: Retry Params",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "End: Diagram Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare: Retry Params": {
+      "main": [
+        [
+          {
+            "node": "Merge Prompts",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Select: Visual Style": {
+      "main": [
+        [
+          {
+            "node": "Apply: Style to Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply: Style to Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch: Prompt Template": {
+      "main": [
+        [
+          {
+            "node": "Merge Github",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Fetch: Visual Styles Dataset": {
+      "main": [
+        [
+          {
+            "node": "Merge Github",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit: Review Generated Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select: Diagram Type & Context": {
+      "main": [
+        [
+          {
+            "node": "Build: Diagram Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Prompts": {
+      "main": [
+        [
+          {
+            "node": "Generate: Image via Portkey",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "generate_image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Github": {
+      "main": [
+        [
+          {
+            "node": "Parse: Dataset & Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract: Image": {
+      "main": [
+        [
+          {
+            "node": "Insert Temp File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Temp File": {
+      "main": [
+        [
+          {
+            "node": "Show: Image & Retry Option",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch: Color Presets Dataset": {
+      "main": [
+        [
+          {
+            "node": "Merge Github",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "generate_image": {
+      "main": [
+        [
+          {
+            "node": "Extract: Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model Fallback": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-04-28T13:50:57.156Z",
+  "id": "8cRfhWwzFYvma7OI",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Image Content Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Diagram Image Generator",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Diagram Text",
+              "fieldType": "textarea",
+              "placeholder": "Describe the diagram you want to generate. E.g.: 'User authentication flow with OAuth2, showing login, token exchange, and session management steps'",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}\n\ntextarea {\n  min-height: 300px;\n  max-height: 300px;\n}"
+        }
+      },
+      "id": "0d224344-d7d0-4c0f-b148-b6e645e564f9",
+      "name": "Init: Diagram Generator Form",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [
+        -464,
+        0
+      ],
+      "typeVersion": 2.2,
+      "webhookId": "ef5928cb-36a5-47ee-8809-99d5f34ca449"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assign-001",
+              "name": "diagramDescription",
+              "value": "={{ $json['Diagram Text'] }}",
+              "type": "string"
+            },
+            {
+              "id": "assign-002",
+              "name": "githubOwner",
+              "value": "=datahub-local",
+              "type": "string"
+            },
+            {
+              "id": "assign-003",
+              "name": "githubRepo",
+              "value": "=datahub-local-workflows",
+              "type": "string"
+            },
+            {
+              "id": "assign-004",
+              "name": "githubBranch",
+              "value": "=main",
+              "type": "string"
+            },
+            {
+              "id": "assign-005",
+              "name": "datasetPath",
+              "value": "n8n/datasets/dataset-diagram-types.json",
+              "type": "string"
+            },
+            {
+              "id": "assign-006",
+              "name": "promptPath",
+              "value": "n8n/prompts/prompts-diagram-generator.md",
+              "type": "string"
+            },
+            {
+              "id": "assign-007",
+              "name": "stylesDatasetPath",
+              "value": "n8n/datasets/dataset-diagram-visual-styles.json",
+              "type": "string"
+            },
+            {
+              "id": "assign-008",
+              "name": "colorPresetsDatasetPath",
+              "value": "n8n/datasets/dataset-diagram-color-presets.json",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1d8bffae-bd81-41d1-9cc5-aa791572de91",
+      "name": "Init: Set GitHub Config",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -240,
+        0
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubOwner }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubRepo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('Init: Set GitHub Config').first().json.datasetPath }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {
+          "reference": "={{ $('Init: Set GitHub Config').first().json.githubBranch }}"
+        }
+      },
+      "id": "40fc8f37-2bf9-4b29-a97b-b4697c10cd94",
+      "name": "Fetch: Diagram Types Dataset",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        -16,
+        -96
+      ],
+      "typeVersion": 1,
+      "webhookId": "c2877290-e24b-46ae-8798-9097d2b35319",
+      "credentials": {
+        "githubApi": {
+          "id": "x1DjxYsMLFm3vUiv",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// GitHub node returns file content as base64 in $json.content\nconst decode = (b64) => Buffer.from(b64.replace(/\\n/g, ''), 'base64').toString('utf8');\n\nconst diagramTypesRaw = decode($('Fetch: Diagram Types Dataset').first().json.content);\nconst promptTemplate = decode($('Fetch: Prompt Template').first().json.content);\nconst visualStylesRaw = decode($('Fetch: Visual Styles Dataset').first().json.content);\nconst colorPresetsRaw = decode($('Fetch: Color Presets Dataset').first().json.content);\nconst config = $('Init: Set GitHub Config').first().json;\n\nconst diagramTypes = JSON.parse(diagramTypesRaw);\nconst visualStyles = JSON.parse(visualStylesRaw);\nconst colorPresets = JSON.parse(colorPresetsRaw);\n\nreturn [{\n  diagramTypes,\n  visualStyles,\n  colorPresets,\n  promptTemplate,\n  diagramDescription: config.diagramDescription,\n  githubOwner: config.githubOwner,\n  githubRepo: config.githubRepo,\n  githubBranch: config.githubBranch\n}];"
+      },
+      "id": "10dc50ca-9995-451b-bd31-2dce2168f9c4",
+      "name": "Parse: Dataset & Template",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        432,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const selection = $input.first().json;\nconst parsedData = $('Parse: Dataset & Template').first().json;\n\n// Extract diagram type id from the dropdown selection (format: \"emoji id — Name\")\nconst diagramTypeRaw = selection['Diagram Type'] || '';\nconst diagramTypeId = diagramTypeRaw.replace(/^\\S+\\s+/, '').split(' — ')[0].trim();\n\n// Find the full diagram type object\nconst diagramType = parsedData.diagramTypes.find(d => d.id === diagramTypeId) || {};\n\nconst model = selection['Image Generation Model'] || '@openai-aifoundry-swc-001/gpt-image-1';\nconst additionalContext = selection['Additional Context (optional)'] || 'None';\nconst description = parsedData.diagramDescription;\n\n// Filter visual styles compatible with this diagram type\nconst compatibleStyles = parsedData.visualStyles.filter(\n  s => s.compatible_types.includes(diagramTypeId)\n);\n// Fallback: if no compatible styles found, return all styles\nconst visualStyles = compatibleStyles.length > 0 ? compatibleStyles : parsedData.visualStyles;\n\nreturn [{\n  diagramTypeId,\n  diagramTypeName: diagramType.name || diagramTypeId,\n  diagramTypeDescription: diagramType.description || '',\n  styleHint: diagramType.style_hint || '',\n  colorPalette: diagramType.color_palette || 'White background',\n  diagramDescription: description,\n  promptTemplate: parsedData.promptTemplate,\n  model,\n  additionalContext,\n  visualStyles,\n  colorPresets: parsedData.colorPresets\n}];"
+      },
+      "id": "14d01633-e204-417e-90b2-8dd91434cd99",
+      "name": "Build: Diagram Prompt",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        880,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Image Prompt",
+              "fieldType": "textarea",
+              "defaultValue": "={{ $json.output }}",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Image Model",
+              "fieldType": "dropdown",
+              "defaultValue": "gemini-3.1-flash-image-preview",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "gemini-3.1-flash-image-preview"
+                  },
+                  {
+                    "option": "google/gemini-2.5-flash-image"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Image Size",
+              "fieldType": "dropdown",
+              "defaultValue": "auto",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "1024x1024"
+                  },
+                  {
+                    "option": "1024x1536"
+                  },
+                  {
+                    "option": "1536x1024"
+                  },
+                  {
+                    "option": "auto"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Image Quality",
+              "fieldType": "dropdown",
+              "defaultValue": "auto",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "low"
+                  },
+                  {
+                    "option": "medium"
+                  },
+                  {
+                    "option": "high"
+                  },
+                  {
+                    "option": "auto"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Regenerate Prompt",
+              "fieldType": "dropdown",
+              "defaultValue": "no",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "no"
+                  },
+                  {
+                    "option": "yes"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "formTitle": "Diagram Image Generator — Step 4",
+          "formDescription": "={{ 'Diagram: ' + $('Apply: Style to Prompt').first().json.diagramTypeName + ' | Style: ' + $('Apply: Style to Prompt').first().json.visualStyleName + ' | Model: ' + $('Apply: Style to Prompt').first().json.model }}",
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}\n\ntextarea {\n  min-height: 300px;\n  max-height: 300px;\n}"
+        }
+      },
+      "id": "669bbbc4-9ded-4ec5-b86a-34b4c052baca",
+      "name": "Edit: Review Generated Prompt",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        1904,
+        24
+      ],
+      "typeVersion": 2.3,
+      "webhookId": "d1a9f3e2-3333-4abc-8def-000000000003"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json['Regenerate Prompt'] }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              },
+              "id": "cond-prompt-retry-001"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "08b69e94-1adf-48a6-8e18-4593bcd46bf0",
+      "name": "Retry Prompt?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2128,
+        24
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "return [$('Apply: Style to Prompt').first().json];"
+      },
+      "id": "ecdd7d1b-b8f3-418d-8d85-c583144ddba2",
+      "name": "Prepare: Prompt Retry",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2352,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const formData = $input.first().json;\nconst applyData = $('Apply: Style to Prompt').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'],\n  model: 'google/' + formData['Image Model'],\n  imageSize: formData['Image Size'],\n  imageQuality: formData['Image Quality'],\n  diagramTypeName: applyData.diagramTypeName,\n  visualStyleName: applyData.visualStyleName\n}];"
+      },
+      "id": "4c52a8bc-12dd-4d73-955c-8db4d612f371",
+      "name": "Set: Generation Params",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2352,
+        288
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://portkey.syngenta.com/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  model: $json.model,\n  prompt: $json.finalPrompt,\n  n: 1,\n  size: $json.imageSize,\n  quality: $json.imageQuality\n}, null, 2) }}",
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "dee849f0-52ba-4054-8be2-0c300152caa3",
+      "name": "Generate: Image via Portkey",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2800,
+        216
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldType": "html",
+              "html": "<div style=\"text-align:center; padding: 16px 0;\">\n  <p style=\"font-size:13px; color:#555; margin-bottom:12px;\"><strong>{{ $('Extract: Image').item.json.diagramTypeName }}</strong> &nbsp;|&nbsp; {{ $('Extract: Image').item.json.visualStyleName }} &nbsp;|&nbsp; {{ $('Extract: Image').item.json.model }} &nbsp;|&nbsp; {{ $('Extract: Image').item.json.imageSize }}</p>\n  <img src=\"https://n8n.syngenta.com/webhook/76a3521f-8ce6-41e5-9741-a1a0d22736ff/76a3521f-8ce6-41e5-9741-a1a0d22736ff/{{ $json.fileId }}\" width=\"600\" alt=\"Generated diagram\" />\n</div>"
+            },
+            {
+              "fieldLabel": "Retry",
+              "fieldType": "dropdown",
+              "defaultValue": "no",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "no"
+                  },
+                  {
+                    "option": "yes"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Image Prompt",
+              "fieldType": "textarea",
+              "defaultValue": "={{ $('Extract: Image').item.json.originalPrompt || $('Extract: Image').item.json.revisedPrompt }}",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "formTitle": "Diagram Image Generator — Result",
+          "formDescription": "Review the generated diagram. Set retry to yes to regenerate the image, and edit the prompt if needed before resubmitting.",
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}"
+        }
+      },
+      "id": "556ec316-fc28-4a86-a0e8-1f0febcc640b",
+      "name": "Show: Image & Retry Option",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        3472,
+        216
+      ],
+      "typeVersion": 2.3,
+      "webhookId": "d1a9f3e2-4444-4abc-8def-000000000004"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json['Retry'] }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              },
+              "id": "cond-retry-001"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "88168079-8a35-491f-8eae-006bd2235af1",
+      "name": "Retry?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        3696,
+        216
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const formData = $input.first().json;\nconst prevParams = $('Set: Generation Params').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'] || prevParams.finalPrompt,\n  imageSize: prevParams.imageSize,\n  imageQuality: prevParams.imageQuality,\n  model: prevParams.model,\n  diagramTypeName: prevParams.diagramTypeName,\n  visualStyleName: prevParams.visualStyleName\n}];"
+      },
+      "id": "5fa896ed-a89d-4442-a4f8-c93a85edb63e",
+      "name": "Prepare: Retry Params",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        3920,
+        120
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldType": "html",
+              "html": "<div style=\"text-align:center; padding: 16px 0;\">\n  <img src=\"https://n8n.syngenta.com/webhook/76a3521f-8ce6-41e5-9741-a1a0d22736ff/76a3521f-8ce6-41e5-9741-a1a0d22736ff/{{ $('Extract: Image').last().json.fileId }}\" width=\"600\" alt=\"Generated diagram\" />\n</div>"
+            }
+          ]
+        },
+        "options": {
+          "formTitle": "Diagram Image Generator — Done",
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\n\t/* Colors */\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\n\t/* Border Radii */\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\n\t/* Spacing */\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\n\t/* Dimensions */\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\n\t/* Others */\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}\n\ntextarea {\n  min-height: 80px;\n  max-height: 80px;\n}\n\ntextarea#field-1 {\n  min-height: 200px;\n  max-height: 200px;\n}"
+        }
+      },
+      "id": "33d57635-81f5-4faa-9ce2-0b20cd588ad8",
+      "name": "End: Diagram Done",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        3920,
+        336
+      ],
+      "typeVersion": 2.3,
+      "webhookId": "d1a9f3e2-5555-4abc-8def-000000000005"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n  {\n    \"fieldLabel\": \"Visual Style\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {{ $json.visualStyles.map(s => `{\"option\": \"${s.icon} ${s.id} — ${s.name}\"}`).join(',\\n        ') }}\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldLabel\": \"Color Preset\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {{ $json.colorPresets.map(c => `{\"option\": \"${c.icon} ${c.id} — ${c.name}\"}`).join(',\\n        ') }}\n      ]\n    },\n    \"requiredField\": true\n  }\n]",
+        "options": {
+          "formTitle": "Diagram Image Generator — Step 3",
+          "formDescription": "=<div id='step3-intro'>Diagram: {{$json.diagramTypeName}} | {{$json.diagramTypeDescription}}</div>\n\n<div>\n  <div>\n    <table>\n      <thead>\n        <tr>\n          <th></th>\n          <th>Style</th>\n          <th>Description</th>\n        </tr>\n      </thead>\n      <tbody>{{ `${$json.visualStyles.map(s => `<tr>\n          <td>${s.icon}</td>\n          <td><strong>${s.id}</strong><br></td>\n          <td>${s.description}</td>\n        </tr>`).join('')}` }}\n      </tbody>\n    </table>\n  </div>\n</div>",
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-header: 20px;\n\t--font-size-input: 14px;\n\t--color-background: #fbfcfe;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n}"
+        }
+      },
+      "id": "c608d9ab-e532-4802-9fdb-a062495729e0",
+      "name": "Select: Visual Style",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        1104,
+        96
+      ],
+      "typeVersion": 2.3,
+      "webhookId": "d1a9f3e2-6666-4abc-8def-000000000006"
+    },
+    {
+      "parameters": {
+        "jsCode": "const styleSelection = $input.first().json;\nconst buildData = $('Build: Diagram Prompt').first().json;\n\n// Extract visual style id from selection (format: \"emoji id — Name\")\nconst visualStyleRaw = styleSelection['Visual Style'] || '';\nconst visualStyleId = visualStyleRaw.replace(/^\\S+\\s+/, '').split(' — ')[0].trim();\nconst visualStyleObj = buildData.visualStyles.find(s => s.id === visualStyleId) || {};\nconst visualStyleName = visualStyleObj.name || visualStyleId;\nconst visualStyleDescription = visualStyleObj.description || '';\n\n// Extract color preset id from selection (format: \"emoji id — Name\")\nconst colorPresetRaw = styleSelection['Color Preset'] || '';\nconst colorPresetId = colorPresetRaw.replace(/^\\S+\\s+/, '').split(' — ')[0].trim();\nconst colorPresetObj = buildData.colorPresets.find(c => c.id === colorPresetId) || {};\nconst colorPresetName = colorPresetObj.name || colorPresetId;\nconst colorPresetDescription = colorPresetObj.description || '';\n\n// Substitute all placeholders — prompt is fully agnostic, all content comes from the datasets\nlet prompt = buildData.promptTemplate;\nprompt = prompt.replace(/\\{\\{DIAGRAM_TYPE\\}\\}/g, buildData.diagramTypeName);\nprompt = prompt.replace(/\\{\\{DIAGRAM_TYPE_DESCRIPTION\\}\\}/g, buildData.diagramTypeDescription + ' ' + buildData.styleHint);\nprompt = prompt.replace(/\\{\\{DIAGRAM_TOPIC\\}\\}/g, buildData.diagramDescription);\nprompt = prompt.replace(/\\{\\{VISUAL_STYLE\\}\\}/g, visualStyleName);\nprompt = prompt.replace(/\\{\\{VISUAL_STYLE_DESCRIPTION\\}\\}/g, visualStyleDescription);\nprompt = prompt.replace(/\\{\\{COLOR_PRESET\\}\\}/g, colorPresetName + ': ' + colorPresetDescription);\nprompt = prompt.replace(/\\{\\{DIAGRAM_CONTEXT\\}\\}/g, buildData.additionalContext);\n\n// Build a concise suggested image prompt (pre-filled in the edit form)\nconst suggestedImagePrompt = `\"${buildData.diagramTypeName} diagram of ${buildData.diagramDescription}. Show at most 4-6 key elements. If flow matters, use A -> B -> C. Style: ${visualStyleName}. Palette: ${colorPresetName}. Clean vector lines, short labels.\"`;\n\nreturn [{\n  diagramTypeId: buildData.diagramTypeId,\n  diagramTypeName: buildData.diagramTypeName,\n  diagramDescription: buildData.diagramDescription,\n  visualStyleId,\n  visualStyleName,\n  colorPresetId,\n  colorPresetName,\n  model: buildData.model,\n  additionalContext: buildData.additionalContext,\n  generatedSystemPrompt: prompt,\n  suggestedImagePrompt\n}];"
+      },
+      "id": "29fcc521-67d0-4041-98d8-a5b03bea82d5",
+      "name": "Apply: Style to Prompt",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1328,
+        96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubOwner }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubRepo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('Init: Set GitHub Config').first().json.promptPath }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "a6ce2a2b-24f9-4df4-a830-589439cac8b3",
+      "name": "Fetch: Prompt Template",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        -16,
+        96
+      ],
+      "typeVersion": 1,
+      "webhookId": "1ff01096-3dbd-4204-ae5e-732fea49b81b",
+      "credentials": {
+        "githubApi": {
+          "id": "x1DjxYsMLFm3vUiv",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubOwner }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubRepo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('Init: Set GitHub Config').first().json.stylesDatasetPath }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "6648dde0-37cc-4369-894e-e3a7ed682f6a",
+      "name": "Fetch: Visual Styles Dataset",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        -16,
+        288
+      ],
+      "typeVersion": 1,
+      "webhookId": "1ceb5c45-4e50-4189-8382-44ba07b04cea",
+      "credentials": {
+        "githubApi": {
+          "id": "x1DjxYsMLFm3vUiv",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.generatedSystemPrompt }}",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1552,
+        96
+      ],
+      "id": "45c474be-7ed8-47c0-96cc-e354c9749d1a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "defineForm": "json",
+        "jsonOutput": "=[\n  {\n    \"fieldLabel\": \"Diagram Type\",\n    \"fieldType\": \"dropdown\",\n    \"fieldOptions\": {\n      \"values\": [\n        {{ $json.diagramTypes.map(d => `{\"option\": \"${d.icon} ${d.id} — ${d.name}\"}`).join(',\\n        ') }}\n      ]\n    },\n    \"requiredField\": true\n  },\n  {\n    \"fieldLabel\": \"Additional Context (optional)\",\n    \"fieldType\": \"textarea\",\n    \"placeholder\": \"Any extra details: tech stack, audience, labels to include, etc.\"\n  }\n]",
+        "options": {
+          "formDescription": "=<div>Select the diagram type and context preferences.</div>\n<div>\n  <div>\n    <table>\n      <thead><tr><th></th><th>Type</th><th>Description</th></thead>\n      <tbody>\n{{ `${$json.diagramTypes.map(d => `<tr><td>${d.icon}</td><td><strong>${d.id}</strong></td><td>${d.description}</td></tr>`).join(\"\")}`}}\n      </tbody>\n  </table>\n</div>",
+          "customCss": ":root {\n\t--font-family: 'Open Sans', sans-serif;\n\t--font-weight-normal: 400;\n\t--font-weight-bold: 600;\n\t--font-size-body: 12px;\n\t--font-size-label: 14px;\n\t--font-size-test-notice: 12px;\n\t--font-size-input: 14px;\n\t--font-size-header: 20px;\n\t--font-size-paragraph: 14px;\n\t--font-size-link: 12px;\n\t--font-size-error: 12px;\n\t--font-size-html-h1: 28px;\n\t--font-size-html-h2: 20px;\n\t--font-size-html-h3: 16px;\n\t--font-size-html-h4: 14px;\n\t--font-size-html-h5: 12px;\n\t--font-size-html-h6: 10px;\n\t--font-size-subheader: 14px;\n\t--color-background: #fbfcfe;\n\t--color-test-notice-text: #e6a23d;\n\t--color-test-notice-bg: #fefaf6;\n\t--color-test-notice-border: #f6dcb7;\n\t--color-card-bg: #ffffff;\n\t--color-card-border: #dbdfe7;\n\t--color-card-shadow: rgba(99, 77, 255, 0.06);\n\t--color-link: #7e8186;\n\t--color-header: #525356;\n\t--color-label: #555555;\n\t--color-input-border: #dbdfe7;\n\t--color-input-text: #71747A;\n\t--color-focus-border: rgb(90, 76, 194);\n\t--color-submit-btn-bg: #ff6d5a;\n\t--color-submit-btn-text: #ffffff;\n\t--color-error: #ea1f30;\n\t--color-required: #ff6d5a;\n\t--color-clear-button-bg: #7e8186;\n\t--color-html-text: #555;\n\t--color-html-link: #ff6d5a;\n\t--color-header-subtext: #7e8186;\n\t--border-radius-card: 8px;\n\t--border-radius-input: 6px;\n\t--border-radius-clear-btn: 50%;\n\t--card-border-radius: 8px;\n\t--padding-container-top: 24px;\n\t--padding-card: 24px;\n\t--padding-test-notice-vertical: 12px;\n\t--padding-test-notice-horizontal: 24px;\n\t--margin-bottom-card: 16px;\n\t--padding-form-input: 12px;\n\t--card-padding: 24px;\n\t--card-margin-bottom: 16px;\n\t--container-width: 675px;\n\t--submit-btn-height: 48px;\n\t--checkbox-size: 18px;\n\t--box-shadow-card: 0px 4px 16px 0px var(--color-card-shadow);\n\t--opacity-placeholder: 0.5;\n}"
+        }
+      },
+      "id": "84298e0f-9aef-48c4-b2f4-56c9199fd199",
+      "name": "Select: Diagram Type & Context",
+      "type": "n8n-nodes-base.form",
+      "position": [
+        656,
+        96
+      ],
+      "typeVersion": 2.3,
+      "webhookId": "d1a9f3e2-2222-4abc-8def-000000000002"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2576,
+        288
+      ],
+      "id": "c5ad5dbe-59ad-44bd-b3f4-00b52603f5f5",
+      "name": "Merge Prompts"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        64
+      ],
+      "id": "ed998d63-6c14-49a7-8842-02e7907cf4e3",
+      "name": "Merge Github"
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst params = $('Set: Generation Params').first().json;\n\nconst imageData = response.data && response.data[0];\nif (!imageData) {\n  throw new Error('No image returned from Portkey. Response: ' + JSON.stringify(response));\n}\n\nconst image = imageData.b64_json;\nconst fileId = $execution.id + \"_\" + (Math.random() + 1).toString(36).substring(6);\nconst revisedPrompt = imageData.revised_prompt || params.finalPrompt;\n\nreturn [{\n  image,\n  fileId,\n  revisedPrompt,\n  originalPrompt: params.finalPrompt,\n  model: params.model,\n  diagramTypeName: params.diagramTypeName,\n  visualStyleName: params.visualStyleName,\n  imageSize: params.imageSize,\n  generatedAt: new Date().toISOString()\n}];"
+      },
+      "id": "9cfb576f-a292-40d3-9e9b-678c8c9b9740",
+      "name": "Extract: Image",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        3024,
+        216
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "nN4RTGWhlQCnrC4Y",
+          "mode": "list",
+          "cachedResultName": "TemporalFiles",
+          "cachedResultUrl": "/projects/trexIkWXWeDrqYwQ/datatables/nN4RTGWhlQCnrC4Y"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fileId": "={{ $json.fileId }}",
+            "dataBase64": "={{ $json.image }}",
+            "contentType": "image/png"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fileId",
+              "displayName": "fileId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "dataBase64",
+              "displayName": "dataBase64",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "contentType",
+              "displayName": "contentType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3248,
+        216
+      ],
+      "id": "a36c2592-9aff-49a0-834d-5ef5be8042e0",
+      "name": "Insert Temp File"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubOwner }}",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "={{ $('Init: Set GitHub Config').first().json.githubRepo }}",
+          "mode": "name"
+        },
+        "filePath": "={{ $('Init: Set GitHub Config').first().json.colorPresetsDatasetPath }}",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "id": "b2609a9b-19b2-44c2-8a25-2a998845bea3",
+      "name": "Fetch: Color Presets Dataset",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        -16,
+        480
+      ],
+      "typeVersion": 1,
+      "webhookId": "c3d4e5f6-0000-4000-8000-000000000099",
+      "credentials": {
+        "githubApi": {
+          "id": "x1DjxYsMLFm3vUiv",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openrouter.ai/api/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"{{ $('set_workflow_vars').item.json.IMAGE_MODEL }}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $json.finalPrompt.toJsonString() }}\n    }\n  ],\n  \"modalities\": [\n    \"image\",\n    \"text\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2800,
+        24
+      ],
+      "id": "0541aee0-3d97-46b8-ae63-d8da8c57822f",
+      "name": "generate_image",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "w1lsvBaScdYqzahC",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1688,
+        320
+      ],
+      "id": "10452ae2-a81d-4a1d-9954-6ff895a3ac83",
+      "name": "Model Fallback",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        1560,
+        320
+      ],
+      "id": "1d89eaf1-b034-41ec-8915-7cf9b6d933c7",
+      "name": "Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ohBCg8rvjDPWEVQT",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-04-28T13:50:57.156Z",
+      "createdAt": "2026-04-28T13:50:57.156Z",
+      "role": "workflow:owner",
+      "workflowId": "8cRfhWwzFYvma7OI",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-04-28T18:28:46.694Z",
+  "versionId": "089f10ae-39e4-466b-b5fd-3bfd22cf9de9"
+}

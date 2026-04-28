@@ -46,7 +46,7 @@ def test_task_exists():
     mod = importlib.import_module("dags.spark_py_dag")
     dag = mod.dag
 
-    assert "clone_and_run_spark_job" in dag.task_ids
+    assert "spark-python-py" in dag.task_ids
 
 
 def test_single_task_dag():
@@ -62,10 +62,10 @@ def test_task_type():
     mod = importlib.import_module("dags.spark_py_dag")
     dag = mod.dag
 
-    task = dag.get_task("clone_and_run_spark_job")
+    task = dag.get_task("spark-python-py")
     # TaskFlow tasks have specific attributes
     assert hasattr(task, "task_id")
-    assert task.task_id == "clone_and_run_spark_job"
+    assert task.task_id == "spark-python-py"
 
 
 def test_dag_has_no_dependencies():
@@ -73,7 +73,7 @@ def test_dag_has_no_dependencies():
     mod = importlib.import_module("dags.spark_py_dag")
     dag = mod.dag
 
-    task = dag.get_task("clone_and_run_spark_job")
+    task = dag.get_task("spark-python-py")
     assert len(task.upstream_task_ids) == 0
     assert len(task.downstream_task_ids) == 0
 
@@ -118,11 +118,11 @@ def test_run_spark_job_uses_python_py_app():
     mod = importlib.import_module("dags.spark_py_dag")
     dag = mod.dag
 
-    task = dag.get_task("clone_and_run_spark_job")
+    task = dag.get_task("spark-python-py")
 
     # Verify task is properly configured
     assert task is not None
-    assert task.task_id == "clone_and_run_spark_job"
+    assert task.task_id == "spark-python-py"
 
 
 def test_run_spark_job_timeout_configured():

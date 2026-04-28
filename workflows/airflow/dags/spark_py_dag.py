@@ -33,7 +33,7 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    @task(task_id="clone_and_run_spark_job")
+    @task(task_id="spark-python-py")
     def run_spark_job(**context):
         app_name, success = clone_and_wait_for_spark_app(
             source_app_name="python-py", parameters={"partitions": 2000}

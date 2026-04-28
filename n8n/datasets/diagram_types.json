@@ -1,0 +1,336 @@
+[
+  {
+    "id": "linear-data-flow",
+    "icon": "📊",
+    "name": "Linear Data Flow",
+    "description": "A left-to-right flow showing data moving through a mostly linear stage sequence: source → ingestion → processing → storage → consumption; keep the main path explicit and do not introduce branching unless the topic clearly requires it",
+    "use_cases": [
+      "Data engineering pipelines",
+      "ETL/ELT architecture",
+      "Streaming vs batch flows",
+      "Event-driven data architectures"
+    ],
+    "key_elements": [
+      "Source nodes (e.g., Kafka, S3, APIs)",
+      "Processing/transform boxes (e.g., Spark, dbt, Flink)",
+      "Storage layers (e.g., Snowflake, Delta Lake)",
+      "Consumption endpoints (e.g., BI tools, ML models)",
+      "Directional arrows with data volume or latency labels",
+      "Stage grouping with swimlanes or color bands"
+    ],
+    "style_hint": "Strict left-to-right layout, equal-width stage columns, technology icons inside labeled boxes, thin connector arrows with optional data-type annotations, and a single readable main sequence without collapsing stages or inventing side branches",
+    "color_palette": "Deep blue for sources, teal for processing, purple for storage, orange for consumption, white background, light gray connectors"
+  },
+  {
+    "id": "architecture-blueprint",
+    "icon": "🏗️",
+    "name": "Architecture Blueprint",
+    "description": "A top-down or isometric view of cloud components interacting — services, VPCs, network boundaries, and data flows",
+    "use_cases": [
+      "Cloud infrastructure design (AWS / GCP / Azure)",
+      "Multi-region deployments",
+      "Security zone mapping",
+      "Hybrid cloud architectures"
+    ],
+    "key_elements": [
+      "Cloud provider service icons (compute, storage, networking)",
+      "VPC / network boundary dashed outlines",
+      "Availability zones and regions",
+      "Labeled connection arrows (HTTPS, gRPC, SQL, etc.)",
+      "Security perimeters (firewalls, WAF, IAM boundaries)",
+      "External actors (users, third-party APIs)"
+    ],
+    "style_hint": "Layered zones from external → edge → compute → data, each zone with a distinct background shade, official cloud icons where possible",
+    "color_palette": "AWS orange / GCP blue / Azure cyan for services, light gray zone backgrounds, red for security controls, white background"
+  },
+  {
+    "id": "comparison-matrix",
+    "icon": "📋",
+    "name": "Comparison Matrix / Table",
+    "description": "A structured side-by-side comparison of two or more technologies, patterns, or approaches highlighting pros, cons, and ideal use cases",
+    "use_cases": [
+      "Lakehouse vs. Data Warehouse",
+      "Batch vs. Streaming processing",
+      "SQL vs. NoSQL databases",
+      "Build vs. Buy decisions"
+    ],
+    "key_elements": [
+      "Column headers (one per option being compared)",
+      "Row attributes (criteria: cost, latency, scalability, complexity, etc.)",
+      "Rating indicators (checkmarks, dots, bars, or scores)",
+      "Pros/cons sections per column",
+      "Highlighted 'best for' row at the bottom",
+      "Optional icons per technology"
+    ],
+    "style_hint": "Clean table grid, alternating row shading, column headers with color accent per option, bold verdict row at bottom, and strict row-column alignment so criteria stay horizontal and are not turned into a flow or timeline",
+    "color_palette": "Each column has a distinct header color (blue, green, orange), light gray row alternation, white background, dark text"
+  },
+  {
+    "id": "tech-stack-pyramid",
+    "icon": "🔺",
+    "name": "Tech Stack Pyramid",
+    "description": "A hierarchical layered diagram showing the levels of a technology stack from infrastructure at the base to applications and interfaces at the top",
+    "use_cases": [
+      "Modern Data Stack overview",
+      "ML platform layers",
+      "Enterprise architecture layers",
+      "DevOps / platform engineering stacks"
+    ],
+    "key_elements": [
+      "Horizontal tiers stacked bottom to top",
+      "Layer labels (Infrastructure, Compute, Storage, Transform, Serve, Consume)",
+      "Technology logos or names inside each layer",
+      "Arrows or gradients indicating abstraction direction",
+      "Optional capability annotations per layer"
+    ],
+    "style_hint": "Trapezoid or triangle pyramid shape, wider at base (infrastructure) narrowing toward top (user-facing tools), each layer in a distinct color band, with technologies kept inside their assigned tier and not rearranged into a process flow",
+    "color_palette": "Dark gray at base grading through blue, teal, green, to orange at the top, white text labels, white background"
+  },
+  {
+    "id": "venn-diagram-tradeoffs",
+    "icon": "⭕",
+    "name": "Venn Diagram of Trade-offs",
+    "description": "Overlapping circle diagram illustrating competing constraints, trade-offs, or intersecting concepts (e.g., CAP Theorem, Cost/Speed/Quality)",
+    "use_cases": [
+      "CAP Theorem (Consistency, Availability, Partition tolerance)",
+      "Cost / Speed / Quality triangle",
+      "Data / Business / IT alignment",
+      "Build / Buy / Partner decision",
+      "People / Process / Technology"
+    ],
+    "key_elements": [
+      "2–4 large overlapping circles",
+      "Bold labels inside each circle (one concept per circle)",
+      "Intersection zone labels describing the overlap",
+      "Central intersection label (the 'sweet spot' or impossibility)",
+      "Optional icons or illustrations inside each circle"
+    ],
+    "style_hint": "Large translucent overlapping circles, each in a distinct color, clearly readable intersection labels, centered layout with minimal clutter",
+    "color_palette": "Soft transparent fills (blue, red, yellow, green), white or light gray background, dark bold text labels"
+  },
+  {
+    "id": "continuous-loop-cycle",
+    "icon": "🔄",
+    "name": "Continuous Loop / Cycle",
+    "description": "A circular diagram illustrating iterative, repeating processes such as CI/CD pipelines, MLOps lifecycles, or feedback loops; show a closed cycle where the last stage reconnects to the first rather than a linear DAG",
+    "use_cases": [
+      "CI/CD for data or software",
+      "MLOps model retraining lifecycle",
+      "DevOps infinity loop",
+      "Agile sprint cycle",
+      "Data quality feedback loop"
+    ],
+    "key_elements": [
+      "Circular or elliptical arrangement of process stages",
+      "Labeled nodes/steps along the circle",
+      "Directional arrows indicating flow direction",
+      "Central label describing the overall cycle name",
+      "Optional icons per stage",
+      "Highlighted entry/exit points or key metrics"
+    ],
+    "style_hint": "Circular layout with evenly spaced stage nodes, curved arrows connecting each stage in sequence, a central label in the middle of the loop, and a visibly closed return path so the diagram reads as cyclical instead of top-to-bottom",
+    "color_palette": "Gradient color progression around the circle (blue → purple → orange → green), white background, dark text labels"
+  },
+  {
+    "id": "hub-and-spoke",
+    "icon": "🌐",
+    "name": "Hub and Spoke",
+    "description": "A central component (hub) connected to multiple surrounding systems or consumers (spokes), illustrating a centralized architecture pattern",
+    "use_cases": [
+      "Centralized Data Lake or Lakehouse",
+      "Event Bus / Message Broker (Kafka)",
+      "API Gateway connecting microservices",
+      "Master data management hub",
+      "iPaaS integration platform"
+    ],
+    "key_elements": [
+      "Large central hub node with label and icon",
+      "Radially arranged spoke nodes around the hub",
+      "Labeled bidirectional or directional connection lines",
+      "Grouping of spoke types (producers vs consumers)",
+      "Optional data-flow annotations on spokes",
+      "Boundary circle or ring around the hub"
+    ],
+    "style_hint": "Hub centered, spoke nodes evenly distributed at equal radius, spokes grouped by type (left = sources, right = consumers), connection lines with flow direction, and connections primarily between hub and spokes rather than spoke-to-spoke unless explicitly requested",
+    "color_palette": "Hub in bold brand color (deep blue or purple), spokes in lighter category colors, white background, thin gray connection lines"
+  },
+  {
+    "id": "node-edge-graph",
+    "icon": "🕸️",
+    "name": "Node-Edge Graph",
+    "description": "A network or knowledge graph showing relationships between entities, microservices, or data objects as nodes connected by labeled edges",
+    "use_cases": [
+      "Microservice dependency map",
+      "Knowledge graph / ontology",
+      "Data lineage graph",
+      "Service mesh topology",
+      "Organizational or team dependency map"
+    ],
+    "key_elements": [
+      "Circular or rounded-rectangle nodes (one per entity)",
+      "Labeled directed or undirected edges between nodes",
+      "Node clusters / communities highlighted by background shading",
+      "Edge weight or label indicating relationship type",
+      "Legend for node types and edge types",
+      "Optional force-directed organic layout"
+    ],
+    "style_hint": "Organic or force-directed layout, node size proportional to importance/degree, cluster grouping with soft background zones, clear edge labels, and only the stated relationships drawn so the graph does not invent extra edges or fully connect clusters",
+    "color_palette": "Distinct color per node cluster (blue, green, orange, red), white node labels, semi-transparent edge lines, white or dark background"
+  },
+  {
+    "id": "decision-tree-flowchart",
+    "icon": "🔀",
+    "name": "Decision Tree / Flowchart",
+    "description": "A logical branching flow showing 'If X then Y' paths for architectural or process choices, guiding users to a recommendation or outcome; each decision must branch to distinct next nodes or terminal outcomes instead of being flattened into one serial chain",
+    "use_cases": [
+      "Architecture selection guide (e.g., 'Do you need real-time? → Kafka vs Batch')",
+      "Technology selection flowchart",
+      "Incident response runbook",
+      "Onboarding decision guide",
+      "Data governance policy flow"
+    ],
+    "key_elements": [
+      "Start oval at the top",
+      "Diamond decision nodes with Yes/No (or labeled) branches that attach to the correct outgoing edge",
+      "Rectangular process/action boxes",
+      "Terminal outcome boxes at the leaves (highlighted), with one outcome per branch leaf unless the topic explicitly merges paths",
+      "Clear directional arrows on all paths",
+      "Optional color-coding by path outcome type"
+    ],
+    "style_hint": "Top-to-bottom or left-to-right layout, decision diamonds clearly distinct from action rectangles, outcome boxes at edges in a distinct color, no crossing arrows, and explicit branch structure where alternatives split from each decision rather than continuing as one central vertical trunk",
+    "color_palette": "Blue start, yellow diamonds for decisions, white rectangles for actions, green terminal boxes for positive outcomes, red for warnings, white background"
+  },
+  {
+    "id": "before-after-sequence",
+    "icon": "↔️",
+    "name": "Before & After Sequence",
+    "description": "A two-panel diagram contrasting a legacy/problematic architecture ('Before') with a modern/improved approach ('After'), highlighting key differences",
+    "use_cases": [
+      "Spaghetti architecture vs. clean microservices",
+      "On-premise vs. cloud migration",
+      "Manual pipeline vs. automated DataOps",
+      "Monolith vs. event-driven architecture",
+      "Legacy ETL vs. modern ELT/Lakehouse"
+    ],
+    "key_elements": [
+      "Two clearly labeled panels: 'Before' (left/top) and 'After' (right/bottom)",
+      "Same system scope shown in both panels for direct comparison",
+      "Problem indicators in 'Before' (red warnings, tangled arrows, bottlenecks)",
+      "Improvement indicators in 'After' (green highlights, clean flows, added components)",
+      "Central divider with transformation label or arrow",
+      "Callout annotations pointing to key changes"
+    ],
+    "style_hint": "Side-by-side layout, 'Before' panel in muted/warm tones (red/orange accents for problems), 'After' panel in cooler clean tones (green/blue for improvements), bold section headers, and strict separation between panels so elements do not blend into one mixed architecture",
+    "color_palette": "Before: warm gray background, red/orange problem highlights. After: light blue/white background, green improvement highlights. Dark callout labels"
+  },
+  {
+    "id": "logo-generator",
+    "icon": "🎨",
+    "name": "Logo Generator",
+    "description": "A professional logo design for a company, project, product, or brand — including mark, wordmark, and color palette",
+    "use_cases": [
+      "Company or startup branding",
+      "Open-source project identity",
+      "Product or app logo",
+      "Personal brand or portfolio mark"
+    ],
+    "key_elements": [
+      "Primary logomark or icon (symbol representing the brand)",
+      "Wordmark / logotype with chosen typeface",
+      "Horizontal and stacked lockup variants",
+      "Brand color palette with primary and accent colors",
+      "Monochrome / single-color version",
+      "Short brand rationale or concept note"
+    ],
+    "style_hint": "Clean, scalable vector aesthetic — minimal details that read well at any size, strong silhouette, balanced negative space, and a single memorable shape or motif",
+    "color_palette": "Defined by the brand concept: bold accent on white or dark background, with one or two supporting neutrals"
+  },
+  {
+    "id": "icon-set-grid",
+    "icon": "🔷",
+    "name": "Icon Set Grid",
+    "description": "A structured grid of related icons designed as a cohesive family, ideal for product systems, pitch decks, and design handoff slides",
+    "use_cases": [
+      "UI icon family exploration",
+      "Feature illustration sets",
+      "PowerPoint supporting visuals",
+      "Design system documentation"
+    ],
+    "key_elements": [
+      "Uniform grid layout with 6 to 16 icons",
+      "Consistent stroke, fill, and corner radius treatment",
+      "Short labels beneath each icon",
+      "Optional category grouping or color coding",
+      "One highlighted hero icon or key feature",
+      "Background guides or sizing keylines"
+    ],
+    "style_hint": "Symmetric grid with consistent spacing, shared visual grammar across all icons, optional caption row, and one or two accent colors for emphasis",
+    "color_palette": "White or pale gray background, dark neutral strokes, one or two accent colors such as blue and coral"
+  },
+  {
+    "id": "title-slide-hero-layout",
+    "icon": "🖼️",
+    "name": "Title Slide Hero Layout",
+    "description": "A keynote-style cover slide combining a bold title area with a large hero diagram or illustration for presentation openings and section dividers",
+    "use_cases": [
+      "PowerPoint title slides",
+      "Section divider visuals",
+      "Conference talk opening slides",
+      "Executive presentation covers"
+    ],
+    "key_elements": [
+      "Large presentation title block",
+      "Subtitle or short supporting statement",
+      "Hero visual occupying one half or two thirds of the slide",
+      "Optional small logo or presenter name area",
+      "Background shape system or gradient field",
+      "Clear visual hierarchy optimized for distant viewing"
+    ],
+    "style_hint": "16:9 slide composition with strong title hierarchy, large margin structure, asymmetric hero placement, and minimal supporting text",
+    "color_palette": "Bold presentation gradient or solid brand background, high-contrast title text, bright accent highlights"
+  },
+  {
+    "id": "chevron-process-slide",
+    "icon": "➡️",
+    "name": "Chevron Process Slide",
+    "description": "A slide-friendly horizontal process diagram using large chevrons or segmented arrows to explain phased workflows, roadmaps, or operating models",
+    "use_cases": [
+      "Executive process summaries",
+      "Roadmap slides",
+      "Transformation phases",
+      "Go-to-market or delivery workflows"
+    ],
+    "key_elements": [
+      "3 to 7 large chevron stages",
+      "Step titles and short sublabels",
+      "Optional icons inside each stage",
+      "Progressive directional flow from left to right",
+      "Milestone markers or ownership tags",
+      "Headline and footer note zone for slide context"
+    ],
+    "style_hint": "Wide 16:9 layout with oversized chevrons, concise stage labels, strong contrast between phases, and minimal clutter for readability on slides, keeping each phase in its own chevron rather than breaking the process into scattered boxes",
+    "color_palette": "Sequential brand colors across stages, white or dark neutral background, high-contrast text"
+  },
+  {
+    "id": "kpi-dashboard-slide",
+    "icon": "📈",
+    "name": "KPI Dashboard Slide",
+    "description": "A presentation-ready dashboard summarizing metrics, status indicators, and small charts in a single polished overview slide",
+    "use_cases": [
+      "Quarterly business review slides",
+      "Program status reporting",
+      "Product analytics summaries",
+      "Leadership metric snapshots"
+    ],
+    "key_elements": [
+      "Large KPI cards for headline metrics",
+      "Mini charts or sparklines",
+      "Status badges or trend arrows",
+      "Segmented sections for categories or teams",
+      "Optional commentary callouts",
+      "Consistent card alignment across a slide grid"
+    ],
+    "style_hint": "Presentation dashboard arranged on a clean modular grid, prominent top-row KPIs, small supporting visuals below, and restrained annotation, with cards aligned to the grid and metrics kept inside their own panels rather than forming a flowchart",
+    "color_palette": "White or dark slate dashboard canvas, blue and green for positive metrics, amber and red for risks, neutral card borders"
+  }
+]
