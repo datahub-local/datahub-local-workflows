@@ -120,7 +120,157 @@
           "workflowInputs": {
             "mappingMode": "defineBelow",
             "value": {
-              "template_vars": "={{ {\n\"POST_CONTENT\": $('set_workflow_vars').item.json.POST_CONTENT\n} }}",
+              "template_vars": "={{ {} }}",
+              "template_name": "datasets/diagram_types.json"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "template_name",
+                "displayName": "template_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "template_vars",
+                "displayName": "template_vars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          480,
+          -352
+        ],
+        "id": "3c4ad391-7d19-4935-a1c0-5ba55f6edb76",
+        "name": "download_diagram_types"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "09xEuVQj207pjK4x",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+            "cachedResultName": "DownloadTemplate"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "template_vars": "={{ {} }}",
+              "template_name": "datasets/diagram_visual_styles.json"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "template_name",
+                "displayName": "template_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "template_vars",
+                "displayName": "template_vars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          720,
+          -352
+        ],
+        "id": "6d6be0ea-5f9a-4c2f-a31f-162a7f98a936",
+        "name": "download_diagram_visual_styles"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "09xEuVQj207pjK4x",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+            "cachedResultName": "DownloadTemplate"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "template_vars": "={{ {} }}",
+              "template_name": "datasets/diagram_color_presets.json"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "template_name",
+                "displayName": "template_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "template_vars",
+                "displayName": "template_vars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          960,
+          -352
+        ],
+        "id": "b4f1d7bb-3f6f-48fe-91d2-c4c2d11a2836",
+        "name": "download_diagram_color_presets"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "09xEuVQj207pjK4x",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+            "cachedResultName": "DownloadTemplate"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "template_vars": "={{ {\n\"POST_CONTENT\": $('set_workflow_vars').item.json.POST_CONTENT,\n\"DIAGRAM_TYPES\": $('download_diagram_types').item.json.output,\n\"DIAGRAM_VISUAL_STYLES\": $('download_diagram_visual_styles').item.json.output,\n\"DIAGRAM_COLOR_PRESETS\": $('download_diagram_color_presets').item.json.output\n} }}",
               "template_name": "prompts/linkedin_image_prompt.md"
             },
             "matchingColumns": [],
@@ -277,7 +427,7 @@
         "main": [
           [
             {
-              "node": "download_image_prompt",
+              "node": "download_diagram_types",
               "type": "main",
               "index": 0
             }
@@ -300,6 +450,39 @@
           [
             {
               "node": "create_image_prompt_ai",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "download_diagram_types": {
+        "main": [
+          [
+            {
+              "node": "download_diagram_visual_styles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "download_diagram_visual_styles": {
+        "main": [
+          [
+            {
+              "node": "download_diagram_color_presets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "download_diagram_color_presets": {
+        "main": [
+          [
+            {
+              "node": "download_image_prompt",
               "type": "main",
               "index": 0
             }
@@ -373,7 +556,7 @@
       "main": [
         [
           {
-            "node": "download_image_prompt",
+            "node": "download_diagram_types",
             "type": "main",
             "index": 0
           }
@@ -396,6 +579,39 @@
         [
           {
             "node": "create_image_prompt_ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_diagram_types": {
+      "main": [
+        [
+          {
+            "node": "download_diagram_visual_styles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_diagram_visual_styles": {
+      "main": [
+        [
+          {
+            "node": "download_diagram_color_presets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_diagram_color_presets": {
+      "main": [
+        [
+          {
+            "node": "download_image_prompt",
             "type": "main",
             "index": 0
           }
@@ -580,7 +796,157 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "template_vars": "={{ {\n\"POST_CONTENT\": $('set_workflow_vars').item.json.POST_CONTENT\n} }}",
+            "template_vars": "={{ {} }}",
+            "template_name": "datasets/diagram_types.json"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        -352
+      ],
+      "id": "3c4ad391-7d19-4935-a1c0-5ba55f6edb76",
+      "name": "download_diagram_types"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {} }}",
+            "template_name": "datasets/diagram_visual_styles.json"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        -352
+      ],
+      "id": "6d6be0ea-5f9a-4c2f-a31f-162a7f98a936",
+      "name": "download_diagram_visual_styles"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {} }}",
+            "template_name": "datasets/diagram_color_presets.json"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "template_name",
+              "displayName": "template_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "template_vars",
+              "displayName": "template_vars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        960,
+        -352
+      ],
+      "id": "b4f1d7bb-3f6f-48fe-91d2-c4c2d11a2836",
+      "name": "download_diagram_color_presets"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "09xEuVQj207pjK4x",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/09xEuVQj207pjK4x",
+          "cachedResultName": "DownloadTemplate"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "template_vars": "={{ {\n\"POST_CONTENT\": $('set_workflow_vars').item.json.POST_CONTENT,\n\"DIAGRAM_TYPES\": $('download_diagram_types').item.json.output,\n\"DIAGRAM_VISUAL_STYLES\": $('download_diagram_visual_styles').item.json.output,\n\"DIAGRAM_COLOR_PRESETS\": $('download_diagram_color_presets').item.json.output\n} }}",
             "template_name": "prompts/linkedin_image_prompt.md"
           },
           "matchingColumns": [],

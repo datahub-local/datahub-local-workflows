@@ -188,20 +188,20 @@
               {
                 "fieldLabel": "Image Size",
                 "fieldType": "dropdown",
-                "defaultValue": "auto",
+                "defaultValue": "1:1 (1024×1024)",
                 "fieldOptions": {
                   "values": [
                     {
-                      "option": "1024x1024"
+                      "option": "1:1 (1024×1024)"
                     },
                     {
-                      "option": "1024x1536"
+                      "option": "2:3 (1024×1536)"
                     },
                     {
-                      "option": "1536x1024"
+                      "option": "3:2 (1536×1024)"
                     },
                     {
-                      "option": "auto"
+                      "option": "Auto"
                     }
                   ]
                 },
@@ -311,7 +311,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const formData = $input.first().json;\nconst applyData = $('Apply: Style to Prompt').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'],\n  model: 'google/' + formData['Image Model'],\n  imageSize: formData['Image Size'],\n  imageQuality: formData['Image Quality'],\n  diagramTypeName: applyData.diagramTypeName,\n  visualStyleName: applyData.visualStyleName\n}];"
+          "jsCode": "const formData = $input.first().json;\nconst applyData = $('Apply: Style to Prompt').first().json;\n\nconst imageSizeLabel = formData['Image Size'];\nconst aspectRatioMatch = imageSizeLabel.match(/^(\\d+:\\d+)/);\nconst imageAspectRatio = aspectRatioMatch ? aspectRatioMatch[1] : null;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'],\n  model: 'google/' + formData['Image Model'],\n  imageSize: imageSizeLabel,\n  imageAspectRatio,\n  imageQuality: formData['Image Quality'],\n  diagramTypeName: applyData.diagramTypeName,\n  visualStyleName: applyData.visualStyleName\n}];"
         },
         "id": "4c52a8bc-12dd-4d73-955c-8db4d612f371",
         "name": "Set: Generation Params",
@@ -405,7 +405,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const formData = $input.first().json;\nconst prevParams = $('Set: Generation Params').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'] || prevParams.finalPrompt,\n  imageSize: prevParams.imageSize,\n  imageQuality: prevParams.imageQuality,\n  model: prevParams.model,\n  diagramTypeName: prevParams.diagramTypeName,\n  visualStyleName: prevParams.visualStyleName\n}];"
+          "jsCode": "const formData = $input.first().json;\nconst prevParams = $('Set: Generation Params').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'] || prevParams.finalPrompt,\n  imageSize: prevParams.imageSize,\n  imageAspectRatio: prevParams.imageAspectRatio,\n  imageQuality: prevParams.imageQuality,\n  model: prevParams.model,\n  diagramTypeName: prevParams.diagramTypeName,\n  visualStyleName: prevParams.visualStyleName\n}];"
         },
         "id": "5fa896ed-a89d-4442-a4f8-c93a85edb63e",
         "name": "Prepare: Retry Params",
@@ -603,7 +603,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const response = $input.first().json;\nconst params = $('Set: Generation Params').first().json;\n\nconst imageData = response.data && response.data[0];\nif (!imageData) {\n  throw new Error('No image returned from Portkey. Response: ' + JSON.stringify(response));\n}\n\nconst image = imageData.b64_json;\nconst fileId = $execution.id + \"_\" + (Math.random() + 1).toString(36).substring(6);\nconst revisedPrompt = imageData.revised_prompt || params.finalPrompt;\n\nreturn [{\n  image,\n  fileId,\n  revisedPrompt,\n  originalPrompt: params.finalPrompt,\n  model: params.model,\n  diagramTypeName: params.diagramTypeName,\n  visualStyleName: params.visualStyleName,\n  imageSize: params.imageSize,\n  generatedAt: new Date().toISOString()\n}];"
+          "jsCode": "const response = $input.first().json;\nconst params = $('Set: Generation Params').first().json;\n\nconst choice = response.choices && response.choices[0];\nif (!choice || !choice.message) {\n  throw new Error('No response from OpenRouter. Response: ' + JSON.stringify(response));\n}\n\nconst msg = choice.message;\nconst imageEntry = msg.images && msg.images[0];\nif (!imageEntry || !imageEntry.image_url || !imageEntry.image_url.url) {\n  throw new Error('No image in OpenRouter response. Message: ' + JSON.stringify(msg));\n}\n\nconst dataUrl = imageEntry.image_url.url;\nconst image = dataUrl.includes(',') ? dataUrl.split(',')[1] : dataUrl;\n\nconst fileId = $execution.id + \"_\" + (Math.random() + 1).toString(36).substring(6);\nconst revisedPrompt = params.finalPrompt;\n\nreturn [{\n  image,\n  fileId,\n  revisedPrompt,\n  originalPrompt: params.finalPrompt,\n  model: params.model,\n  diagramTypeName: params.diagramTypeName,\n  visualStyleName: params.visualStyleName,\n  imageSize: params.imageSize,\n  generatedAt: new Date().toISOString()\n}];"
         },
         "id": "9cfb576f-a292-40d3-9e9b-678c8c9b9740",
         "name": "Extract: Image",
@@ -719,7 +719,7 @@
           "genericAuthType": "httpBearerAuth",
           "sendBody": true,
           "specifyBody": "json",
-          "jsonBody": "={\n  \"model\": \"{{ $('set_workflow_vars').item.json.IMAGE_MODEL }}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $json.finalPrompt.toJsonString() }}\n    }\n  ],\n  \"modalities\": [\n    \"image\",\n    \"text\"\n  ]\n}",
+          "jsonBody": "={\n  \"model\": \"{{ $('set_workflow_vars').item.json.IMAGE_MODEL }}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $json.finalPrompt.toJsonString() }}\n    }\n  ],\n  \"modalities\": [\n    \"image\",\n    \"text\"\n  ]{{ $json.imageAspectRatio ? ',\\n  \"image_config\": {\\n    \"aspect_ratio\": \"' + $json.imageAspectRatio + '\"\\n  }' : '' }}\n}",
           "options": {}
         },
         "type": "n8n-nodes-base.httpRequest",
@@ -1616,20 +1616,20 @@
             {
               "fieldLabel": "Image Size",
               "fieldType": "dropdown",
-              "defaultValue": "auto",
+              "defaultValue": "1:1 (1024×1024)",
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "1024x1024"
+                    "option": "1:1 (1024×1024)"
                   },
                   {
-                    "option": "1024x1536"
+                    "option": "2:3 (1024×1536)"
                   },
                   {
-                    "option": "1536x1024"
+                    "option": "3:2 (1536×1024)"
                   },
                   {
-                    "option": "auto"
+                    "option": "Auto"
                   }
                 ]
               },
@@ -1739,7 +1739,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const formData = $input.first().json;\nconst applyData = $('Apply: Style to Prompt').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'],\n  model: 'google/' + formData['Image Model'],\n  imageSize: formData['Image Size'],\n  imageQuality: formData['Image Quality'],\n  diagramTypeName: applyData.diagramTypeName,\n  visualStyleName: applyData.visualStyleName\n}];"
+        "jsCode": "const formData = $input.first().json;\nconst applyData = $('Apply: Style to Prompt').first().json;\n\nconst imageSizeLabel = formData['Image Size'];\nconst aspectRatioMatch = imageSizeLabel.match(/^(\\d+:\\d+)/);\nconst imageAspectRatio = aspectRatioMatch ? aspectRatioMatch[1] : null;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'],\n  model: 'google/' + formData['Image Model'],\n  imageSize: imageSizeLabel,\n  imageAspectRatio,\n  imageQuality: formData['Image Quality'],\n  diagramTypeName: applyData.diagramTypeName,\n  visualStyleName: applyData.visualStyleName\n}];"
       },
       "id": "4c52a8bc-12dd-4d73-955c-8db4d612f371",
       "name": "Set: Generation Params",
@@ -1833,7 +1833,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const formData = $input.first().json;\nconst prevParams = $('Set: Generation Params').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'] || prevParams.finalPrompt,\n  imageSize: prevParams.imageSize,\n  imageQuality: prevParams.imageQuality,\n  model: prevParams.model,\n  diagramTypeName: prevParams.diagramTypeName,\n  visualStyleName: prevParams.visualStyleName\n}];"
+        "jsCode": "const formData = $input.first().json;\nconst prevParams = $('Set: Generation Params').first().json;\n\nreturn [{\n  finalPrompt: formData['Image Prompt'] || prevParams.finalPrompt,\n  imageSize: prevParams.imageSize,\n  imageAspectRatio: prevParams.imageAspectRatio,\n  imageQuality: prevParams.imageQuality,\n  model: prevParams.model,\n  diagramTypeName: prevParams.diagramTypeName,\n  visualStyleName: prevParams.visualStyleName\n}];"
       },
       "id": "5fa896ed-a89d-4442-a4f8-c93a85edb63e",
       "name": "Prepare: Retry Params",
@@ -2031,7 +2031,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const response = $input.first().json;\nconst params = $('Set: Generation Params').first().json;\n\nconst imageData = response.data && response.data[0];\nif (!imageData) {\n  throw new Error('No image returned from Portkey. Response: ' + JSON.stringify(response));\n}\n\nconst image = imageData.b64_json;\nconst fileId = $execution.id + \"_\" + (Math.random() + 1).toString(36).substring(6);\nconst revisedPrompt = imageData.revised_prompt || params.finalPrompt;\n\nreturn [{\n  image,\n  fileId,\n  revisedPrompt,\n  originalPrompt: params.finalPrompt,\n  model: params.model,\n  diagramTypeName: params.diagramTypeName,\n  visualStyleName: params.visualStyleName,\n  imageSize: params.imageSize,\n  generatedAt: new Date().toISOString()\n}];"
+        "jsCode": "const response = $input.first().json;\nconst params = $('Set: Generation Params').first().json;\n\nconst choice = response.choices && response.choices[0];\nif (!choice || !choice.message) {\n  throw new Error('No response from OpenRouter. Response: ' + JSON.stringify(response));\n}\n\nconst msg = choice.message;\nconst imageEntry = msg.images && msg.images[0];\nif (!imageEntry || !imageEntry.image_url || !imageEntry.image_url.url) {\n  throw new Error('No image in OpenRouter response. Message: ' + JSON.stringify(msg));\n}\n\nconst dataUrl = imageEntry.image_url.url;\nconst image = dataUrl.includes(',') ? dataUrl.split(',')[1] : dataUrl;\n\nconst fileId = $execution.id + \"_\" + (Math.random() + 1).toString(36).substring(6);\nconst revisedPrompt = params.finalPrompt;\n\nreturn [{\n  image,\n  fileId,\n  revisedPrompt,\n  originalPrompt: params.finalPrompt,\n  model: params.model,\n  diagramTypeName: params.diagramTypeName,\n  visualStyleName: params.visualStyleName,\n  imageSize: params.imageSize,\n  generatedAt: new Date().toISOString()\n}];"
       },
       "id": "9cfb576f-a292-40d3-9e9b-678c8c9b9740",
       "name": "Extract: Image",
@@ -2147,7 +2147,7 @@
         "genericAuthType": "httpBearerAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"model\": {{ $('Set: Generation Params').item.json.model.toJsonString() }},\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $('Set: Generation Params').item.json.finalPrompt.toJsonString() }}\n    }\n  ],\n  \"modalities\": [\n    \"image\",\n    \"text\"\n  ]\n}",
+        "jsonBody": "={\n  \"model\": {{ $('Set: Generation Params').item.json.model.toJsonString() }},\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": {{ $('Set: Generation Params').item.json.finalPrompt.toJsonString() }}\n    }\n  ],\n  \"modalities\": [\n    \"image\",\n    \"text\"\n  ]{{ $('Set: Generation Params').item.json.imageAspectRatio ? ',\\n  \"image_config\": {\\n    \"aspect_ratio\": \"' + $('Set: Generation Params').item.json.imageAspectRatio + '\"\\n  }' : '' }}\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -3443,7 +3443,7 @@
             },
             "cost_details": {
               "upstream_inference_cost": 0.068052,
-              "upstream_inference_prompt_cost": 0.000063,
+              "upstream_inference_prompt_cost": 6.3e-05,
               "upstream_inference_completions_cost": 0.067989
             },
             "completion_tokens_details": {
