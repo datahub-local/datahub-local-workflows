@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-06T13:43:41.030Z",
-    "createdAt": "2026-04-06T13:43:36.976Z",
-    "versionId": "40b0a696-fe8d-4011-a32f-589157bd437d",
+    "updatedAt": "2026-04-30T17:15:43.124Z",
+    "createdAt": "2026-04-30T16:36:59.689Z",
+    "versionId": "99ed348f-2e83-4360-af3e-476dba44a141",
     "workflowId": "a9tFFs8qkRu8taC2",
     "nodes": [
       {
@@ -54,10 +54,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          304,
-          -224
+          192,
+          64
         ],
-        "id": "2e74e9d9-ad49-4610-bb5b-9c5d9f43f4ae",
+        "id": "f90d598b-e17c-4706-ae18-c5c7f911507b",
         "name": "set_workflow_vars"
       },
       {
@@ -83,10 +83,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          1552,
-          -224
+          2112,
+          64
         ],
-        "id": "9e1a9794-c629-45b1-b804-57c1f0f9aaa7",
+        "id": "3a12d97a-c600-4c4c-963e-e3ee1eba0755",
         "name": "set_output"
       },
       {
@@ -102,10 +102,10 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.1,
         "position": [
-          80,
-          -224
+          -32,
+          64
         ],
-        "id": "ced30e9d-063e-4a26-bb4a-d4ce6c48d829",
+        "id": "9c17321d-6a85-4d7c-bb22-e5100e32793c",
         "name": "main_trigger"
       },
       {
@@ -152,10 +152,10 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          480,
-          -352
+          416,
+          64
         ],
-        "id": "3c4ad391-7d19-4935-a1c0-5ba55f6edb76",
+        "id": "3d822dc9-9a81-4327-8c5d-626290dc2dc8",
         "name": "download_diagram_types"
       },
       {
@@ -202,10 +202,10 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          720,
-          -352
+          640,
+          64
         ],
-        "id": "6d6be0ea-5f9a-4c2f-a31f-162a7f98a936",
+        "id": "a533049a-e266-4a63-863b-1d07b0171911",
         "name": "download_diagram_visual_styles"
       },
       {
@@ -252,10 +252,10 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          960,
-          -352
+          864,
+          64
         ],
-        "id": "b4f1d7bb-3f6f-48fe-91d2-c4c2d11a2836",
+        "id": "f09a7494-b64d-448b-9798-d0f35bc6910c",
         "name": "download_diagram_color_presets"
       },
       {
@@ -302,10 +302,10 @@
         "type": "n8n-nodes-base.executeWorkflow",
         "typeVersion": 1.2,
         "position": [
-          528,
-          -224
+          1088,
+          64
         ],
-        "id": "8f5e6ae1-0f1a-4a8d-931c-4dc00a03780d",
+        "id": "00ce6e44-f57c-4461-97ea-0fa39c0852d4",
         "name": "download_image_prompt"
       },
       {
@@ -316,10 +316,10 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          768,
-          0
+          1320,
+          288
         ],
-        "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
+        "id": "8490484e-c651-4418-96f7-fc96f2294c5d",
         "name": "ai_model",
         "retryOnFail": true,
         "waitBetweenTries": 5000,
@@ -348,10 +348,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          1104,
-          -224
+          1664,
+          64
         ],
-        "id": "70e6737b-ae4f-4bca-b178-50013b5c05a6",
+        "id": "28470e89-7ec6-488f-9f72-dc4dc5530a18",
         "name": "parse_llm_output"
       },
       {
@@ -362,10 +362,10 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          896,
-          0
+          1448,
+          288
         ],
-        "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
+        "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
         "name": "ai_model_fallback",
         "retryOnFail": true,
         "waitBetweenTries": 5000,
@@ -386,10 +386,10 @@
         "type": "@n8n/n8n-nodes-langchain.chainLlm",
         "typeVersion": 1.6,
         "position": [
-          752,
-          -224
+          1312,
+          64
         ],
-        "id": "f0f76413-53cd-4587-9dff-014e78f48941",
+        "id": "13da9da5-498c-4f76-ace1-aa0ee01829d7",
         "name": "create_image_prompt_ai"
       },
       {
@@ -406,10 +406,10 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.4,
         "position": [
-          1328,
-          -224
+          1888,
+          64
         ],
-        "id": "fa257e83-9962-4f3e-a284-139ff3dd8a62",
+        "id": "df83d38f-9bfb-4456-b59b-d39c57a275a9",
         "name": "generate_image",
         "retryOnFail": true,
         "maxTries": 2,
@@ -546,11 +546,11 @@
       }
     },
     "authors": "no name",
-    "name": "Version 40b0a696",
+    "name": "Version 99ed348f",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "40b0a696-fe8d-4011-a32f-589157bd437d",
+  "activeVersionId": "99ed348f-2e83-4360-af3e-476dba44a141",
   "connections": {
     "set_workflow_vars": {
       "main": [
@@ -730,10 +730,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        304,
-        -224
+        192,
+        64
       ],
-      "id": "2e74e9d9-ad49-4610-bb5b-9c5d9f43f4ae",
+      "id": "f90d598b-e17c-4706-ae18-c5c7f911507b",
       "name": "set_workflow_vars"
     },
     {
@@ -759,10 +759,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1552,
-        -224
+        2112,
+        64
       ],
-      "id": "9e1a9794-c629-45b1-b804-57c1f0f9aaa7",
+      "id": "3a12d97a-c600-4c4c-963e-e3ee1eba0755",
       "name": "set_output"
     },
     {
@@ -778,10 +778,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        80,
-        -224
+        -32,
+        64
       ],
-      "id": "ced30e9d-063e-4a26-bb4a-d4ce6c48d829",
+      "id": "9c17321d-6a85-4d7c-bb22-e5100e32793c",
       "name": "main_trigger"
     },
     {
@@ -828,10 +828,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        480,
-        -352
+        416,
+        64
       ],
-      "id": "3c4ad391-7d19-4935-a1c0-5ba55f6edb76",
+      "id": "3d822dc9-9a81-4327-8c5d-626290dc2dc8",
       "name": "download_diagram_types"
     },
     {
@@ -878,10 +878,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        720,
-        -352
+        640,
+        64
       ],
-      "id": "6d6be0ea-5f9a-4c2f-a31f-162a7f98a936",
+      "id": "a533049a-e266-4a63-863b-1d07b0171911",
       "name": "download_diagram_visual_styles"
     },
     {
@@ -928,10 +928,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        960,
-        -352
+        864,
+        64
       ],
-      "id": "b4f1d7bb-3f6f-48fe-91d2-c4c2d11a2836",
+      "id": "f09a7494-b64d-448b-9798-d0f35bc6910c",
       "name": "download_diagram_color_presets"
     },
     {
@@ -978,10 +978,10 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        528,
-        -224
+        1088,
+        64
       ],
-      "id": "8f5e6ae1-0f1a-4a8d-931c-4dc00a03780d",
+      "id": "00ce6e44-f57c-4461-97ea-0fa39c0852d4",
       "name": "download_image_prompt"
     },
     {
@@ -992,10 +992,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        768,
-        0
+        1320,
+        288
       ],
-      "id": "a6b9c54b-7d9c-47d5-b15d-7bffeaa6d444",
+      "id": "8490484e-c651-4418-96f7-fc96f2294c5d",
       "name": "ai_model",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
@@ -1024,10 +1024,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1104,
-        -224
+        1664,
+        64
       ],
-      "id": "70e6737b-ae4f-4bca-b178-50013b5c05a6",
+      "id": "28470e89-7ec6-488f-9f72-dc4dc5530a18",
       "name": "parse_llm_output"
     },
     {
@@ -1038,10 +1038,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        896,
-        0
+        1448,
+        288
       ],
-      "id": "ba648f4e-09f8-4a07-bfbd-1544035b525d",
+      "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
       "name": "ai_model_fallback",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
@@ -1062,10 +1062,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.6,
       "position": [
-        752,
-        -224
+        1312,
+        64
       ],
-      "id": "f0f76413-53cd-4587-9dff-014e78f48941",
+      "id": "13da9da5-498c-4f76-ace1-aa0ee01829d7",
       "name": "create_image_prompt_ai"
     },
     {
@@ -1082,10 +1082,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        1328,
-        -224
+        1888,
+        64
       ],
-      "id": "fa257e83-9962-4f3e-a284-139ff3dd8a62",
+      "id": "df83d38f-9bfb-4456-b59b-d39c57a275a9",
       "name": "generate_image",
       "retryOnFail": true,
       "maxTries": 2,
@@ -1118,6 +1118,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-06T13:43:36.972Z",
-  "versionId": "40b0a696-fe8d-4011-a32f-589157bd437d"
+  "updatedAt": "2026-04-30T16:37:01.580Z",
+  "versionId": "99ed348f-2e83-4360-af3e-476dba44a141"
 }
