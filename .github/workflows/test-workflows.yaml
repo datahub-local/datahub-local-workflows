@@ -5,14 +5,12 @@ on:
     paths:
       - ".github/workflows/test-workflows.yaml"
       - "workflows/airflow/**"
-      - "workflows/spark/**"
   push:
     branches:
       - main
     paths:
       - ".github/workflows/test-workflows.yaml"
       - "workflows/airflow/**"
-      - "workflows/spark/**"
 
 permissions:
   contents: read
@@ -36,7 +34,6 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-          cache-dependency-glob: workflows/airflow/uv.lock
 
       - name: Install Python with uv
         working-directory: workflows/airflow
@@ -49,30 +46,3 @@ jobs:
       - name: Run Airflow tests
         working-directory: workflows/airflow
         run: uv run -- pytest
-
-  spark:
-    name: Spark Helmfile checks
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: workflows/spark
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.20.1
-
-      - name: Install Helmfile
-        run: |
-          HELMFILE_VERSION=1.4.4
-          curl -fsSL "https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz" \
-            | tar -xz helmfile
-          sudo install helmfile /usr/local/bin/helmfile
-          helmfile version
-
-      - name: Run Helmfile checks
-        run: |
-          helmfile template .

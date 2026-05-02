@@ -1,0 +1,36 @@
+# syntax=docker/dockerfile:1.23
+
+ARG PYTHON_VERSION=3.10
+ARG SPARK_VERSION=4.1.1
+ARG PEX_VERSION=2.93.4
+
+FROM apache/spark:${SPARK_VERSION}-python3 AS pex-builder
+ARG PYTHON_VERSION
+ARG PEX_VERSION
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+USER root
+WORKDIR /bundle
+
+COPY pyproject.toml README.md setup.py .spark-version /bundle/
+COPY src/ /src/
+
+RUN uv export \
+		--python "${PYTHON_VERSION}" \
+		--format requirements.txt \
+		--no-dev \
+		--no-editable \
+		--no-emit-project \
+		--no-hashes \
+		--output-file /bundle/requirements.txt \
+	&& python3 -m pip install --disable-pip-version-check --no-cache-dir "pex==${PEX_VERSION}" \
+	&& pex \
+		--python-shebang "/usr/bin/env python3" \
+		--sources-directory /src \
+		-r /bundle/requirements.txt \
+		-o /bundle/pyspark_pex_env.pex
+
+FROM scratch
+
+COPY --from=pex-builder /bundle/pyspark_pex_env.pex /deps/pyspark_pex_env.py

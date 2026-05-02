@@ -1,0 +1,13 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/workflows/spark/.venv/bin/python",
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "${workspaceFolder}/workflows/spark/.venv/bin/pytest",
+    "python.testing.pytestArgs": [
+        "workflows/spark/tests",
+        "-v",
+        "--tb=short"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    }
+}

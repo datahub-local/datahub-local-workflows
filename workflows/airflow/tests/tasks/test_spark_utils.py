@@ -15,11 +15,11 @@ from kubernetes.client.rest import ApiException
 
 from dags.tasks.spark_utils import (
     K8S_API_REQUEST_TIMEOUT,
-    clone_and_wait_for_spark_app,
     clone_spark_app,
     generate_random_name,
     get_current_namespace,
     load_k8s_client,
+    run_spark_app,
     update_spark_app_arguments,
     wait_for_spark_app_completion,
 )
@@ -408,6 +408,43 @@ class TestCloneSparkApp:
         assert args[idx + 1] == "1000"
 
     @patch("dags.tasks.spark_utils.load_k8s_client")
+    def test_clone_with_resource_overrides(self, mock_load_client):
+        """Test cloning with driver and executor resource overrides."""
+        mock_api = MagicMock()
+        mock_load_client.return_value = (mock_api, "airflow")
+
+        source_app = {
+            "apiVersion": "sparkoperator.k8s.io/v1beta2",
+            "kind": "SparkApplication",
+            "spec": {
+                "driver": {"cores": 1, "memory": "2g"},
+                "executor": {"instances": 2, "cores": 1, "memory": "2g"},
+            },
+        }
+        mock_api.get_namespaced_custom_object.return_value = source_app
+        mock_api.create_namespaced_custom_object.return_value = {
+            "metadata": {"name": "test-app"}
+        }
+
+        clone_spark_app(
+            source_app_name="python-py",
+            driver_cores=2,
+            driver_memory="4g",
+            executor_instances=4,
+            executor_cores=3,
+            executor_memory="6g",
+        )
+
+        create_call = mock_api.create_namespaced_custom_object.call_args
+        created_spec = create_call[1]["body"]["spec"]
+
+        assert created_spec["driver"]["cores"] == 2
+        assert created_spec["driver"]["memory"] == "4g"
+        assert created_spec["executor"]["instances"] == 4
+        assert created_spec["executor"]["cores"] == 3
+        assert created_spec["executor"]["memory"] == "6g"
+
+    @patch("dags.tasks.spark_utils.load_k8s_client")
     def test_clone_preserves_other_spec_fields(self, mock_load_client):
         """Test that cloning preserves other spec fields."""
         mock_api = MagicMock()
@@ -445,22 +482,27 @@ class TestCloneSparkApp:
 class TestWaitForSparkAppCompletion:
     """Test SparkApplication status monitoring."""
 
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
     @patch("dags.tasks.spark_utils.time.sleep")
     @patch("dags.tasks.spark_utils.load_k8s_client")
-    def test_wait_for_success(self, mock_load_client, mock_sleep):
+    def test_wait_for_success(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for successful completion."""
         mock_api = MagicMock()
+        mock_pod_api = MagicMock()
         mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
 
         # App completes successfully on first check
         app_response = {
             "status": {
                 "applicationState": {
                     "state": "COMPLETED",
-                }
+                },
+                "driverInfo": {"podName": "test-app-driver"},
             }
         }
         mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.return_value = "driver log"
 
         success = wait_for_spark_app_completion(app_name="test-app")
 
@@ -470,28 +512,74 @@ class TestWaitForSparkAppCompletion:
             mock_api.get_namespaced_custom_object.call_args.kwargs["_request_timeout"]
             == K8S_API_REQUEST_TIMEOUT
         )
+        mock_pod_api.read_namespaced_pod_log.assert_called_once_with(
+            name="test-app-driver",
+            namespace="airflow",
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
         mock_sleep.assert_not_called()
 
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
     @patch("dags.tasks.spark_utils.time.sleep")
     @patch("dags.tasks.spark_utils.load_k8s_client")
-    def test_wait_for_failure(self, mock_load_client, mock_sleep):
+    def test_wait_for_failure(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for application failure."""
         mock_api = MagicMock()
+        mock_pod_api = MagicMock()
         mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
 
         app_response = {
             "status": {
                 "applicationState": {
                     "state": "FAILED",
                     "errorMessage": "Out of memory",
-                }
+                },
+                "driverInfo": {"podName": "test-app-driver"},
             }
         }
         mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.return_value = "driver failed"
 
         success = wait_for_spark_app_completion(app_name="test-app")
 
         assert success is False
+        mock_pod_api.read_namespaced_pod_log.assert_called_once_with(
+            name="test-app-driver",
+            namespace="airflow",
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
+
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
+    @patch("dags.tasks.spark_utils.time.sleep")
+    @patch("dags.tasks.spark_utils.load_k8s_client")
+    def test_wait_logs_driver_log_read_error_without_failing(
+        self, mock_load_client, mock_sleep, mock_core_v1_api, capsys
+    ):
+        """Test driver log fetch failures are logged but do not change the result."""
+        mock_api = MagicMock()
+        mock_pod_api = MagicMock()
+        mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
+
+        app_response = {
+            "status": {
+                "applicationState": {
+                    "state": "FAILED",
+                    "errorMessage": "Out of memory",
+                },
+                "driverInfo": {"podName": "test-app-driver"},
+            }
+        }
+        mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.side_effect = ApiException(
+            status=404, reason="Not Found"
+        )
+
+        success = wait_for_spark_app_completion(app_name="test-app")
+
+        assert success is False
+        assert "Unable to read driver logs" in capsys.readouterr().out
 
     @patch("dags.tasks.spark_utils.time.time")
     @patch("dags.tasks.spark_utils.time.sleep")
@@ -578,8 +666,8 @@ class TestWaitForSparkAppCompletion:
         assert calls[0][1]["namespace"] == "airflow"
 
 
-class TestCloneAndWaitForSparkApp:
-    """Test end-to-end orchestration of cloning and waiting."""
+class TestRunSparkApp:
+    """Test end-to-end orchestration of running a SparkApplication."""
 
     @patch("dags.tasks.spark_utils.wait_for_spark_app_completion")
     @patch("dags.tasks.spark_utils.clone_spark_app")
@@ -588,7 +676,7 @@ class TestCloneAndWaitForSparkApp:
         mock_clone.return_value = "python-py-abc123"
         mock_wait.return_value = True
 
-        app_name, success = clone_and_wait_for_spark_app(source_app_name="python-py")
+        app_name, success = run_spark_app(source_app_name="python-py")
 
         assert app_name == "python-py-abc123"
         assert success is True
@@ -602,7 +690,7 @@ class TestCloneAndWaitForSparkApp:
         mock_clone.return_value = "python-py-abc123"
         mock_wait.return_value = False
 
-        app_name, success = clone_and_wait_for_spark_app(source_app_name="python-py")
+        app_name, success = run_spark_app(source_app_name="python-py")
 
         assert app_name == "python-py-abc123"
         assert success is False
@@ -614,7 +702,7 @@ class TestCloneAndWaitForSparkApp:
         mock_clone.return_value = "python-py-abc123"
         mock_wait.return_value = True
 
-        clone_and_wait_for_spark_app(
+        run_spark_app(
             source_app_name="python-py",
             source_namespace="source-ns",
             target_namespace="target-ns",
@@ -635,9 +723,14 @@ class TestCloneAndWaitForSparkApp:
         mock_clone.return_value = "python-py-abc123"
         mock_wait.return_value = True
 
-        clone_and_wait_for_spark_app(
+        run_spark_app(
             source_app_name="python-py",
             parameters={"partitions": "1000", "executor-cores": "4"},
+            driver_cores=2,
+            driver_memory="4g",
+            executor_instances=5,
+            executor_cores=3,
+            executor_memory="6g",
         )
 
         # Verify parameters are passed through
@@ -646,3 +739,8 @@ class TestCloneAndWaitForSparkApp:
             "partitions": "1000",
             "executor-cores": "4",
         }
+        assert clone_call[1]["driver_cores"] == 2
+        assert clone_call[1]["driver_memory"] == "4g"
+        assert clone_call[1]["executor_instances"] == 5
+        assert clone_call[1]["executor_cores"] == 3
+        assert clone_call[1]["executor_memory"] == "6g"

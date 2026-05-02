@@ -76,6 +76,38 @@ def update_spark_app_arguments(arguments: list, parameters: dict) -> list:
     return result
 
 
+def update_spark_app_resources(
+    spec: dict,
+    driver_cores: Optional[int] = None,
+    driver_memory: Optional[str] = None,
+    executor_instances: Optional[int] = None,
+    executor_cores: Optional[int] = None,
+    executor_memory: Optional[str] = None,
+) -> dict:
+    """Update SparkApplication driver and executor resources."""
+    if driver_cores is not None or driver_memory is not None:
+        driver = spec.setdefault("driver", {})
+        if driver_cores is not None:
+            driver["cores"] = driver_cores
+        if driver_memory is not None:
+            driver["memory"] = driver_memory
+
+    if (
+        executor_instances is not None
+        or executor_cores is not None
+        or executor_memory is not None
+    ):
+        executor = spec.setdefault("executor", {})
+        if executor_instances is not None:
+            executor["instances"] = executor_instances
+        if executor_cores is not None:
+            executor["cores"] = executor_cores
+        if executor_memory is not None:
+            executor["memory"] = executor_memory
+
+    return spec
+
+
 def get_current_namespace(in_cluster: bool = True) -> str:
     """Get the namespace where the current pod is running.
 
@@ -125,12 +157,62 @@ def load_k8s_client(
     return api, namespace
 
 
+def log_spark_driver_logs(
+    app_name: str,
+    namespace: str,
+    status: dict,
+    pod_api: client.CoreV1Api,
+) -> None:
+    """Emit the Spark driver pod logs associated with a SparkApplication.
+
+    Args:
+        app_name: Name of the SparkApplication.
+        namespace: Namespace containing the SparkApplication and driver pod.
+        status: SparkApplication status payload.
+        pod_api: Kubernetes CoreV1Api client.
+    """
+    driver_pod_name = status.get("driverInfo", {}).get("podName")
+    if not driver_pod_name:
+        print(
+            f"No driver pod name available yet for SparkApplication '{app_name}'."
+        )
+        return
+
+    try:
+        driver_logs = pod_api.read_namespaced_pod_log(
+            name=driver_pod_name,
+            namespace=namespace,
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
+    except ApiException as e:
+        print(
+            f"Unable to read driver logs for SparkApplication '{app_name}' "
+            f"from pod '{driver_pod_name}': {e}"
+        )
+        return
+
+    print(
+        f"--- Driver logs for SparkApplication '{app_name}' "
+        f"(pod '{driver_pod_name}') ---"
+    )
+    if driver_logs:
+        print(str(driver_logs).rstrip())
+    else:
+        print("(no driver logs returned)")
+    print(f"--- End driver logs for SparkApplication '{app_name}' ---")
+
+
 def clone_spark_app(
     source_app_name: str,
     source_namespace: Optional[str] = None,
     target_namespace: Optional[str] = None,
     new_app_name: Optional[str] = None,
     parameters: Optional[dict] = None,
+    driver_cores: Optional[int] = None,
+    driver_memory: Optional[str] = None,
+    executor_instances: Optional[int] = None,
+    executor_cores: Optional[int] = None,
+    executor_memory: Optional[str] = None,
     in_cluster: bool = True,
 ) -> str:
     """Clone a SparkApplication resource with a new name.
@@ -147,6 +229,11 @@ def clone_spark_app(
         new_app_name: Name for the cloned app (auto-generated if None)
         parameters: Dict of parameters to set as arguments (e.g., {"partitions": "1000"}).
                    Replaces existing values if they already exist.
+        driver_cores: Override for Spark driver CPU cores.
+        driver_memory: Override for Spark driver memory (e.g., "4g").
+        executor_instances: Override for number of Spark executors.
+        executor_cores: Override for Spark executor CPU cores.
+        executor_memory: Override for Spark executor memory (e.g., "4g").
         in_cluster: If True, run from within a cluster (default: True)
 
     Returns:
@@ -201,6 +288,25 @@ def clone_spark_app(
         current_arguments = spec.get("arguments", [])
         spec["arguments"] = update_spark_app_arguments(current_arguments, parameters)
         print(f"Updated arguments: {spec['arguments']}")
+
+    if any(
+        value is not None
+        for value in (
+            driver_cores,
+            driver_memory,
+            executor_instances,
+            executor_cores,
+            executor_memory,
+        )
+    ):
+        update_spark_app_resources(
+            spec,
+            driver_cores=driver_cores,
+            driver_memory=driver_memory,
+            executor_instances=executor_instances,
+            executor_cores=executor_cores,
+            executor_memory=executor_memory,
+        )
 
     # Clone the application with updated spec
     cloned_app = {
@@ -257,6 +363,7 @@ def wait_for_spark_app_completion(
         ApiException: If unable to query the SparkApplication status
     """
     api, current_ns = load_k8s_client(in_cluster=in_cluster)
+    pod_api = client.CoreV1Api()
 
     # Use current namespace if not specified
     if namespace is None:
@@ -295,6 +402,7 @@ def wait_for_spark_app_completion(
         print(f"[{int(elapsed)}s] SparkApplication '{app_name}' state: {app_state}")
 
         if app_state == "COMPLETED":
+            log_spark_driver_logs(app_name, namespace, status, pod_api)
             print(f"✓ SparkApplication '{app_name}' completed successfully")
             return True
         elif app_state == "FAILED":
@@ -302,6 +410,7 @@ def wait_for_spark_app_completion(
                 "errorMessage", "Unknown error"
             )
             print(f"✗ SparkApplication '{app_name}' failed: {error_msg}")
+            log_spark_driver_logs(app_name, namespace, status, pod_api)
             return False
         elif app_state == "UNKNOWN":
             print(f"⚠ SparkApplication '{app_name}' state is unknown, waiting...")
@@ -309,12 +418,17 @@ def wait_for_spark_app_completion(
         time.sleep(poll_interval_seconds)
 
 
-def clone_and_wait_for_spark_app(
+def run_spark_app(
     source_app_name: str,
     source_namespace: Optional[str] = None,
     target_namespace: Optional[str] = None,
     new_app_name: Optional[str] = None,
     parameters: Optional[dict] = None,
+    driver_cores: Optional[int] = None,
+    driver_memory: Optional[str] = None,
+    executor_instances: Optional[int] = None,
+    executor_cores: Optional[int] = None,
+    executor_memory: Optional[str] = None,
     timeout_seconds: int = 3600,
     poll_interval_seconds: int = 10,
     in_cluster: bool = True,
@@ -332,6 +446,11 @@ def clone_and_wait_for_spark_app(
         new_app_name: Name for the cloned app (auto-generated if None)
         parameters: Dict of parameters to set as arguments (e.g., {"partitions": "1000"}).
                    Replaces existing values if they already exist.
+        driver_cores: Override for Spark driver CPU cores.
+        driver_memory: Override for Spark driver memory (e.g., "4g").
+        executor_instances: Override for number of Spark executors.
+        executor_cores: Override for Spark executor CPU cores.
+        executor_memory: Override for Spark executor memory (e.g., "4g").
         timeout_seconds: Maximum time to wait for completion (default: 3600)
         poll_interval_seconds: Time between status checks (default: 10)
         in_cluster: If True, run from within a cluster (default: True)
@@ -354,6 +473,11 @@ def clone_and_wait_for_spark_app(
         target_namespace=target_namespace,
         new_app_name=new_app_name,
         parameters=parameters,
+        driver_cores=driver_cores,
+        driver_memory=driver_memory,
+        executor_instances=executor_instances,
+        executor_cores=executor_cores,
+        executor_memory=executor_memory,
         in_cluster=in_cluster,
     )
 
