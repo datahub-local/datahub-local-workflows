@@ -1,0 +1,48 @@
+spark:
+  sparkVersion: 4.1.1
+  tag: 4.1.1
+
+sparkOperator:
+  enabled: false
+
+scripts:
+  enabled: false
+
+sharedConfigMaps: []
+sharedSecrets: []
+
+sparkApplications:
+  - name: python-py
+    type: Python
+    mode: cluster
+    mainApplicationFile: local:///opt/spark/app/src/core/launchers/spark_pipelines.py
+    deps:
+      pyFiles:
+        - local:///opt/spark/app/deps/python-deps.zip
+    sparkConf:
+      spark.datahub_local_workflows.pipeline.partitions: "500"
+      spark.datahub_local_workflows.pipeline.samples_per_partition: "100000"
+      spark.datahub_local_workflows.pipeline.random_seed: "7"
+    volumes:
+      - name: spark-app-bundle
+        image:
+          reference: ghcr.io/datahub-local/datahub-local-workflows-spark-bundle:main
+          pullPolicy: Always
+    restartPolicy:
+      type: Never
+    driver:
+      cores: 1
+      coreLimit: "1200m"
+      memory: 512m
+      volumeMounts:
+        - name: spark-app-bundle
+          mountPath: /opt/spark/app
+          readOnly: true
+    executor:
+      instances: 2
+      cores: 1
+      memory: 512m
+      volumeMounts:
+        - name: spark-app-bundle
+          mountPath: /opt/spark/app
+          readOnly: true

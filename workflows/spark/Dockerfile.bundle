@@ -1,0 +1,4 @@
+FROM scratch
+
+COPY build/runtime/python-deps.zip /deps/python-deps.zip
+COPY build/runtime/src/ /src/

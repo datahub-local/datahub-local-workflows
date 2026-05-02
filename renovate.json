@@ -31,6 +31,16 @@
         "major"
       ],
       "enabled": false
+    },
+    {
+      "matchDatasources": [
+        "python-version"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "enabled": false
     }
   ]
 }
