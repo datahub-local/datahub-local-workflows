@@ -1,0 +1,33 @@
+# syntax=docker/dockerfile:1.7
+
+ARG PYTHON_VERSION=3.11
+ARG PEX_VERSION=2.93.4
+
+FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION}-trixie-slim AS pex-builder
+ARG PYTHON_VERSION
+ARG PEX_VERSION
+
+WORKDIR /bundle
+
+COPY pyproject.toml uv.lock README.md /bundle/
+
+RUN uv export \
+		--python "${PYTHON_VERSION}" \
+		--frozen \
+		--format requirements.txt \
+		--no-dev \
+		--no-editable \
+		--no-emit-project \
+		--no-hashes \
+		--output-file /bundle/requirements.txt \
+	&& python -m pip install --disable-pip-version-check --no-cache-dir "pex==${PEX_VERSION}" \
+	&& pex \
+		--python-shebang "/usr/bin/env python${PYTHON_VERSION}" \
+		-r /bundle/requirements.txt \
+		-o /bundle/python-deps.pex
+
+FROM scratch
+
+COPY --from=pex-builder /bundle/python-deps.pex /deps/python-deps.pex
+COPY src/core/ /src/core/
+COPY src/pipelines/ /src/pipelines/
