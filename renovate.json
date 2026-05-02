@@ -31,6 +31,31 @@
         "major"
       ],
       "enabled": false
+    },
+    {
+      "matchDatasources": [
+        "python-version"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
+      "enabled": false
+    },
+    {
+      "matchManagers": [
+        "pyenv"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "enabled": false
+    },
+    {
+      "matchDepTypes": [
+        "requires-python"
+      ],
+      "enabled": false
     }
   ]
 }

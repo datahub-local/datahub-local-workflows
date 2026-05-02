@@ -36,7 +36,7 @@ with DAG(
     @task(task_id="spark-python-py")
     def run_spark_job(**context):
         app_name, success = clone_and_wait_for_spark_app(
-            source_app_name="python-py", parameters={"partitions": 2000}
+            source_app_name="python-py", parameters={"spec": "pipelines/pi/spark-pipeline.yml.j2"}
         )
 
         result = {

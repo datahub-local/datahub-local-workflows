@@ -445,22 +445,27 @@ class TestCloneSparkApp:
 class TestWaitForSparkAppCompletion:
     """Test SparkApplication status monitoring."""
 
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
     @patch("dags.tasks.spark_utils.time.sleep")
     @patch("dags.tasks.spark_utils.load_k8s_client")
-    def test_wait_for_success(self, mock_load_client, mock_sleep):
+    def test_wait_for_success(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for successful completion."""
         mock_api = MagicMock()
+        mock_pod_api = MagicMock()
         mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
 
         # App completes successfully on first check
         app_response = {
             "status": {
                 "applicationState": {
                     "state": "COMPLETED",
-                }
+                },
+                "driverInfo": {"podName": "test-app-driver"},
             }
         }
         mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.return_value = "driver log"
 
         success = wait_for_spark_app_completion(app_name="test-app")
 
@@ -470,28 +475,74 @@ class TestWaitForSparkAppCompletion:
             mock_api.get_namespaced_custom_object.call_args.kwargs["_request_timeout"]
             == K8S_API_REQUEST_TIMEOUT
         )
+        mock_pod_api.read_namespaced_pod_log.assert_called_once_with(
+            name="test-app-driver",
+            namespace="airflow",
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
         mock_sleep.assert_not_called()
 
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
     @patch("dags.tasks.spark_utils.time.sleep")
     @patch("dags.tasks.spark_utils.load_k8s_client")
-    def test_wait_for_failure(self, mock_load_client, mock_sleep):
+    def test_wait_for_failure(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for application failure."""
         mock_api = MagicMock()
+        mock_pod_api = MagicMock()
         mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
 
         app_response = {
             "status": {
                 "applicationState": {
                     "state": "FAILED",
                     "errorMessage": "Out of memory",
-                }
+                },
+                "driverInfo": {"podName": "test-app-driver"},
             }
         }
         mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.return_value = "driver failed"
 
         success = wait_for_spark_app_completion(app_name="test-app")
 
         assert success is False
+        mock_pod_api.read_namespaced_pod_log.assert_called_once_with(
+            name="test-app-driver",
+            namespace="airflow",
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
+
+    @patch("dags.tasks.spark_utils.client.CoreV1Api")
+    @patch("dags.tasks.spark_utils.time.sleep")
+    @patch("dags.tasks.spark_utils.load_k8s_client")
+    def test_wait_logs_driver_log_read_error_without_failing(
+        self, mock_load_client, mock_sleep, mock_core_v1_api, capsys
+    ):
+        """Test driver log fetch failures are logged but do not change the result."""
+        mock_api = MagicMock()
+        mock_pod_api = MagicMock()
+        mock_load_client.return_value = (mock_api, "airflow")
+        mock_core_v1_api.return_value = mock_pod_api
+
+        app_response = {
+            "status": {
+                "applicationState": {
+                    "state": "FAILED",
+                    "errorMessage": "Out of memory",
+                },
+                "driverInfo": {"podName": "test-app-driver"},
+            }
+        }
+        mock_api.get_namespaced_custom_object.return_value = app_response
+        mock_pod_api.read_namespaced_pod_log.side_effect = ApiException(
+            status=404, reason="Not Found"
+        )
+
+        success = wait_for_spark_app_completion(app_name="test-app")
+
+        assert success is False
+        assert "Unable to read driver logs" in capsys.readouterr().out
 
     @patch("dags.tasks.spark_utils.time.time")
     @patch("dags.tasks.spark_utils.time.sleep")

@@ -98,7 +98,7 @@ ipython_config.py
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
-#uv.lock
+uv.lock
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
@@ -221,7 +221,12 @@ node_modules/
 # OS specific
 .DS_Store
 
+# Rendered Jinja2 SQL templates (generated at runtime)
+workflows/spark/src/pipelines/**/*.sql
+!workflows/spark/src/pipelines/**/*.sql.j2
+
 # Task files
 # tasks.json
 # tasks/ 
-workflows/spark/charts/spark-apps-0.1.2.tgz
+workflows/spark/charts
+workflows/spark/spark-warehouse

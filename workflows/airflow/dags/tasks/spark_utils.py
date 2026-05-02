@@ -125,6 +125,51 @@ def load_k8s_client(
     return api, namespace
 
 
+def log_spark_driver_logs(
+    app_name: str,
+    namespace: str,
+    status: dict,
+    pod_api: client.CoreV1Api,
+) -> None:
+    """Emit the Spark driver pod logs associated with a SparkApplication.
+
+    Args:
+        app_name: Name of the SparkApplication.
+        namespace: Namespace containing the SparkApplication and driver pod.
+        status: SparkApplication status payload.
+        pod_api: Kubernetes CoreV1Api client.
+    """
+    driver_pod_name = status.get("driverInfo", {}).get("podName")
+    if not driver_pod_name:
+        print(
+            f"No driver pod name available yet for SparkApplication '{app_name}'."
+        )
+        return
+
+    try:
+        driver_logs = pod_api.read_namespaced_pod_log(
+            name=driver_pod_name,
+            namespace=namespace,
+            _request_timeout=K8S_API_REQUEST_TIMEOUT,
+        )
+    except ApiException as e:
+        print(
+            f"Unable to read driver logs for SparkApplication '{app_name}' "
+            f"from pod '{driver_pod_name}': {e}"
+        )
+        return
+
+    print(
+        f"--- Driver logs for SparkApplication '{app_name}' "
+        f"(pod '{driver_pod_name}') ---"
+    )
+    if driver_logs:
+        print(str(driver_logs).rstrip())
+    else:
+        print("(no driver logs returned)")
+    print(f"--- End driver logs for SparkApplication '{app_name}' ---")
+
+
 def clone_spark_app(
     source_app_name: str,
     source_namespace: Optional[str] = None,
@@ -257,6 +302,7 @@ def wait_for_spark_app_completion(
         ApiException: If unable to query the SparkApplication status
     """
     api, current_ns = load_k8s_client(in_cluster=in_cluster)
+    pod_api = client.CoreV1Api()
 
     # Use current namespace if not specified
     if namespace is None:
@@ -295,6 +341,7 @@ def wait_for_spark_app_completion(
         print(f"[{int(elapsed)}s] SparkApplication '{app_name}' state: {app_state}")
 
         if app_state == "COMPLETED":
+            log_spark_driver_logs(app_name, namespace, status, pod_api)
             print(f"✓ SparkApplication '{app_name}' completed successfully")
             return True
         elif app_state == "FAILED":
@@ -302,6 +349,7 @@ def wait_for_spark_app_completion(
                 "errorMessage", "Unknown error"
             )
             print(f"✗ SparkApplication '{app_name}' failed: {error_msg}")
+            log_spark_driver_logs(app_name, namespace, status, pod_api)
             return False
         elif app_state == "UNKNOWN":
             print(f"⚠ SparkApplication '{app_name}' state is unknown, waiting...")

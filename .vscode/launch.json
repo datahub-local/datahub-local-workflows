@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Spark Pipeline: Run",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "cd ${workspaceFolder}/workflows/spark && uv run spark-pipelines run --spec ${workspaceFolder}/${currentFile}"
+        },
+        {
+            "name": "Spark Pipeline: Dry Run",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "cd ${workspaceFolder}/workflows/spark && uv run spark-pipelines dry-run --spec ${workspaceFolder}/${currentFile}"
+        }
+    ]
+}
