@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-30T17:15:43.124Z",
-    "createdAt": "2026-04-30T16:36:59.689Z",
-    "versionId": "99ed348f-2e83-4360-af3e-476dba44a141",
+    "updatedAt": "2026-05-07T13:45:28.306Z",
+    "createdAt": "2026-05-07T13:45:14.658Z",
+    "versionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166",
     "workflowId": "a9tFFs8qkRu8taC2",
     "nodes": [
       {
@@ -316,7 +316,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          1320,
+          1328,
           288
         ],
         "id": "8490484e-c651-4418-96f7-fc96f2294c5d",
@@ -362,7 +362,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1,
         "position": [
-          1448,
+          1456,
           288
         ],
         "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
@@ -390,7 +390,10 @@
           64
         ],
         "id": "13da9da5-498c-4f76-ace1-aa0ee01829d7",
-        "name": "create_image_prompt_ai"
+        "name": "create_image_prompt_ai",
+        "retryOnFail": true,
+        "maxTries": 5,
+        "waitBetweenTries": 5000
       },
       {
         "parameters": {
@@ -546,11 +549,11 @@
       }
     },
     "authors": "no name",
-    "name": "Version 99ed348f",
+    "name": "Version 6ff3b27e",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "99ed348f-2e83-4360-af3e-476dba44a141",
+  "activeVersionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166",
   "connections": {
     "set_workflow_vars": {
       "main": [
@@ -992,7 +995,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1320,
+        1328,
         288
       ],
       "id": "8490484e-c651-4418-96f7-fc96f2294c5d",
@@ -1038,7 +1041,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        1448,
+        1456,
         288
       ],
       "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
@@ -1066,7 +1069,10 @@
         64
       ],
       "id": "13da9da5-498c-4f76-ace1-aa0ee01829d7",
-      "name": "create_image_prompt_ai"
+      "name": "create_image_prompt_ai",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -1118,6 +1124,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-04-30T16:37:01.580Z",
-  "versionId": "99ed348f-2e83-4360-af3e-476dba44a141"
+  "updatedAt": "2026-05-07T13:45:14.655Z",
+  "versionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166"
 }
