@@ -1,0 +1,33 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "n8n",
+      "path": "n8n"
+    },
+    {
+      "name": "airflow",
+      "path": "workflows/airflow"
+    },
+    {
+      "name": "sqlmesh",
+      "path": "workflows/sqlmesh"
+    }
+  ],
+  "settings": {
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.python"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "charliermarsh.ruff",
+      "ms-python.python",
+      "ms-python.debugpy",
+      "augustocdias.tasks-shell-input"
+    ]
+  }
+}

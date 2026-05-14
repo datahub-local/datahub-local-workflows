@@ -221,12 +221,5 @@ node_modules/
 # OS specific
 .DS_Store
 
-# Rendered Jinja2 SQL templates (generated at runtime)
-workflows/spark/src/pipelines/**/*.sql
-!workflows/spark/src/pipelines/**/*.sql.j2
-
-# Task files
-# tasks.json
-# tasks/ 
-workflows/spark/charts
-workflows/spark/spark-warehouse
+workflows/sqlmesh/local.db
+workflows/sqlmesh/metastore_db
