@@ -1,7 +1,8 @@
-import os
 import typing as t
 
 from sqlmesh import ExecutionContext, model
+
+from models.marts.jdbc import write_jdbc
 
 
 @model(
@@ -38,21 +39,5 @@ def execute(context: ExecutionContext, **kwargs: t.Any) -> t.Any:
     from pyspark.sql import functions as F  # type: ignore[import]
 
     df = context.spark.sql(sql).withColumn("created_date", F.current_timestamp())
-    _write_jdbc(df, table="automotive_make_price_summary")
+    write_jdbc(df, table="automotive_make_price_summary")
     return df
-
-
-def _write_jdbc(df: t.Any, table: str) -> None:
-    db_url = os.environ["EXAMPLE_DB_URL"]
-    schema = os.environ.get("EXAMPLE_DB_SCHEMA", "public")
-    user = os.environ["EXAMPLE_DB_USER"]
-    password = os.environ.get("EXAMPLE_DB_PASSWORD", "")
-    driver = os.environ.get("EXAMPLE_DB_DRIVER", "org.h2.Driver")
-
-    df.write.format("jdbc").options(
-        url=db_url,
-        dbtable=f"{schema}.{table}",
-        user=user,
-        password=password,
-        driver=driver,
-    ).mode("overwrite").save()

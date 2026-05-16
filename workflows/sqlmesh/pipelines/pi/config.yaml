@@ -4,7 +4,13 @@ gateways:
       type: spark
       catalog: nessie
       config:
-        spark.master: "{{ env_var('SPARK_MASTER', 'local[*]') }}"
+        spark.master: "{{ env_var('SPARK_MASTER', 'k8s://https://kubernetes.default.svc') }}"
+        spark.submit.deployMode: "client"
+        spark.kubernetes.container.image: "apache/spark:4.2.0-preview5-python3"
+        spark.executor.instances: "{{ env_var('SPARK_EXECUTOR_INSTANCES', '2') }}"
+        spark.executor.memory: "{{ env_var('SPARK_EXECUTOR_MEMORY', '2G') }}"
+        spark.driver.cores: "{{ env_var('SPARK_DRIVER_CORES', '1') }}"
+        spark.driver.memory: "{{ env_var('SPARK_DRIVER_MEMORY', '2G') }}"
         spark.sql.shuffle.partitions: "{{ env_var('PI_PARTITIONS', '500') }}"
         # Iceberg + Nessie catalog
         # Nessie SQL extensions (CREATE BRANCH etc.) not yet published for Spark 4.x
@@ -19,8 +25,8 @@ gateways:
     state_connection:
       type: postgres
       host: "{{ env_var('SQLMESH_STATE_HOST') }}"
-      port: 5432
-      database: sqlmesh
+      port: "{{ env_var('SQLMESH_STATE_PORT', '5432') }}"
+      database: "{{ env_var('SQLMESH_STATE_DB', 'sqlmesh') }}"
       user: "{{ env_var('SQLMESH_STATE_USER') }}"
       password: "{{ env_var('SQLMESH_STATE_PASSWORD') }}"
 

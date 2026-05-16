@@ -25,7 +25,7 @@ default_args = {
 }
 
 with DAG(
-    dag_id="example_ingestion",
+    dag_id="example",
     default_args=default_args,
     description="Example ingestion DAG: raw -> bronze",
     schedule=None,
