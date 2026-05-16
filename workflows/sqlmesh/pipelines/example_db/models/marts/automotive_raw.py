@@ -42,7 +42,7 @@ from sqlmesh import ExecutionContext, model
     },
 )
 def execute(context: ExecutionContext, **kwargs: t.Any) -> t.Any:
-    snapshot = context.table("example_db.automotive_snapshot")
+    snapshot = context.resolve_table("example_db.automotive_snapshot")
     sql = f"""
         SELECT
           symboling,
