@@ -67,7 +67,7 @@ with DAG(
         SQLMeshTaskConfig(
             task_id="sqlmesh_example_db",
             pipeline_name="example_db",
-            env_vars=COMMON_ENV_VARS,
+            env_vars={**COMMON_ENV_VARS, **EXAMPLE_DB_ENV_VARS},
             secret_env_vars=EXAMPLE_DB_SECRET_ENV_VARS,
             executor_instances=TEST_EXECUTOR_INSTANCES,
             executor_memory=TEST_EXECUTOR_MEMORY,

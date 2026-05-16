@@ -36,7 +36,7 @@ def test_sqlmesh_test_dag_tasks_target_expected_pipelines():
     ]
 
 
-def test_sqlmesh_test_dag_passes_example_db_env_from_secrets_from_dag():
+def test_sqlmesh_test_dag_passes_expected_env_from_dag():
     mod = importlib.import_module("dags.sqlmesh_dag")
     dag = mod.dag
 
@@ -47,10 +47,13 @@ def test_sqlmesh_test_dag_passes_example_db_env_from_secrets_from_dag():
         env_var.name: env_var for env_var in sqlmesh_example_db.env_vars
     }
 
-    assert pi_env_var_map["NESSIE_URI"].value_from.secret_key_ref.name == "nessie-secret"
-    assert pi_env_var_map["SQLMESH_STATE_HOST"].value_from.secret_key_ref.name == "sqlmesh-state-secret"
-    assert pi_env_var_map["SQLMESH_STATE_DB"].value_from.secret_key_ref.name == "postgres-db-secret"
-    assert example_db_env_var_map["EXAMPLE_DB_URL"].value_from.secret_key_ref.name == "example-db-secret"
+    assert pi_env_var_map["SQLMESH_STATE_HOST"].value == "datahub-local-core-data-postgresql:5432"
+    assert pi_env_var_map["SQLMESH_STATE_PORT"].value == "5432"
+    assert pi_env_var_map["SQLMESH_STATE_DB"].value == "sqlmesh"
+    assert pi_env_var_map["SQLMESH_STATE_USER"].value_from.secret_key_ref.name == "postgresql-admin-credentials"
+    assert pi_env_var_map["SQLMESH_STATE_PASSWORD"].value_from.secret_key_ref.name == "postgresql-admin-credentials"
+    assert example_db_env_var_map["EXAMPLE_DB_URL"].value == "jdbc:postgresql://datahub-local-core-data-postgresql:5432/sqlmesh"
+    assert example_db_env_var_map["EXAMPLE_DB_SCHEMA"].value == "sqlmesh_example_db"
     assert example_db_env_var_map["EXAMPLE_DB_USER"].value_from.secret_key_ref.name == "example-db-secret"
     assert example_db_env_var_map["EXAMPLE_DB_PASSWORD"].value_from.secret_key_ref.name == "example-db-secret"
     assert example_db_env_var_map["NESSIE_REF"].value == "main"
