@@ -13,7 +13,7 @@ from unittest.mock import MagicMock, mock_open, patch
 import pytest
 from kubernetes.client.rest import ApiException
 
-from dags.tasks.spark_utils import (
+from tasks.spark_utils import (
     K8S_API_REQUEST_TIMEOUT,
     clone_spark_app,
     generate_random_name,
@@ -86,9 +86,9 @@ class TestGetCurrentNamespace:
 class TestLoadK8sClient:
     """Test Kubernetes client loading."""
 
-    @patch("dags.tasks.spark_utils.get_current_namespace")
-    @patch("dags.tasks.spark_utils.config.load_incluster_config")
-    @patch("dags.tasks.spark_utils.client.CustomObjectsApi")
+    @patch("tasks.spark_utils.get_current_namespace")
+    @patch("tasks.spark_utils.config.load_incluster_config")
+    @patch("tasks.spark_utils.client.CustomObjectsApi")
     def test_in_cluster_config_loading(
         self, mock_api, mock_incluster_config, mock_get_namespace
     ):
@@ -103,9 +103,9 @@ class TestLoadK8sClient:
         assert api == mock_api_instance
         assert namespace == "airflow"
 
-    @patch("dags.tasks.spark_utils.get_current_namespace")
-    @patch("dags.tasks.spark_utils.config.load_kube_config")
-    @patch("dags.tasks.spark_utils.client.CustomObjectsApi")
+    @patch("tasks.spark_utils.get_current_namespace")
+    @patch("tasks.spark_utils.config.load_kube_config")
+    @patch("tasks.spark_utils.client.CustomObjectsApi")
     def test_out_of_cluster_config_loading(
         self, mock_api, mock_kube_config, mock_get_namespace
     ):
@@ -120,7 +120,7 @@ class TestLoadK8sClient:
         assert api == mock_api_instance
         assert namespace == "default"
 
-    @patch("dags.tasks.spark_utils.config.load_incluster_config")
+    @patch("tasks.spark_utils.config.load_incluster_config")
     def test_config_exception_handling(self, mock_incluster_config):
         """Test handling of configuration exceptions."""
         from kubernetes import config
@@ -181,8 +181,8 @@ class TestUpdateSparkAppArguments:
 class TestCloneSparkApp:
     """Test SparkApplication cloning functionality."""
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
-    @patch("dags.tasks.spark_utils.generate_random_name")
+    @patch("tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.generate_random_name")
     def test_clone_with_auto_generated_name(self, mock_gen_name, mock_load_client):
         """Test cloning with auto-generated name."""
         mock_api = MagicMock()
@@ -218,7 +218,7 @@ class TestCloneSparkApp:
             == K8S_API_REQUEST_TIMEOUT
         )
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_with_explicit_name(self, mock_load_client):
         """Test cloning with explicitly provided name."""
         mock_api = MagicMock()
@@ -240,7 +240,7 @@ class TestCloneSparkApp:
 
         assert name == "my-custom-job"
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_uses_current_namespace_when_not_specified(self, mock_load_client):
         """Test that cloning uses current pod's namespace when not specified."""
         mock_api = MagicMock()
@@ -266,7 +266,7 @@ class TestCloneSparkApp:
         calls = mock_api.create_namespaced_custom_object.call_args_list
         assert calls[0][1]["namespace"] == "airflow"
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_uses_explicit_namespace(self, mock_load_client):
         """Test that cloning uses explicitly provided namespaces."""
         mock_api = MagicMock()
@@ -296,7 +296,7 @@ class TestCloneSparkApp:
         create_calls = mock_api.create_namespaced_custom_object.call_args_list
         assert create_calls[0][1]["namespace"] == "target-ns"
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_source_not_found(self, mock_load_client):
         """Test handling when source SparkApplication is not found."""
         mock_api = MagicMock()
@@ -309,7 +309,7 @@ class TestCloneSparkApp:
         with pytest.raises(ApiException):
             clone_spark_app(source_app_name="nonexistent")
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_create_failure(self, mock_load_client):
         """Test handling when creation fails."""
         mock_api = MagicMock()
@@ -328,7 +328,7 @@ class TestCloneSparkApp:
         with pytest.raises(ApiException):
             clone_spark_app(source_app_name="python-py")
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_sets_suspend_false(self, mock_load_client):
         """Test that cloning sets suspend=false."""
         mock_api = MagicMock()
@@ -351,7 +351,7 @@ class TestCloneSparkApp:
         created_spec = create_call[1]["body"]["spec"]
         assert created_spec["suspend"] is False
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_sets_time_to_live_seconds(self, mock_load_client):
         """Test that cloning sets timeToLiveSeconds to 1 hour."""
         mock_api = MagicMock()
@@ -374,7 +374,7 @@ class TestCloneSparkApp:
         created_spec = create_call[1]["body"]["spec"]
         assert created_spec["timeToLiveSeconds"] == 3600
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_with_parameters(self, mock_load_client):
         """Test cloning with custom parameters."""
         mock_api = MagicMock()
@@ -407,7 +407,7 @@ class TestCloneSparkApp:
         idx = args.index("--partitions")
         assert args[idx + 1] == "1000"
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_with_resource_overrides(self, mock_load_client):
         """Test cloning with driver and executor resource overrides."""
         mock_api = MagicMock()
@@ -444,7 +444,7 @@ class TestCloneSparkApp:
         assert created_spec["executor"]["cores"] == 3
         assert created_spec["executor"]["memory"] == "6g"
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_clone_preserves_other_spec_fields(self, mock_load_client):
         """Test that cloning preserves other spec fields."""
         mock_api = MagicMock()
@@ -482,9 +482,9 @@ class TestCloneSparkApp:
 class TestWaitForSparkAppCompletion:
     """Test SparkApplication status monitoring."""
 
-    @patch("dags.tasks.spark_utils.client.CoreV1Api")
-    @patch("dags.tasks.spark_utils.time.sleep")
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.client.CoreV1Api")
+    @patch("tasks.spark_utils.time.sleep")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_for_success(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for successful completion."""
         mock_api = MagicMock()
@@ -519,9 +519,9 @@ class TestWaitForSparkAppCompletion:
         )
         mock_sleep.assert_not_called()
 
-    @patch("dags.tasks.spark_utils.client.CoreV1Api")
-    @patch("dags.tasks.spark_utils.time.sleep")
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.client.CoreV1Api")
+    @patch("tasks.spark_utils.time.sleep")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_for_failure(self, mock_load_client, mock_sleep, mock_core_v1_api):
         """Test waiting for application failure."""
         mock_api = MagicMock()
@@ -550,9 +550,9 @@ class TestWaitForSparkAppCompletion:
             _request_timeout=K8S_API_REQUEST_TIMEOUT,
         )
 
-    @patch("dags.tasks.spark_utils.client.CoreV1Api")
-    @patch("dags.tasks.spark_utils.time.sleep")
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.client.CoreV1Api")
+    @patch("tasks.spark_utils.time.sleep")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_logs_driver_log_read_error_without_failing(
         self, mock_load_client, mock_sleep, mock_core_v1_api, capsys
     ):
@@ -581,9 +581,9 @@ class TestWaitForSparkAppCompletion:
         assert success is False
         assert "Unable to read driver logs" in capsys.readouterr().out
 
-    @patch("dags.tasks.spark_utils.time.time")
-    @patch("dags.tasks.spark_utils.time.sleep")
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.time.time")
+    @patch("tasks.spark_utils.time.sleep")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_transitions_from_running_to_completed(
         self, mock_load_client, mock_sleep, mock_time
     ):
@@ -609,8 +609,8 @@ class TestWaitForSparkAppCompletion:
         assert mock_api.get_namespaced_custom_object.call_count == 2
         mock_sleep.assert_called_once_with(5)
 
-    @patch("dags.tasks.spark_utils.time.time")
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.time.time")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_timeout(self, mock_load_client, mock_time):
         """Test timeout when app doesn't complete."""
         mock_api = MagicMock()
@@ -631,7 +631,7 @@ class TestWaitForSparkAppCompletion:
         with pytest.raises(TimeoutError):
             wait_for_spark_app_completion(app_name="test-app", timeout_seconds=3600)
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_api_error(self, mock_load_client):
         """Test handling of API errors during monitoring."""
         mock_api = MagicMock()
@@ -644,7 +644,7 @@ class TestWaitForSparkAppCompletion:
         with pytest.raises(ApiException):
             wait_for_spark_app_completion(app_name="test-app")
 
-    @patch("dags.tasks.spark_utils.load_k8s_client")
+    @patch("tasks.spark_utils.load_k8s_client")
     def test_wait_uses_current_namespace_when_not_specified(self, mock_load_client):
         """Test that wait uses current pod's namespace when not specified."""
         mock_api = MagicMock()
@@ -669,8 +669,8 @@ class TestWaitForSparkAppCompletion:
 class TestRunSparkApp:
     """Test end-to-end orchestration of running a SparkApplication."""
 
-    @patch("dags.tasks.spark_utils.wait_for_spark_app_completion")
-    @patch("dags.tasks.spark_utils.clone_spark_app")
+    @patch("tasks.spark_utils.wait_for_spark_app_completion")
+    @patch("tasks.spark_utils.clone_spark_app")
     def test_successful_orchestration(self, mock_clone, mock_wait):
         """Test successful end-to-end orchestration."""
         mock_clone.return_value = "python-py-abc123"
@@ -683,8 +683,8 @@ class TestRunSparkApp:
         mock_clone.assert_called_once()
         mock_wait.assert_called_once()
 
-    @patch("dags.tasks.spark_utils.wait_for_spark_app_completion")
-    @patch("dags.tasks.spark_utils.clone_spark_app")
+    @patch("tasks.spark_utils.wait_for_spark_app_completion")
+    @patch("tasks.spark_utils.clone_spark_app")
     def test_failed_orchestration(self, mock_clone, mock_wait):
         """Test orchestration when app fails."""
         mock_clone.return_value = "python-py-abc123"
@@ -695,8 +695,8 @@ class TestRunSparkApp:
         assert app_name == "python-py-abc123"
         assert success is False
 
-    @patch("dags.tasks.spark_utils.wait_for_spark_app_completion")
-    @patch("dags.tasks.spark_utils.clone_spark_app")
+    @patch("tasks.spark_utils.wait_for_spark_app_completion")
+    @patch("tasks.spark_utils.clone_spark_app")
     def test_orchestration_with_custom_namespaces(self, mock_clone, mock_wait):
         """Test orchestration with custom namespaces."""
         mock_clone.return_value = "python-py-abc123"
@@ -716,8 +716,8 @@ class TestRunSparkApp:
         wait_call = mock_wait.call_args
         assert wait_call[1]["namespace"] == "target-ns"
 
-    @patch("dags.tasks.spark_utils.wait_for_spark_app_completion")
-    @patch("dags.tasks.spark_utils.clone_spark_app")
+    @patch("tasks.spark_utils.wait_for_spark_app_completion")
+    @patch("tasks.spark_utils.clone_spark_app")
     def test_orchestration_with_parameters(self, mock_clone, mock_wait):
         """Test orchestration with parameters."""
         mock_clone.return_value = "python-py-abc123"

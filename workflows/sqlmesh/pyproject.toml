@@ -1,0 +1,21 @@
+[project]
+name = "datahub-local-workflows-sqlmesh"
+version = "0.1.0"
+description = "SQLMesh pipelines for datahub-local-workflows"
+requires-python = ">=3.13"
+
+dependencies = [
+  "sqlmesh>=0.170.0",
+  "pyspark==4.1.1",
+  "psycopg2-binary>=2.9",
+  "pyarrow>=15.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "duckdb>=1.1.0"]
+
+[tool.uv]
+# Optional uv settings for this project can be added here.
+
+[tool.ruff.lint]
+ignore = ["E402"]

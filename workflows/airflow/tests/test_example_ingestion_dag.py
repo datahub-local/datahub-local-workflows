@@ -2,14 +2,14 @@ import importlib
 
 
 def test_dag_importable():
-    mod = importlib.import_module("dags.example_ingestion_dag")
-    assert hasattr(mod, "dag"), "example_ingestion_dag module should expose `dag`"
+    mod = importlib.import_module("dags.example_dag")
+    assert hasattr(mod, "dag"), "example_dag module should expose `dag`"
     dag = mod.dag
-    assert dag.dag_id == "example_ingestion"
+    assert dag.dag_id == "example"
 
 
 def test_tasks_and_dependencies():
-    mod = importlib.import_module("dags.example_ingestion_dag")
+    mod = importlib.import_module("dags.example_dag")
     dag = mod.dag
 
     expected = {"fetch_sample", "process_sample"}

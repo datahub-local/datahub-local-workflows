@@ -10,7 +10,7 @@ Tests cover:
 from unittest.mock import MagicMock, patch
 
 
-from dags.tasks.sample_tasks import fetch_sample, process_sample
+from tasks.sample_tasks import fetch_sample, process_sample
 
 
 class TestFetchSample:

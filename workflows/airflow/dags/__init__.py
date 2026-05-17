@@ -1,1 +1,1 @@
-SPARK_JOB_PREFIX = "datahub-local-core-data-spark-apps-"
+from .tasks import SPARK_JOB_PREFIX

@@ -12,7 +12,8 @@ from typing import Optional
 
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
-from .. import SPARK_JOB_PREFIX
+
+from . import SPARK_JOB_PREFIX
 
 
 K8S_API_REQUEST_TIMEOUT = (5, 30)

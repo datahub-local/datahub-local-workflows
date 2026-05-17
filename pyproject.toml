@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "datahub-local-workflows"
+version = "0.1.0"
+description = "Centralized collection of workflow definitions for Datahub.local and related tools"
+readme = "README.md"
+license = { text = "See LICENSE for details" }
+requires-python = ">=3.11"
+authors = [
+    { name = "DataHub Local Contributors" }
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+airflow = [
+    "apache-airflow==3.2.1",
+    "apache-airflow-providers-postgres",
+    "apache-airflow-providers-http",
+    "apache-airflow-providers-amazon",
+    "apache-airflow-providers-cncf-kubernetes>=10.0.0",
+    "kubernetes>=30.0.0",
+]
+sqlmesh = [
+    "sqlmesh>=0.170.0",
+    "pyspark==4.1.1",
+    "psycopg2-binary>=2.9",
+    "pyarrow>=15.0.0",
+]
+dev = [
+    "pytest>=9.0.0",
+    "ruff",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+ignore = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "workflows/airflow/tests",
+]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short"
+
+[tool.uv]
+# Optional uv settings for the monorepo can be added here.

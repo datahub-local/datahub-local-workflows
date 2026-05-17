@@ -5,17 +5,23 @@ description = "Airflow project skeleton for datahub-local-workflows"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 
+
+
 dependencies = [
   "apache-airflow==3.2.1",
   "apache-airflow-providers-postgres",
   "apache-airflow-providers-http",
   "apache-airflow-providers-amazon",
+  "apache-airflow-providers-cncf-kubernetes>=10.0.0",
   "kubernetes>=30.0.0",
   "pytest",
 ]
 
 [tool.uv]
 # Optional uv settings for this project can be added here.
+
+[tool.pytest.ini_options]
+pythonpath = ["dags"]
 
 [tool.ruff]
 # Ruff configuration for linting
