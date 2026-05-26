@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-05-07T13:45:28.306Z",
-    "createdAt": "2026-05-07T13:45:14.658Z",
-    "versionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166",
+    "updatedAt": "2026-05-25T19:01:28.237Z",
+    "createdAt": "2026-05-25T19:01:25.731Z",
+    "versionId": "b40e3f57-4b06-4013-9c7a-032f1cf98c54",
     "workflowId": "a9tFFs8qkRu8taC2",
     "nodes": [
       {
@@ -35,15 +35,15 @@
                 "type": "string"
               },
               {
-                "id": "2f650b34-52f6-4aec-9375-8aa7abcb7d8b",
-                "name": "TEXT_MODEL_FALLBACK",
-                "value": "models/gemini-2.5-flash",
+                "id": "c5c01700-e75b-4be5-afd4-bba2e2324bea",
+                "name": "TEXT_MODEL",
+                "value": "models/gemini-3.1-pro-preview",
                 "type": "string"
               },
               {
-                "id": "c5c01700-e75b-4be5-afd4-bba2e2324bea",
-                "name": "TEXT_MODEL",
-                "value": "models/gemini-3-flash-preview",
+                "id": "2f650b34-52f6-4aec-9375-8aa7abcb7d8b",
+                "name": "TEXT_MODEL_FALLBACK",
+                "value": "deepseek/deepseek-v4-pro",
                 "type": "string"
               }
             ]
@@ -356,29 +356,6 @@
       },
       {
         "parameters": {
-          "modelName": "={{ $('set_workflow_vars').item.json.TEXT_MODEL_FALLBACK }}",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-        "typeVersion": 1,
-        "position": [
-          1456,
-          288
-        ],
-        "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
-        "name": "ai_model_fallback",
-        "retryOnFail": true,
-        "waitBetweenTries": 5000,
-        "notesInFlow": false,
-        "credentials": {
-          "googlePalmApi": {
-            "id": "ohBCg8rvjDPWEVQT",
-            "name": "Google Gemini(PaLM) Api account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "promptType": "define",
           "text": "={{ $('download_image_prompt').item.json.output }}",
           "needsFallback": true
@@ -420,6 +397,28 @@
         "credentials": {
           "httpBearerAuth": {
             "id": "w1lsvBaScdYqzahC",
+            "name": "OpenRouter account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": "={{ $('set_workflow_vars').item.json.TEXT_MODEL_FALLBACK }}",
+          "options": {
+            "maxRetries": 2
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+        "typeVersion": 1,
+        "position": [
+          1456,
+          288
+        ],
+        "id": "157f9dfa-26b9-4f69-8796-500f297c2389",
+        "name": "ai_model_fallback",
+        "credentials": {
+          "openRouterApi": {
+            "id": "QBmSiBlACt26uQAX",
             "name": "OpenRouter account"
           }
         }
@@ -514,17 +513,6 @@
           ]
         ]
       },
-      "ai_model_fallback": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "create_image_prompt_ai",
-              "type": "ai_languageModel",
-              "index": 1
-            }
-          ]
-        ]
-      },
       "create_image_prompt_ai": {
         "main": [
           [
@@ -546,14 +534,25 @@
             }
           ]
         ]
+      },
+      "ai_model_fallback": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "create_image_prompt_ai",
+              "type": "ai_languageModel",
+              "index": 1
+            }
+          ]
+        ]
       }
     },
     "authors": "no name",
-    "name": "Version 6ff3b27e",
+    "name": "Version b40e3f57",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166",
+  "activeVersionId": "b40e3f57-4b06-4013-9c7a-032f1cf98c54",
   "connections": {
     "set_workflow_vars": {
       "main": [
@@ -643,17 +642,6 @@
         ]
       ]
     },
-    "ai_model_fallback": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "create_image_prompt_ai",
-            "type": "ai_languageModel",
-            "index": 1
-          }
-        ]
-      ]
-    },
     "create_image_prompt_ai": {
       "main": [
         [
@@ -672,6 +660,17 @@
             "node": "set_output",
             "type": "main",
             "index": 0
+          }
+        ]
+      ]
+    },
+    "ai_model_fallback": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "create_image_prompt_ai",
+            "type": "ai_languageModel",
+            "index": 1
           }
         ]
       ]
@@ -714,15 +713,15 @@
               "type": "string"
             },
             {
-              "id": "2f650b34-52f6-4aec-9375-8aa7abcb7d8b",
-              "name": "TEXT_MODEL_FALLBACK",
-              "value": "models/gemini-2.5-flash",
+              "id": "c5c01700-e75b-4be5-afd4-bba2e2324bea",
+              "name": "TEXT_MODEL",
+              "value": "models/gemini-3.1-pro-preview",
               "type": "string"
             },
             {
-              "id": "c5c01700-e75b-4be5-afd4-bba2e2324bea",
-              "name": "TEXT_MODEL",
-              "value": "models/gemini-3-flash-preview",
+              "id": "2f650b34-52f6-4aec-9375-8aa7abcb7d8b",
+              "name": "TEXT_MODEL_FALLBACK",
+              "value": "deepseek/deepseek-v4-pro",
               "type": "string"
             }
           ]
@@ -1035,29 +1034,6 @@
     },
     {
       "parameters": {
-        "modelName": "={{ $('set_workflow_vars').item.json.TEXT_MODEL_FALLBACK }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        1456,
-        288
-      ],
-      "id": "80e789f6-45ed-4785-929c-0518e0f2d455",
-      "name": "ai_model_fallback",
-      "retryOnFail": true,
-      "waitBetweenTries": 5000,
-      "notesInFlow": false,
-      "credentials": {
-        "googlePalmApi": {
-          "id": "ohBCg8rvjDPWEVQT",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $('download_image_prompt').item.json.output }}",
         "needsFallback": true
@@ -1102,6 +1078,28 @@
           "name": "OpenRouter account"
         }
       }
+    },
+    {
+      "parameters": {
+        "model": "={{ $('set_workflow_vars').item.json.TEXT_MODEL_FALLBACK }}",
+        "options": {
+          "maxRetries": 2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        288
+      ],
+      "id": "157f9dfa-26b9-4f69-8796-500f297c2389",
+      "name": "ai_model_fallback",
+      "credentials": {
+        "openRouterApi": {
+          "id": "QBmSiBlACt26uQAX",
+          "name": "OpenRouter account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1124,6 +1122,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-05-07T13:45:14.655Z",
-  "versionId": "6ff3b27e-6227-4658-8ef3-66ae0c89e166"
+  "updatedAt": "2026-05-25T19:01:26.697Z",
+  "versionId": "b40e3f57-4b06-4013-9c7a-032f1cf98c54"
 }
