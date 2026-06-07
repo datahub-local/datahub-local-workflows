@@ -50,6 +50,18 @@ with DAG(
     catchup=False,
     tags=["sqlmesh"],
 ) as dag:
+    # Migration task - runs first to ensure state schema is up-to-date
+    sqlmesh_migrate = create_sqlmesh_task(
+        SQLMeshTaskConfig(
+            task_id="sqlmesh_migrate",
+            pipeline_name="example_db",
+            env_vars=COMMON_ENV_VARS,
+            secret_env_vars=COMMON_SECRET_ENV_VARS,
+            command="migrate",
+            run_migrate=True,
+        )
+    )
+
     sqlmesh_pi = create_sqlmesh_task(
         SQLMeshTaskConfig(
             task_id="sqlmesh_pi",
@@ -76,4 +88,5 @@ with DAG(
         )
     )
 
-    sqlmesh_pi >> sqlmesh_example_db
+    # Migration runs first, then other tasks
+    sqlmesh_migrate >> sqlmesh_pi >> sqlmesh_example_db

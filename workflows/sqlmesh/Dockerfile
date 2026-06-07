@@ -18,12 +18,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 FROM debian:trixie
 
+ARG TARGETARCH
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     openjdk-21-jre-headless \
     && rm -rf /var/lib/apt/lists/*
 
-ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-${TARGETARCH}
 ENV PATH=/app/.venv/bin:$PATH
 ENV PYSPARK_PYTHON=/app/.venv/bin/python
 

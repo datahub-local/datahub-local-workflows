@@ -53,6 +53,8 @@ class SQLMeshTaskConfig:
     executor_memory: str | None = None
     driver_cores: int | None = None
     driver_memory: str | None = None
+    command: str = "plan"
+    run_migrate: bool = False
 
 
 def _stringify_env_value(value: Any) -> str:
@@ -103,18 +105,32 @@ def validate_task_config(task_config: SQLMeshTaskConfig) -> None:
 
 def build_sqlmesh_arguments(task_config: SQLMeshTaskConfig) -> list[str]:
     validate_task_config(task_config)
+
+    # Run migrate if requested (skip other commands)
+    if task_config.run_migrate:
+        return [
+            "-p",
+            f"/app/pipelines/{task_config.pipeline_name}",
+            "--gateway",
+            task_config.gateway,
+            "migrate",
+        ]
+
+    # Regular command (plan or run)
     arguments = [
         "-p",
         f"/app/pipelines/{task_config.pipeline_name}",
         "--gateway",
         task_config.gateway,
-        "plan",
+        task_config.command,
         "--auto-apply",
         "--no-prompts",
     ]
+
     if task_config.select_model:
         arguments.extend(["--select-model", task_config.select_model])
-    arguments.append(task_config.environment)
+    if task_config.environment:
+        arguments.append(task_config.environment)
     return arguments
 
 

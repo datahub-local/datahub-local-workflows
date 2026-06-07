@@ -1,6 +1,8 @@
 name: Publish SQLMesh Image
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [main]
     paths:
@@ -58,6 +60,7 @@ jobs:
         with:
           context: workflows/sqlmesh
           push: ${{ github.ref == 'refs/heads/main' }}
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/datahub-local/datahub-local-workflows-sqlmesh:main
           cache-from: type=gha
           cache-to: type=gha,mode=max

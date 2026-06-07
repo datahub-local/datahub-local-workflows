@@ -6,7 +6,7 @@ def test_dag_importable():
     assert hasattr(mod, "dag"), "sqlmesh_dag module should expose `dag`"
     dag = mod.dag
     assert dag.dag_id == "sqlmesh"
-    assert set(dag.task_ids) == {"sqlmesh_pi", "sqlmesh_example_db"}
+    assert set(dag.task_ids) == {"sqlmesh_migrate", "sqlmesh_pi", "sqlmesh_example_db"}
 
 
 def test_sqlmesh_test_dag_runs_pi_before_example_db():

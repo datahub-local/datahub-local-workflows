@@ -57,16 +57,16 @@ Each project supports two gateways defined in `config.yaml`:
 
 ### `homelab` gateway
 
-| Variable                 | Default                                | Description                                                  |
-|--------------------------|----------------------------------------|--------------------------------------------------------------|
-| `SPARK_MASTER`           | `k8s://https://kubernetes.default.svc` | Spark master URL for the Kubernetes-backed `homelab` gateway |
-| `NESSIE_URI`             | `http://nessie:19120/api/v2`           | Nessie catalog REST endpoint                                 |
-| `NESSIE_REF`             | `main`                                 | Nessie branch/tag                                            |
-| `NESSIE_WAREHOUSE`       | —                                      | Warehouse path (e.g. `s3://bucket/warehouse`)                |
-| `SQLMESH_STATE_HOST`     | —                                      | PostgreSQL host for state                                    |
-| `SQLMESH_STATE_DB`       | `sqlmesh`                              | PostgreSQL database for SQLMesh state                        |
-| `SQLMESH_STATE_USER`     | —                                      | PostgreSQL user for state                                    |
-| `SQLMESH_STATE_PASSWORD` | —                                      | PostgreSQL password for state                                |
+| Variable                 | Default                                              | Description                                                  |
+|--------------------------|------------------------------------------------------|--------------------------------------------------------------|
+| `SPARK_MASTER`           | `k8s://https://kubernetes.default.svc`               | Spark master URL for the Kubernetes-backed `homelab` gateway |
+| `NESSIE_URI`             | `http://datahub-local-core-data-nessie:19120/api/v2` | Nessie catalog REST endpoint                                 |
+| `NESSIE_REF`             | `main`                                               | Nessie branch/tag                                            |
+| `NESSIE_WAREHOUSE`       | —                                                    | Warehouse path (e.g. `s3://bucket/warehouse`)                |
+| `SQLMESH_STATE_HOST`     | —                                                    | PostgreSQL host for state                                    |
+| `SQLMESH_STATE_DB`       | `sqlmesh`                                            | PostgreSQL database for SQLMesh state                        |
+| `SQLMESH_STATE_USER`     | —                                                    | PostgreSQL user for state                                    |
+| `SQLMESH_STATE_PASSWORD` | —                                                    | PostgreSQL password for state                                |
 
 The `homelab` gateway runs with `spark.submit.deployMode=client` and `spark.kubernetes.container.image=apache/spark:4.2.0-preview5-python3` by default.
 
@@ -96,7 +96,7 @@ docker run --rm \
 
 # run against the production Spark/Nessie gateway (pass env vars)
 docker run --rm \
-  -e NESSIE_URI=http://nessie:19120/api/v2 \
+  -e NESSIE_URI=http://datahub-local-core-data-nessie:19120/api/v2 \
   -e NESSIE_WAREHOUSE=s3://my-bucket/warehouse \
   -e SQLMESH_STATE_HOST=postgres \
   -e SQLMESH_STATE_USER=sqlmesh \
