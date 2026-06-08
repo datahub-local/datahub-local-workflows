@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 
-from tasks.sqlmesh_launcher import (
+from tasks.sqlmesh_utils import (
     SQLMeshTaskConfig,
     SecretEnvVarRef,
     create_sqlmesh_task,
@@ -30,8 +30,8 @@ COMMON_SECRET_ENV_VARS = (
 )
 EXAMPLE_DB_SECRET_ENV_VARS = (
     *COMMON_SECRET_ENV_VARS,
-    SecretEnvVarRef(secret_name="example-db-secret", secret_key="user", env_name="EXAMPLE_DB_USER"),
-    SecretEnvVarRef(secret_name="example-db-secret", secret_key="password", env_name="EXAMPLE_DB_PASSWORD"),
+    SecretEnvVarRef(secret_name="postgresql-admin-credentials", secret_key="user", env_name="EXAMPLE_DB_USER"),
+    SecretEnvVarRef(secret_name="postgresql-admin-credentials", secret_key="password", env_name="EXAMPLE_DB_PASSWORD"),
 )
 
 default_args = {
@@ -60,7 +60,6 @@ with DAG(
             env_vars=COMMON_ENV_VARS,
             secret_env_vars=COMMON_SECRET_ENV_VARS,
             command="migrate",
-            run_migrate=True,
         )
     )
 
@@ -68,6 +67,7 @@ with DAG(
         SQLMeshTaskConfig(
             task_id="sqlmesh_pi",
             pipeline_name="pi",
+            restate_model="*",
             env_vars=COMMON_ENV_VARS,
             secret_env_vars=COMMON_SECRET_ENV_VARS,
             executor_instances=TEST_EXECUTOR_INSTANCES,
@@ -81,6 +81,7 @@ with DAG(
         SQLMeshTaskConfig(
             task_id="sqlmesh_example_db",
             pipeline_name="example_db",
+            restate_model="*",
             env_vars={**COMMON_ENV_VARS, **EXAMPLE_DB_ENV_VARS},
             secret_env_vars=EXAMPLE_DB_SECRET_ENV_VARS,
             executor_instances=TEST_EXECUTOR_INSTANCES,

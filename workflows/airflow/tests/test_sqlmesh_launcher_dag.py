@@ -9,13 +9,16 @@ def test_dag_importable():
     assert set(dag.task_ids) == {"sqlmesh_migrate", "sqlmesh_pi", "sqlmesh_example_db"}
 
 
-def test_sqlmesh_test_dag_runs_pi_before_example_db():
+def test_sqlmesh_test_dag_runs_migrate_then_pi_then_example_db():
     mod = importlib.import_module("dags.sqlmesh_dag")
     dag = mod.dag
 
+    sqlmesh_migrate = dag.get_task("sqlmesh_migrate")
     sqlmesh_pi = dag.get_task("sqlmesh_pi")
     sqlmesh_example_db = dag.get_task("sqlmesh_example_db")
 
+    assert "sqlmesh_pi" in sqlmesh_migrate.downstream_task_ids
+    assert "sqlmesh_migrate" in sqlmesh_pi.upstream_task_ids
     assert "sqlmesh_example_db" in sqlmesh_pi.downstream_task_ids
     assert "sqlmesh_pi" in sqlmesh_example_db.upstream_task_ids
 
@@ -24,9 +27,17 @@ def test_sqlmesh_test_dag_tasks_target_expected_pipelines():
     mod = importlib.import_module("dags.sqlmesh_dag")
     dag = mod.dag
 
+    sqlmesh_migrate = dag.get_task("sqlmesh_migrate")
     sqlmesh_pi = dag.get_task("sqlmesh_pi")
     sqlmesh_example_db = dag.get_task("sqlmesh_example_db")
 
+    assert sqlmesh_migrate.arguments == [
+        "-p",
+        "/app/pipelines/example_db",
+        "--gateway",
+        "homelab",
+        "migrate",
+    ]
     assert sqlmesh_pi.arguments == [
         "-p",
         "/app/pipelines/pi",
@@ -35,6 +46,20 @@ def test_sqlmesh_test_dag_tasks_target_expected_pipelines():
         "plan",
         "--auto-apply",
         "--no-prompts",
+        "--restate-model",
+        "*",
+        "prod",
+    ]
+    assert sqlmesh_example_db.arguments == [
+        "-p",
+        "/app/pipelines/example_db",
+        "--gateway",
+        "homelab",
+        "plan",
+        "--auto-apply",
+        "--no-prompts",
+        "--restate-model",
+        "*",
         "prod",
     ]
 
@@ -60,19 +85,9 @@ def test_sqlmesh_test_dag_passes_expected_env_from_dag():
     assert pi_env_var_map["SPARK_DRIVER_POD_IP"].value_from.field_ref.field_path == "status.podIP"
     assert example_db_env_var_map["EXAMPLE_DB_URL"].value == "jdbc:postgresql://datahub-local-core-data-postgresql.data.svc.cluster.local:5432/sqlmesh"
     assert example_db_env_var_map["EXAMPLE_DB_SCHEMA"].value == "sqlmesh_example_db"
-    assert example_db_env_var_map["EXAMPLE_DB_USER"].value_from.secret_key_ref.name == "example-db-secret"
-    assert example_db_env_var_map["EXAMPLE_DB_PASSWORD"].value_from.secret_key_ref.name == "example-db-secret"
+    assert example_db_env_var_map["EXAMPLE_DB_USER"].value_from.secret_key_ref.name == "postgresql-admin-credentials"
+    assert example_db_env_var_map["EXAMPLE_DB_PASSWORD"].value_from.secret_key_ref.name == "postgresql-admin-credentials"
     assert example_db_env_var_map["NESSIE_REF"].value == "main"
     assert example_db_env_var_map["SPARK_NAMESPACE"].value_from.field_ref.field_path == "metadata.namespace"
     assert example_db_env_var_map["SPARK_DRIVER_POD_NAME"].value_from.field_ref.field_path == "metadata.name"
     assert example_db_env_var_map["SPARK_DRIVER_POD_IP"].value_from.field_ref.field_path == "status.podIP"
-    assert sqlmesh_example_db.arguments == [
-        "-p",
-        "/app/pipelines/example_db",
-        "--gateway",
-        "homelab",
-        "plan",
-        "--auto-apply",
-        "--no-prompts",
-        "prod",
-    ]

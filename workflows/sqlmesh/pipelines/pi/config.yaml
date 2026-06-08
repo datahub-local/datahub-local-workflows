@@ -34,18 +34,17 @@ gateways:
         spark.hadoop.fs.s3a.path.style.access: "true"
         spark.hadoop.fs.s3a.connection.ssl.enabled: "false"
         spark.hadoop.fs.s3a.impl: "org.apache.hadoop.fs.s3a.S3AFileSystem"
+        spark.hadoop.fs.s3a.endpoint.region: "homelab"
         spark.hadoop.fs.s3a.region: "homelab"
 
-        # Iceberg + Nessie catalog
+        # Iceberg REST catalog
         # Set default catalog at session level to avoid "USE CATALOG" SQL (not supported in Spark SQL syntax)
-        spark.sql.defaultCatalog: "nessie"
-        # Nessie SQL extensions (CREATE BRANCH etc.) not yet published for Spark 4.x
+        spark.sql.defaultCatalog: "iceberg"
         spark.sql.extensions: "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
-        spark.sql.catalog.nessie: "org.apache.iceberg.spark.SparkCatalog"
-        spark.sql.catalog.nessie.catalog-impl: "org.apache.iceberg.nessie.NessieCatalog"
-        spark.sql.catalog.nessie.uri: "{{ env_var('NESSIE_URI', 'http://datahub-local-core-data-nessie:19120/api/v2') }}"
-        spark.sql.catalog.nessie.ref: "{{ env_var('NESSIE_REF', 'main') }}"
-        spark.sql.catalog.nessie.warehouse: "{{ env_var('NESSIE_WAREHOUSE', 's3a://datahub-local-tests') }}"
+        spark.sql.catalog.iceberg: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.iceberg.catalog-impl: "org.apache.iceberg.rest.RESTCatalog"
+        spark.sql.catalog.iceberg.uri: "{{ env_var('ICEBERG_CATALOG_URI', 'http://datahub-local-core-data-nessie:19120/iceberg/') }}"
+        spark.sql.catalog.iceberg.warehouse: "{{ env_var('ICEBERG_WAREHOUSE', 's3://datahub-local-test') }}"
         # Packages: Iceberg runtime (Spark 4 / Scala 2.13) + S3A connector
         spark.jars.packages: "org.apache.iceberg:iceberg-spark-runtime-4.1_2.13:1.11.0,org.apache.hadoop:hadoop-aws:3.4.3,com.amazonaws:aws-java-sdk-bundle:1.12.797"
     state_connection:
@@ -56,6 +55,7 @@ gateways:
       user: "{{ env_var('SQLMESH_STATE_USER') }}"
       password: "{{ env_var('SQLMESH_STATE_PASSWORD') }}"
 
+{% if env_var('SQLMESH_LOCAL_GATEWAY', 'false') == 'true' %}
   local:
     connection:
       type: spark
@@ -66,8 +66,9 @@ gateways:
     state_connection:
       type: duckdb
       database: "local.db"
+{% endif %}
 
-default_gateway: local
+default_gateway: "{{ 'local' if env_var('SQLMESH_LOCAL_GATEWAY', 'false') == 'true' else 'homelab' }}"
 
 model_defaults:
   dialect: spark

@@ -2,14 +2,13 @@ import typing as t
 
 from sqlmesh import ExecutionContext, model
 
-from models.marts.jdbc import write_jdbc
+from models.jdbc import write_jdbc
 
 
 @model(
-    "example_db.automotive_fuel_body_mpg_summary",
+    "gold.example_db.automotive_fuel_body_mpg_summary",
     kind="FULL",
     dialect="spark",
-    catalog="nessie_gold",
     description="MPG and price summary by fuel type and body style, written to Spark warehouse and external JDBC target.",
     depends_on=["example_db.automotive_snapshot"],
     columns={

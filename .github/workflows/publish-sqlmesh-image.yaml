@@ -36,11 +36,8 @@ jobs:
 
       - name: Validate SQLMesh projects (dry-run plan)
         working-directory: workflows/sqlmesh
-        env:
-          EXAMPLE_DB_URL: "jdbc:h2:mem:testdb"
-          EXAMPLE_DB_USER: user
-          EXAMPLE_DB_PASSWORD: ""
         run: |
+          source pipelines/example_db/.env.local
           uv run sqlmesh --project example_db plan --no-prompts --auto-apply --skip-tests 2>&1 | head -50 || true
           uv run sqlmesh --project pi plan --no-prompts --auto-apply --skip-tests 2>&1 | head -50 || true
 

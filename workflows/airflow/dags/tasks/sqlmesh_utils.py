@@ -38,11 +38,15 @@ class ConfigMapEnvVarRef:
     env_name: str | None = None
 
 
+DEFAULT_STARTUP_TIMEOUT_SECONDS = 300
+
+
 @dataclass(frozen=True)
 class SQLMeshTaskConfig:
     task_id: str
     pipeline_name: str
     select_model: str = ""
+    restate_model: str = ""
     gateway: str = DEFAULT_GATEWAY
     environment: str = DEFAULT_ENVIRONMENT
     env_vars: Mapping[str, Any] = field(default_factory=dict)
@@ -53,8 +57,8 @@ class SQLMeshTaskConfig:
     executor_memory: str | None = None
     driver_cores: int | None = None
     driver_memory: str | None = None
+    startup_timeout_seconds: int = DEFAULT_STARTUP_TIMEOUT_SECONDS
     command: str = "plan"
-    run_migrate: bool = False
 
 
 def _stringify_env_value(value: Any) -> str:
@@ -106,8 +110,7 @@ def validate_task_config(task_config: SQLMeshTaskConfig) -> None:
 def build_sqlmesh_arguments(task_config: SQLMeshTaskConfig) -> list[str]:
     validate_task_config(task_config)
 
-    # Run migrate if requested (skip other commands)
-    if task_config.run_migrate:
+    if task_config.command == "migrate":
         return [
             "-p",
             f"/app/pipelines/{task_config.pipeline_name}",
@@ -116,19 +119,19 @@ def build_sqlmesh_arguments(task_config: SQLMeshTaskConfig) -> list[str]:
             "migrate",
         ]
 
-    # Regular command (plan or run)
     arguments = [
         "-p",
         f"/app/pipelines/{task_config.pipeline_name}",
         "--gateway",
         task_config.gateway,
         task_config.command,
-        "--auto-apply",
-        "--no-prompts",
     ]
-
+    if task_config.command == "plan":
+        arguments.extend(["--auto-apply", "--no-prompts"])
     if task_config.select_model:
         arguments.extend(["--select-model", task_config.select_model])
+    if task_config.restate_model:
+        arguments.extend(["--restate-model", task_config.restate_model])
     if task_config.environment:
         arguments.append(task_config.environment)
     return arguments
@@ -217,7 +220,6 @@ def build_sqlmesh_container_resources(
 
 
 def create_sqlmesh_task(task_config: SQLMeshTaskConfig) -> KubernetesPodOperator:
-    validate_task_config(task_config)
     return KubernetesPodOperator(
         task_id=task_config.task_id,
         name=task_config.task_id.replace("_", "-"),
@@ -234,4 +236,5 @@ def create_sqlmesh_task(task_config: SQLMeshTaskConfig) -> KubernetesPodOperator
         security_context=V1PodSecurityContext(
             run_as_non_root=False,  # Required for Spark to function
         ),
+        startup_timeout_seconds=task_config.startup_timeout_seconds,
     )

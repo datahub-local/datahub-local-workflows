@@ -1,7 +1,7 @@
 import pytest
 from airflow.exceptions import AirflowException
 
-from tasks.sqlmesh_launcher import (
+from tasks.sqlmesh_utils import (
     ConfigMapEnvVarRef,
     SQLMeshTaskConfig,
     SecretEnvVarRef,
@@ -33,6 +33,48 @@ def test_build_sqlmesh_arguments_includes_select_model():
     ]
 
 
+def test_build_sqlmesh_arguments_includes_restate_model():
+    task_config = SQLMeshTaskConfig(
+        task_id="sqlmesh_example_db",
+        pipeline_name="example_db",
+        restate_model="nessie_silver.example_db.automotive_raw",
+    )
+
+    assert build_sqlmesh_arguments(task_config) == [
+        "-p",
+        "/app/pipelines/example_db",
+        "--gateway",
+        "homelab",
+        "plan",
+        "--auto-apply",
+        "--no-prompts",
+        "--restate-model",
+        "nessie_silver.example_db.automotive_raw",
+        "prod",
+    ]
+
+
+def test_build_sqlmesh_arguments_restate_all_models():
+    task_config = SQLMeshTaskConfig(
+        task_id="sqlmesh_example_db",
+        pipeline_name="example_db",
+        restate_model="*",
+    )
+
+    assert build_sqlmesh_arguments(task_config) == [
+        "-p",
+        "/app/pipelines/example_db",
+        "--gateway",
+        "homelab",
+        "plan",
+        "--auto-apply",
+        "--no-prompts",
+        "--restate-model",
+        "*",
+        "prod",
+    ]
+
+
 def test_build_sqlmesh_arguments_supports_custom_environment():
     task_config = SQLMeshTaskConfig(
         task_id="sqlmesh_pi",
@@ -49,6 +91,22 @@ def test_build_sqlmesh_arguments_supports_custom_environment():
         "--auto-apply",
         "--no-prompts",
         "dev_ci",
+    ]
+
+
+def test_build_sqlmesh_arguments_migrate_command():
+    task_config = SQLMeshTaskConfig(
+        task_id="sqlmesh_migrate",
+        pipeline_name="example_db",
+        command="migrate",
+    )
+
+    assert build_sqlmesh_arguments(task_config) == [
+        "-p",
+        "/app/pipelines/example_db",
+        "--gateway",
+        "homelab",
+        "migrate",
     ]
 
 

@@ -37,32 +37,30 @@ gateways:
         spark.hadoop.fs.s3a.path.style.access: "true"
         spark.hadoop.fs.s3a.connection.ssl.enabled: "false"
         spark.hadoop.fs.s3a.impl: "org.apache.hadoop.fs.s3a.S3AFileSystem"
+        spark.hadoop.fs.s3a.endpoint.region: "homelab"
         spark.hadoop.fs.s3a.region: "homelab"
 
-        # Iceberg + Nessie catalogs (medallion architecture)
-        spark.sql.defaultCatalog: "nessie_bronze"
+        # Iceberg REST catalogs (medallion architecture)
+        spark.sql.defaultCatalog: "bronze"
         spark.sql.extensions: "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
 
         # Bronze catalog — raw ingestion and staging
-        spark.sql.catalog.nessie_bronze: "org.apache.iceberg.spark.SparkCatalog"
-        spark.sql.catalog.nessie_bronze.catalog-impl: "org.apache.iceberg.nessie.NessieCatalog"
-        spark.sql.catalog.nessie_bronze.uri: "{{ env_var('NESSIE_URI', 'http://datahub-local-core-data-nessie:19120/api/v2') }}"
-        spark.sql.catalog.nessie_bronze.ref: "{{ env_var('NESSIE_REF', 'main') }}"
-        spark.sql.catalog.nessie_bronze.warehouse: "s3a://datahub-local-bronze"
+        spark.sql.catalog.bronze: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.bronze.catalog-impl: "org.apache.iceberg.rest.RESTCatalog"
+        spark.sql.catalog.bronze.uri: "{{ env_var('ICEBERG_CATALOG_URI', 'http://datahub-local-core-data-nessie:19120/iceberg/') }}"
+        spark.sql.catalog.bronze.warehouse: "s3://datahub-local-bronze"
 
         # Silver catalog — cleaned and fully-typed data
-        spark.sql.catalog.nessie_silver: "org.apache.iceberg.spark.SparkCatalog"
-        spark.sql.catalog.nessie_silver.catalog-impl: "org.apache.iceberg.nessie.NessieCatalog"
-        spark.sql.catalog.nessie_silver.uri: "{{ env_var('NESSIE_URI', 'http://datahub-local-core-data-nessie:19120/api/v2') }}"
-        spark.sql.catalog.nessie_silver.ref: "{{ env_var('NESSIE_REF', 'main') }}"
-        spark.sql.catalog.nessie_silver.warehouse: "s3a://datahub-local-silver"
+        spark.sql.catalog.silver: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.silver.catalog-impl: "org.apache.iceberg.rest.RESTCatalog"
+        spark.sql.catalog.silver.uri: "{{ env_var('ICEBERG_CATALOG_URI', 'http://datahub-local-core-data-nessie:19120/iceberg/') }}"
+        spark.sql.catalog.silver.warehouse: "s3://datahub-local-silver"
 
         # Gold catalog — aggregated, business-ready data
-        spark.sql.catalog.nessie_gold: "org.apache.iceberg.spark.SparkCatalog"
-        spark.sql.catalog.nessie_gold.catalog-impl: "org.apache.iceberg.nessie.NessieCatalog"
-        spark.sql.catalog.nessie_gold.uri: "{{ env_var('NESSIE_URI', 'http://datahub-local-core-data-nessie:19120/api/v2') }}"
-        spark.sql.catalog.nessie_gold.ref: "{{ env_var('NESSIE_REF', 'main') }}"
-        spark.sql.catalog.nessie_gold.warehouse: "s3a://datahub-local-gold"
+        spark.sql.catalog.gold: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.gold.catalog-impl: "org.apache.iceberg.rest.RESTCatalog"
+        spark.sql.catalog.gold.uri: "{{ env_var('ICEBERG_CATALOG_URI', 'http://datahub-local-core-data-nessie:19120/iceberg/') }}"
+        spark.sql.catalog.gold.warehouse: "s3://datahub-local-gold"
 
         spark.driverEnv.EXAMPLE_DB_URL: "{{ env_var('EXAMPLE_DB_URL', 'jdbc:h2:mem:testdb') }}"
         spark.driverEnv.EXAMPLE_DB_USER: "{{ env_var('EXAMPLE_DB_USER', 'user') }}"
@@ -75,6 +73,7 @@ gateways:
       user: "{{ env_var('SQLMESH_STATE_USER') }}"
       password: "{{ env_var('SQLMESH_STATE_PASSWORD') }}"
 
+{% if env_var('SQLMESH_LOCAL_GATEWAY', 'false') == 'true' %}
   local:
     connection:
       type: spark
@@ -83,18 +82,45 @@ gateways:
         spark.sql.shuffle.partitions: "4"
         spark.sql.warehouse.dir: "{{ env_var('SPARK_WAREHOUSE_DIR', '/tmp/spark-warehouse') }}"
 
-        # Packages
+        # Packages: Iceberg runtime + H2 JDBC driver
         spark.jars.packages: "org.apache.iceberg:iceberg-spark-runtime-4.1_2.13:1.11.0,com.h2database:h2:2.2.224"
 
-        spark.driverEnv.EXAMPLE_DB_URL: "{{ env_var('EXAMPLE_DB_URL') }}"
-        spark.driverEnv.EXAMPLE_DB_USER: "{{ env_var('EXAMPLE_DB_USER') }}"
-        spark.driverEnv.EXAMPLE_DB_PASSWORD: "{{ env_var('EXAMPLE_DB_PASSWORD') }}"
+        # Iceberg extensions and default catalog
+        spark.sql.extensions: "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
+        spark.sql.defaultCatalog: "bronze"
+
+        # Local Iceberg catalogs (JDBC/H2 — supports SQL views, no external services needed)
+        # Iceberg JDBC catalog has full view support since 1.6; HadoopCatalog does not.
+        spark.sql.catalog.bronze: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.bronze.catalog-impl: "org.apache.iceberg.jdbc.JdbcCatalog"
+        spark.sql.catalog.bronze.io-impl: "org.apache.iceberg.hadoop.HadoopFileIO"
+        spark.sql.catalog.bronze.uri: "{{ env_var('ICEBERG_BRONZE_URI', 'jdbc:h2:mem:iceberg_bronze;DB_CLOSE_DELAY=-1') }}"
+        spark.sql.catalog.bronze.warehouse: "{{ env_var('SPARK_WAREHOUSE_DIR', '/tmp/spark-warehouse') }}/bronze"
+        spark.sql.catalog.bronze.jdbc.schema-version: "V1"
+
+        spark.sql.catalog.silver: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.silver.catalog-impl: "org.apache.iceberg.jdbc.JdbcCatalog"
+        spark.sql.catalog.silver.io-impl: "org.apache.iceberg.hadoop.HadoopFileIO"
+        spark.sql.catalog.silver.uri: "{{ env_var('ICEBERG_SILVER_URI', 'jdbc:h2:mem:iceberg_silver;DB_CLOSE_DELAY=-1') }}"
+        spark.sql.catalog.silver.warehouse: "{{ env_var('SPARK_WAREHOUSE_DIR', '/tmp/spark-warehouse') }}/silver"
+        spark.sql.catalog.silver.jdbc.schema-version: "V1"
+
+        spark.sql.catalog.gold: "org.apache.iceberg.spark.SparkCatalog"
+        spark.sql.catalog.gold.catalog-impl: "org.apache.iceberg.jdbc.JdbcCatalog"
+        spark.sql.catalog.gold.io-impl: "org.apache.iceberg.hadoop.HadoopFileIO"
+        spark.sql.catalog.gold.uri: "{{ env_var('ICEBERG_GOLD_URI', 'jdbc:h2:mem:iceberg_gold;DB_CLOSE_DELAY=-1') }}"
+        spark.sql.catalog.gold.warehouse: "{{ env_var('SPARK_WAREHOUSE_DIR', '/tmp/spark-warehouse') }}/gold"
+        spark.sql.catalog.gold.jdbc.schema-version: "V1"
+
+        spark.driverEnv.EXAMPLE_DB_URL: "{{ env_var('EXAMPLE_DB_URL', 'jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1') }}"
+        spark.driverEnv.EXAMPLE_DB_USER: "{{ env_var('EXAMPLE_DB_USER', 'sa') }}"
+        spark.driverEnv.EXAMPLE_DB_PASSWORD: "{{ env_var('EXAMPLE_DB_PASSWORD', '') }}"
     state_connection:
       type: duckdb
-      database: "local.db"
+      database: "{{ env_var('SQLMESH_LOCAL_STATE_DB', 'local.db') }}"
+{% endif %}
 
-default_gateway: local
+default_gateway: "{{ 'local' if env_var('SQLMESH_LOCAL_GATEWAY', 'false') == 'true' else 'homelab' }}"
 
 model_defaults:
   dialect: spark
-  catalog: nessie_bronze
