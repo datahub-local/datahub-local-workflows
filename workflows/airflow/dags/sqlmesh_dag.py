@@ -25,6 +25,8 @@ EXAMPLE_DB_ENV_VARS = {
 COMMON_SECRET_ENV_VARS = (
     SecretEnvVarRef(secret_name="postgresql-admin-credentials", secret_key="user", env_name="SQLMESH_STATE_USER"),
     SecretEnvVarRef(secret_name="postgresql-admin-credentials", secret_key="password", env_name="SQLMESH_STATE_PASSWORD"),
+    SecretEnvVarRef(secret_name="s3-credentials", secret_key="accessKey", env_name="S3_ACCESS_KEY"),
+    SecretEnvVarRef(secret_name="s3-credentials", secret_key="secretKey", env_name="S3_SECRET_KEY"),
 )
 EXAMPLE_DB_SECRET_ENV_VARS = (
     *COMMON_SECRET_ENV_VARS,

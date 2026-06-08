@@ -9,6 +9,7 @@ from models.marts.jdbc import write_jdbc
     "example_db.automotive_raw",
     kind="FULL",
     dialect="spark",
+    catalog="nessie_silver",
     description="Full automotive dataset written to both Spark warehouse and external JDBC target.",
     depends_on=["example_db.automotive_snapshot"],
     columns={

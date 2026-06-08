@@ -9,6 +9,7 @@ from models.marts.jdbc import write_jdbc
     "example_db.automotive_make_price_summary",
     kind="FULL",
     dialect="spark",
+    catalog="nessie_gold",
     description="Price and horsepower summary per make, written to Spark warehouse and external JDBC target.",
     depends_on=["example_db.automotive_snapshot"],
     columns={
