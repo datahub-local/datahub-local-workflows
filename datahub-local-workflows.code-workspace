@@ -13,8 +13,12 @@
       "path": "workflows/airflow"
     },
     {
-      "name": "sqlmesh",
-      "path": "workflows/sqlmesh"
+      "name": "dbt",
+      "path": "workflows/dbt"
+    },
+    {
+      "name": "dlt",
+      "path": "workflows/dlt"
     }
   ],
   "settings": {

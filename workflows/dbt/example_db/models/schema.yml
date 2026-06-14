@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: automotive_snapshot
+    description: >
+      Cleaned and typed automotive data. Strips whitespace, casts numeric fields, and
+      drops rows without a make.
+    columns:
+      - name: make
+        description: "Vehicle manufacturer."
+        tests:
+          - not_null
+  - name: automotive_raw
+    description: "Full cleaned automotive dataset (also exported to JDBC by the export step)."
+    columns:
+      - name: make
+        tests:
+          - not_null
+  - name: automotive_make_price_summary
+    description: "Price and horsepower summary per make (also exported to JDBC)."
+    columns:
+      - name: make
+        tests:
+          - not_null
+          - unique
+  - name: automotive_fuel_body_mpg_summary
+    description: "MPG and price summary by fuel type and body style (also exported to JDBC)."
+    columns:
+      - name: vehicle_count
+        tests:
+          - not_null

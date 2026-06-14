@@ -1,0 +1,20 @@
+[project]
+name = "datahub-local-workflows-dbt"
+version = "0.1.0"
+description = "dbt Core pipelines for datahub-local-workflows (Trino + DuckDB)"
+requires-python = ">=3.13"
+
+dependencies = [
+  "dbt-core>=1.9",
+  "dbt-trino>=1.9",
+  "dbt-duckdb>=1.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "pyyaml>=6.0"]
+
+[tool.uv]
+# Optional uv settings for this project can be added here.
+
+[tool.ruff.lint]
+ignore = ["E402"]

@@ -1,5 +1,5 @@
 [project]
-name = "datahub-local-workflow-airflow"
+name = "datahub-local-workflows-airflow"
 version = "0.1.0"
 description = "Airflow project skeleton for datahub-local-workflows"
 readme = "README.md"

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: pi_samples
+    description: >
+      Monte Carlo sample generation for pi estimation. Uses project vars partitions,
+      samples_per_partition, and random_seed.
+    columns:
+      - name: is_hit
+        description: "1 when the sample falls inside the unit circle, else 0."
+        tests:
+          - not_null
+  - name: pi_estimate
+    description: "Pi approximation derived from Monte Carlo samples via circle-in-square."
+    columns:
+      - name: pi_estimate
+        description: "Estimated value of pi."
+        tests:
+          - not_null
