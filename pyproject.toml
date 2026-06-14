@@ -24,11 +24,16 @@ airflow = [
     "apache-airflow-providers-cncf-kubernetes>=10.0.0",
     "kubernetes>=30.0.0",
 ]
-sqlmesh = [
-    "sqlmesh>=0.170.0",
-    "pyspark==4.1.2",
-    "psycopg2-binary>=2.9",
-    "pyarrow>=15.0.0",
+dbt = [
+    "dbt-core>=1.9",
+    "dbt-trino>=1.9",
+    "dbt-duckdb>=1.9",
+]
+dlt = [
+    "dlt[duckdb,postgres,filesystem,sql-database,parquet]>=1.6",
+    "pyiceberg[s3fs]>=0.8",
+    "trino[sqlalchemy]>=0.330",
+    "duckdb-engine>=0.13",
 ]
 dev = [
     "pytest>=9.0.0",

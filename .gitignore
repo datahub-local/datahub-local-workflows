@@ -221,5 +221,14 @@ node_modules/
 # OS specific
 .DS_Store
 
-workflows/sqlmesh/local.db
-workflows/sqlmesh/metastore_db
+# dbt local artifacts
+workflows/dbt/**/target/
+workflows/dbt/**/dbt_packages/
+workflows/dbt/**/logs/
+workflows/dbt/**/.user.yml
+
+# DuckDB / dlt local artifacts
+*.duckdb
+*.duckdb.wal
+.dlt/
+workflows/dlt/**/.dlt/

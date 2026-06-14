@@ -1,0 +1,21 @@
+# homelab runs on Trino (Iceberg over Apache Polaris REST, `test` catalog = test);
+# local runs on DuckDB. See example_db/profiles.yml for the full rationale.
+pi:
+  target: homelab
+  outputs:
+    homelab:
+      type: trino
+      method: none
+      host: "{{ env_var('TRINO_HOST', 'datahub-local-core-data-trino-trino') }}"
+      port: "{{ env_var('TRINO_PORT', '8080') | int }}"
+      user: "{{ env_var('TRINO_USER', 'dbt') }}"
+      http_scheme: http
+      database: test
+      schema: pi
+      threads: 4
+    local:
+      type: duckdb
+      path: "{{ env_var('DBT_DUCKDB_PI_PATH', '/tmp/duckdb/test.duckdb') }}"
+      database: test
+      schema: pi
+      threads: 4

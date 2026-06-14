@@ -1,0 +1,21 @@
+[project]
+name = "datahub-local-workflows-dlt"
+version = "0.1.0"
+description = "dlt ingest/export pipelines for datahub-local-workflows (Iceberg/Polaris + Postgres, DuckDB local)"
+requires-python = ">=3.13"
+
+dependencies = [
+  "dlt[duckdb,postgres,filesystem,sql-database,parquet]>=1.6",
+  "pyiceberg[s3fs]>=0.8",
+  "trino[sqlalchemy]>=0.330",
+  "duckdb-engine>=0.13",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[tool.uv]
+# Optional uv settings for this project can be added here.
+
+[tool.ruff.lint]
+ignore = ["E402"]

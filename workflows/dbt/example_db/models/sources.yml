@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: example_db
+    description: "Raw automotive ingestion layer (bronze catalog)."
+    database: bronze
+    schema: example_db
+    tables:
+      - name: automotive_source
+        description: >
+          Raw CSV ingestion of the automotive dataset, produced by the dlt ingest pipeline
+          (workflows/dlt) before the dbt run. All columns are strings with their original
+          hyphenated names.

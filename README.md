@@ -9,7 +9,8 @@ Each subdirectory (e.g., `n8n/`) contains workflows for a specific tool or platf
 - `n8n/` includes n8n workflow definitions and related files.
 - `workflows/` is the main directory for all workflow definitions, organized by tool or format. For example:
 - `workflows/airflow/` is an Airflow project to orchestrate data workflows.
-- `workflows/sqlmesh/` is a SQLMesh project whose maintained source of truth is the data workflows.
+- `workflows/dbt/` is a dbt Core project (Trino / DuckDB, Iceberg + Apache Polaris) for the data transformation pipelines.
+- `workflows/dlt/` is a [dlt](https://dlthub.com) project for the ingest and reverse-ETL export pipelines that run around dbt.
 
 Additional directories may be added in the future to support other workflow engines or formats.
 

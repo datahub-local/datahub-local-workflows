@@ -1,0 +1,20 @@
+name: "pi"
+version: "1.0.0"
+config-version: 2
+
+profile: "pi"
+
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# database (test catalog) and schema (pi) come from the profile; no per-layer overrides.
+models:
+  pi:
+    +materialized: table
+
+# Monte Carlo tuning knobs.
+vars:
+  partitions: "{{ env_var('PI_PARTITIONS', '500') }}"
+  samples_per_partition: "{{ env_var('PI_SAMPLES_PER_PARTITION', '1000') }}"
+  random_seed: "{{ env_var('PI_RANDOM_SEED', '7') }}"

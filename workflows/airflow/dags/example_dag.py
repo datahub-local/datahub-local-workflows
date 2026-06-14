@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.sdk import task
 
-from tasks.sample_tasks import fetch_sample, process_sample
+from tasks.sample import fetch_sample, process_sample
 
 default_args = {
     "owner": "datahub-local",

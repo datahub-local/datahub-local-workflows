@@ -2,7 +2,7 @@
 
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Mapping
 
 from kubernetes.client import (
@@ -13,16 +13,9 @@ from kubernetes.client import (
     V1SecretKeySelector,
 )
 
-# Constants
-NAMESPACE = "data"
-IMAGE_PULL_POLICY = "Always"
-SERVICE_ACCOUNT_NAME = "datahub-local-core-data-airflow-task"
-DEFAULT_STARTUP_TIMEOUT_SECONDS = 300
-DBT_IMAGE = "ghcr.io/datahub-local/datahub-local-workflows-dbt:main"
-DLT_IMAGE = "ghcr.io/datahub-local/datahub-local-workflows-dlt:main"
-DEFAULT_TARGET = "homelab"
-DEFAULT_GATEWAY = "homelab"
-DEFAULT_ENVIRONMENT = "prod"
+# ==============
+# Shared Classes
+# ==============
 
 
 @dataclass(frozen=True)
@@ -38,6 +31,10 @@ class ConfigMapEnvVarRef:
     configmap_key: str
     env_name: str | None = None
 
+
+# ==============
+# Shared Functions
+# ==============
 
 _NAME_RE = re.compile(r"[A-Za-z0-9_.-]+")
 
@@ -62,7 +59,7 @@ def build_pod_env_vars(
     secret_env_vars: tuple[SecretEnvVarRef, ...],
     configmap_env_vars: tuple[ConfigMapEnvVarRef, ...],
 ) -> list[V1EnvVar]:
-    """Build the K8s env var list shared by the dbt, dlt, and other pod tasks."""
+    """Build the K8s env var list shared by the dbt, dlt, and others pod tasks."""
     result = [
         V1EnvVar(name=key, value=_stringify_env_value(value))
         for key, value in sorted(env_vars.items())
@@ -100,53 +97,3 @@ def build_pod_resources(cpu: str | None, memory: str | None) -> V1ResourceRequir
     if not requests:
         return None
     return V1ResourceRequirements(requests=requests, limits=dict(requests))
-
-
-# Submodule imports come after the definitions above so that dbt.py / dlt.py
-# can do `from tasks import ...` without hitting a circular-import issue.
-from tasks.dbt import (
-    DbtTaskConfig,
-    build_dbt_arguments,
-    build_dbt_container_resources,
-    build_dbt_env_vars,
-    create_dbt_task,
-)
-
-from tasks.dlt import (
-    DltTaskConfig,
-    build_dlt_arguments,
-    build_dlt_container_resources,
-    build_dlt_env_vars,
-    create_dlt_task,
-)
-
-__all__ = [
-    # Constants
-    "NAMESPACE",
-    "IMAGE_PULL_POLICY",
-    "SERVICE_ACCOUNT_NAME",
-    "DEFAULT_STARTUP_TIMEOUT_SECONDS",
-    "DBT_IMAGE",
-    "DLT_IMAGE",
-    "DEFAULT_TARGET",
-    "DEFAULT_GATEWAY",
-    "DEFAULT_ENVIRONMENT",
-    # Shared classes
-    "SecretEnvVarRef",
-    "ConfigMapEnvVarRef",
-    # Shared functions
-    "build_pod_env_vars",
-    "build_pod_resources",
-    # dbt
-    "DbtTaskConfig",
-    "build_dbt_arguments",
-    "build_dbt_container_resources",
-    "build_dbt_env_vars",
-    "create_dbt_task",
-    # dlt
-    "DltTaskConfig",
-    "build_dlt_arguments",
-    "build_dlt_container_resources",
-    "build_dlt_env_vars",
-    "create_dlt_task",
-]
