@@ -17,23 +17,30 @@ Sub-projects follow a consistent structure:
 
 ```
 workflows/<tool>/
-  <tool>_runner/          Python entry point package (python -m <tool>_runner)
-  <pipeline>/             dbt project or named pipeline (e.g. example_db, pi)
+  src/
+    <tool>_runner/        Python entry point package (python -m <tool>_runner)
+  projects/
+    <project>/            project-specific code or dbt SQL/YAML
   tests/
-    <pipeline>/           tests grouped by pipeline (integration tests)
-    test_<cross>.py       cross-pipeline tests stay at the tests/ root
+    <project>/            tests grouped by project
+    test_<cross>.py       cross-project tests stay at the tests/ root
   Dockerfile
   pyproject.toml          name: datahub-local-workflows-<tool>
   README.md
 ```
+
+Both `dbt` and `dlt` use a `src/` layout with a `projects/` directory:
+
+- **dbt**: `src/dbt_runner/` is the only Python package; `projects/example_db/`, `projects/pi/`, `projects/bodega/` are SQL+YAML dbt projects (not Python packages).
+- **dlt**: `src/dlt_runner/` is the runner; `projects/example_db/` and `projects/bodega/` are Python pipeline packages installed via hatchling.
 
 | What | Convention | Examples |
 |---|---|---|
 | Package name | `datahub-local-workflows-<tool>` | `datahub-local-workflows-dbt` |
 | Python runner module | `<tool>_runner` | `dbt_runner`, `dlt_runner` |
 | Container entry point | `python -m <tool>_runner` | `ENTRYPOINT ["python", "-m", "dbt_runner"]` |
-| Pipeline / project dir | lowercase, underscores | `example_db`, `pi` |
-| Test subdirs | per-pipeline, mirroring source | `tests/example_db/`, `tests/pi/` |
+| Project dir | lowercase, underscores | `example_db`, `pi` |
+| Test subdirs | per-project, mirroring source | `tests/example_db/`, `tests/pi/` |
 
 ## Commands
 
@@ -48,15 +55,15 @@ package is just a convenience wrapper around `dbt build`.
 # Install
 uv sync --extra dev
 
-# Run pipeline (local target — DuckDB, no external services)
+# Run project (local target — DuckDB, no external services)
 uv run python -m dbt_runner --project pi --target local
 uv run python -m dbt_runner --project example_db --target local   # needs bronze source seeded first
 
-# Run pipeline (homelab target — Trino/Polaris/S3 required)
+# Run project (homelab target — Trino/Polaris/S3 required)
 uv run python -m dbt_runner --project example_db --target homelab
 
 # Validate a project without a warehouse connection
-uv run dbt parse --project-dir pi --profiles-dir pi --target local
+uv run dbt parse --project-dir projects/pi --profiles-dir projects/pi --target local
 
 # Tests (no warehouse — project structure, model SQL, dbt parse)
 uv run pytest tests/ --ignore=tests/example_db/test_integration.py
@@ -99,12 +106,12 @@ dbt models run identical `database.schema.table` SQL on both engines:
 
 dbt is **stateless** — no plan/apply or state store. All models are `materialized='table'`.
 
-### dbt pipelines and the runner
+### dbt projects and the runner
 
-Each pipeline is a self-contained dbt project under `workflows/dbt/<name>/` (`dbt_project.yml`, `profiles.yml`, `models/`). `dbt_runner/__main__.py` (`--project --target [--select] [--full-refresh]`) just resolves the project dir and invokes `dbt build` in-process. It does **not** ingest or export — those are dlt pipelines.
+Each project is a self-contained dbt project under `workflows/dbt/projects/<name>/` (`dbt_project.yml`, `profiles.yml`, `models/`). `src/dbt_runner/__main__.py` (`--project --target [--select] [--full-refresh]`) just resolves the project dir and invokes `dbt build` in-process. It does **not** ingest or export — those are dlt projects. `PROJECTS_DIR` is read from `DBT_PROJECTS_DIR` env var (set to `/app/projects` in Docker) or derived from `__file__` for local editable installs.
 
 - **`example_db`** follows the medallion pattern with three catalogs (`bronze`/`silver`/`gold`).
-- **`pi`** is a Monte Carlo π estimator tunable via `PI_PARTITIONS`, `PI_SAMPLES_PER_PARTITION`, `PI_RANDOM_SEED` (dbt `vars`). Row generation differs between DuckDB and Trino, so `pi/macros/generate_samples.sql` is **adapter-dispatched** (`duckdb__` uses `range()`, `trino__` cross-joins `sequence()` unnests); both draw x/y with `random()` (the seed is carried as a column but engine `random()` is unseeded).
+- **`pi`** is a Monte Carlo π estimator tunable via `PI_PARTITIONS`, `PI_SAMPLES_PER_PARTITION`, `PI_RANDOM_SEED` (dbt `vars`). Row generation differs between DuckDB and Trino, so `projects/pi/macros/generate_samples.sql` is **adapter-dispatched** (`duckdb__` uses `range()`, `trino__` cross-joins `sequence()` unnests); both draw x/y with `random()` (the seed is carried as a column but engine `random()` is unseeded).
 
 #### Medallion catalogs
 
@@ -115,18 +122,18 @@ Trino and DuckDB both have real catalogs, so each medallion layer is its own cat
 
 ### dlt ingest/export (`workflows/dlt/`)
 
-`dlt_runner/__main__.py` (`--pipeline {ingest,export} --project example_db --target {homelab,local}`) dispatches to the pipeline. Pipeline code lives in `example_db/`:
+`src/dlt_runner/__main__.py` (`--pipeline {ingest,export} --project example_db --target {homelab,local}`) dispatches to the project. Project code lives in `projects/example_db/`:
 
-- `example_db/ingest.py` — streams the automotive CSV into `bronze.example_db.automotive_source` (the dbt source). The `direct` naming convention preserves the raw hyphenated column names. homelab writes Iceberg via pyiceberg's REST catalog (`config.configure_iceberg_env` sets `PYICEBERG_CATALOG__<LAYER>__*`), staging parquet in the **temp bucket** (`datahub-local-temp`); local writes DuckDB.
-- `example_db/export.py` — reads the dbt-built silver/gold tables (Trino on homelab, DuckDB locally) and loads them to Postgres (homelab) / a DuckDB export file (local).
-- `example_db/config.py` — env-driven: catalog→warehouse map, temp bucket, DuckDB paths (reusing the dbt `DBT_DUCKDB_*` vars so a local ingest lands in the files dbt reads), Postgres/Trino DSNs.
+- `projects/example_db/ingest.py` — streams the automotive CSV into `bronze.example_db.automotive_source` (the dbt source). The `direct` naming convention preserves the raw hyphenated column names. homelab writes Iceberg via pyiceberg's REST catalog (`config.configure_iceberg_env` sets `PYICEBERG_CATALOG__<LAYER>__*`), staging parquet in the **temp bucket** (`datahub-local-temp`); local writes DuckDB.
+- `projects/example_db/export.py` — reads the dbt-built silver/gold tables (Trino on homelab, DuckDB locally) and loads them to Postgres (homelab) / a DuckDB export file (local).
+- `projects/example_db/config.py` — env-driven: catalog→warehouse map, temp bucket, DuckDB paths (reusing the dbt `DBT_DUCKDB_*` vars so a local ingest lands in the files dbt reads), Postgres/Trino DSNs.
 
 ### Airflow DAGs and the launchers
 
-**DAGs are one file per pipeline** — each is self-contained and runs as Kubernetes pods:
+**DAGs are one file per project** — each is self-contained and runs as Kubernetes pods:
 
 - `dags/pi_dag.py` (`dag_id: pi`) — pure dbt compute: `dbt_pi`
-- `dags/example_db_dag.py` (`dag_id: example_db`) — full medallion pipeline: `dlt_ingest_example_db → dbt_example_db → dlt_export_example_db`
+- `dags/example_db_dag.py` (`dag_id: example_db`) — full medallion project: `dlt_ingest_example_db → dbt_example_db → dlt_export_example_db`
 
 **Task utilities are organised by tool** under `dags/tasks/`:
 
@@ -137,5 +144,5 @@ Trino and DuckDB both have real catalogs, so each medallion layer is its own cat
 ### Test structure
 
 - dbt `tests/` are lightweight: project/profile structure, model SQL, and `dbt parse` — no warehouse. `tests/example_db/test_integration.py` seeds the bronze source in DuckDB, runs `dbt build` **in a subprocess** (avoids DuckDB's per-process "file already attached" conflict), and asserts the medallion tables.
-- dlt `tests/example_db/` covers the local DuckDB ingest+export integration test; `tests/test_config.py` covers `example_db/config.py` helpers (cross-pipeline, stays at the tests root).
+- dlt `tests/example_db/` covers the local DuckDB ingest+export integration test; `tests/test_config.py` covers `projects/example_db/config.py` helpers (cross-project, stays at the tests root).
 - airflow `tests/` import the DAGs and check the dbt/dlt task arguments, env, and ordering — `test_pi_dag.py` covers the pi DAG; `test_example_db_dag.py` covers example_db.

@@ -72,6 +72,13 @@ class TestIcebergEnv:
         shared_config.configure_iceberg_env("bronze", warehouse="my-polaris-catalog")
         assert os.environ["PYICEBERG_CATALOG__BRONZE__WAREHOUSE"] == "my-polaris-catalog"
 
+    def test_configure_iceberg_env_sets_dlt_catalog_name(self, monkeypatch):
+        # dlt resolves the iceberg catalog name from this var; it must match the
+        # PYICEBERG_CATALOG__<CATALOG>__* prefix or dlt looks for a "default" catalog.
+        monkeypatch.delenv("ICEBERG_CATALOG__ICEBERG_CATALOG_NAME", raising=False)
+        shared_config.configure_iceberg_env("silver")
+        assert os.environ["ICEBERG_CATALOG__ICEBERG_CATALOG_NAME"] == "silver"
+
     def test_configure_iceberg_env_sets_credential(self, monkeypatch):
         for key in list(os.environ):
             if key.startswith("PYICEBERG_CATALOG__BRONZE__"):
@@ -107,4 +114,4 @@ class TestTrinoUrl:
     def test_trino_url_defaults(self, monkeypatch):
         for key in ("TRINO_HOST", "TRINO_PORT", "TRINO_USER"):
             monkeypatch.delenv(key, raising=False)
-        assert shared_config.trino_url() == "trino://dbt@datahub-local-core-data-trino:8080"
+        assert shared_config.trino_url() == "trino://dbt@datahub-local-core-data-trino-trino:8080"

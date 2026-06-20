@@ -3,9 +3,9 @@ import sys
 import tempfile
 from pathlib import Path
 
-# Project root (workflows/dbt) holds the `dbt_runner` package and the dbt project dirs.
+# src/ layout: dbt_runner lives under workflows/dbt/src/.
 PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # DuckDB warehouse files for the local target (one file per medallion catalog). A shared
 # temp dir keeps dbt parse/build and the dlt local ingest pointing at the same catalogs.

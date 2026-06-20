@@ -1,7 +1,7 @@
 """Validate example_db model SQL and that the project parses (no warehouse required)."""
 from pathlib import Path
 
-PROJECT_DIR = Path(__file__).parent.parent.parent / "example_db"
+PROJECT_DIR = Path(__file__).parent.parent.parent / "projects" / "example_db"
 MODELS_DIR = PROJECT_DIR / "models"
 
 

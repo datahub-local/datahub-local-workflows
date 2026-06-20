@@ -1,0 +1,23 @@
+name: "bodega"
+version: "1.0.0"
+config-version: 2
+
+profile: "bodega"
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+# Each medallion layer is a real catalog (Trino: Iceberg over Apache Polaris;
+# DuckDB: an attached database). Models set +database (catalog) and +schema (namespace),
+# yielding `<catalog>.bodega.<table>`. generate_schema_name (macros/) keeps the schema
+# verbatim instead of prefixing it with the target schema.
+models:
+  bodega:
+    +materialized: table
+    +schema: bodega
+    silver:
+      +database: silver
+    gold:
+      +database: gold

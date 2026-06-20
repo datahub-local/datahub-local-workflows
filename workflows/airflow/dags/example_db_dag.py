@@ -2,15 +2,12 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 
-from tasks.dbt import DbtTaskConfig, SecretEnvVarRef, create_dbt_task
-from tasks.dlt import DltTaskConfig, create_dlt_task
+from utils.dbt import DbtTaskConfig, SecretEnvVarRef, create_dbt_task
+from utils.dlt import DltTaskConfig, create_dlt_task
 
 S3_SECRET_ENV_VARS = (
     SecretEnvVarRef(secret_name="s3-credentials", secret_key="accessKey", env_name="S3_ACCESS_KEY"),
     SecretEnvVarRef(secret_name="s3-credentials", secret_key="secretKey", env_name="S3_SECRET_KEY"),
-)
-POLARIS_SECRET_ENV_VARS = (
-    SecretEnvVarRef(secret_name="polaris-credentials", secret_key="credential", env_name="POLARIS_CREDENTIAL"),
 )
 POSTGRES_SECRET_ENV_VARS = (
     SecretEnvVarRef(secret_name="postgresql-admin-credentials", secret_key="user", env_name="EXAMPLE_DB_USER"),
@@ -43,7 +40,7 @@ with DAG(
             task_id="dlt_ingest_example_db",
             project="example_db",
             pipeline="ingest",
-            secret_env_vars=(*S3_SECRET_ENV_VARS, *POLARIS_SECRET_ENV_VARS),
+            secret_env_vars=S3_SECRET_ENV_VARS,
         )
     )
 

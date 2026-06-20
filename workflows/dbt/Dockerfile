@@ -16,6 +16,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && uv venv --python "$(cat .python-version)" --managed-python --relocatable /app/.venv \
     && UV_LINK_MODE=copy uv sync --no-dev --no-install-project
 
+COPY src/ /app/src/
+
+RUN UV_LINK_MODE=copy uv sync --no-dev
+
 FROM debian:trixie
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -23,14 +27,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PATH=/app/.venv/bin:$PATH
+# dbt project dirs are at /app/ in the container.
+ENV DBT_PROJECTS_DIR=/app/projects
 
 WORKDIR /app
 
 COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /opt/python /opt/python
-COPY dbt_runner/ /app/dbt_runner/
-COPY example_db/ /app/example_db/
-COPY pi/ /app/pi/
+COPY --from=builder /app/src /app/src
+COPY projects/ /app/projects/
 
 # python -m runner runs `dbt build` against Trino (homelab) or DuckDB (local).
 ENTRYPOINT ["python", "-m", "dbt_runner"]

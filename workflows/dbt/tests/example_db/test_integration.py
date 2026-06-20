@@ -32,7 +32,7 @@ SAMPLE_ROWS = [
      "5500", "31", "38", "6855"),
 ]
 
-PROJECT_DIR = Path(__file__).parent.parent.parent / "example_db"
+PROJECT_DIR = Path(__file__).parent.parent.parent / "projects" / "example_db"
 
 
 @pytest.fixture(scope="module")

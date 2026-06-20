@@ -1,0 +1,20 @@
+SELECT
+    invoice_number,
+    {{ bodega_parse_dt('invoice_date') }}                               AS invoice_datetime,
+    CAST({{ bodega_parse_dt('invoice_date') }} AS DATE)                 AS invoice_date,
+    year({{ bodega_parse_dt('invoice_date') }})                        AS invoice_year,
+    month({{ bodega_parse_dt('invoice_date') }})                       AS invoice_month,
+    week({{ bodega_parse_dt('invoice_date') }})                        AS invoice_week,
+    operator_id,
+    store_vat_id,
+    trim(upper(store_name))                                             AS store_name,
+    total_amount,
+    {{ bodega_json_sum('taxes_json', 'tax') }}                          AS total_tax_amount,
+    {{ bodega_json_sum('taxes_json', 'base') }}                         AS total_base_amount,
+    payment_method,
+    card_type,
+    card_number_masked,
+    supermarket,
+    {{ bodega_json_len('items_json') }}                                 AS item_count,
+    _ingested_at
+FROM {{ source('bodega', 'raw_invoices') }}

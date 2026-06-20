@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "datahub-local-workflows-dbt"
 version = "0.1.0"
@@ -12,6 +16,9 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "pyyaml>=6.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.uv]
 # Optional uv settings for this project can be added here.

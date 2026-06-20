@@ -14,7 +14,20 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.sdk import task
 
-from tasks.sample import fetch_sample, process_sample
+
+def fetch_sample(context: dict | None = None) -> str:
+    """Simulate fetching sample data. Returns a message for testing."""
+    msg = "Fetching sample data..."
+    print(msg)
+    return msg
+
+
+def process_sample(context: dict | None = None) -> str:
+    """Simulate processing sample data. Returns a message for testing."""
+    msg = "Processing sample data..."
+    print(msg)
+    return msg
+
 
 default_args = {
     "owner": "datahub-local",

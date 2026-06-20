@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: bodega
+    description: "Raw invoice landing zone (bronze catalog), populated by the dlt ingest pipeline."
+    database: bronze
+    schema: bodega
+    tables:
+      - name: raw_invoices
+        description: >
+          Parsed Mercadona invoice JSON drained from Kafka. One row per invoice.
+          items_json and taxes_json are raw JSON strings expanded in Silver.
+
+  - name: bodega_enrich
+    description: "LLM-categorised product dimension (silver catalog), populated by the dlt enrich pipeline."
+    database: silver
+    schema: bodega
+    tables:
+      - name: products
+        description: >
+          Product catalogue with LLM-assigned category and subcategory.
+          Populated by the dlt enrich step between dbt silver and dbt gold runs.

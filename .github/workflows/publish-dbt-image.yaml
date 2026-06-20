@@ -1,18 +1,34 @@
 name: Publish dbt Image
 
 on:
-  workflow_dispatch:
-
-  push:
+  workflow_run:
+    workflows: [Test Workflows]
+    types: [completed]
     branches: [main]
-    paths:
-      - workflows/dbt/**
-  pull_request:
-    paths:
-      - workflows/dbt/**
 
 jobs:
+  changes:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      dbt: ${{ steps.filter.outputs.dbt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 2
+      - name: Check for dbt changes
+        id: filter
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "^workflows/dbt/"; then
+            echo "dbt=true" >> $GITHUB_OUTPUT
+          else
+            echo "dbt=false" >> $GITHUB_OUTPUT
+          fi
+
   build-and-push:
+    needs: changes
+    if: needs.changes.outputs.dbt == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,30 +37,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-
-      - name: Install Python with uv
-        working-directory: workflows/dbt
-        run: uv python install "$(cat .python-version)"
-
-      - name: Install dependencies
-        working-directory: workflows/dbt
-        run: uv sync --extra dev
-
-      - name: Validate dbt projects (parse on DuckDB local target)
-        working-directory: workflows/dbt
-        run: |
-          uv run dbt parse --project-dir pi --profiles-dir pi --target local
-          uv run dbt parse --project-dir example_db --profiles-dir example_db --target local
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to GHCR
-        if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -55,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: workflows/dbt
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/datahub-local/datahub-local-workflows-dbt:main
           cache-from: type=gha

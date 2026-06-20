@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from airflow import DAG
 
-from tasks.dbt import DbtTaskConfig, create_dbt_task
+from utils.dbt import DbtTaskConfig, create_dbt_task
 
 default_args = {
     "owner": "datahub-local",

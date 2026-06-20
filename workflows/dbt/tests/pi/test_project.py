@@ -3,7 +3,7 @@ from pathlib import Path
 
 import yaml
 
-PROJECT_DIR = Path(__file__).parent.parent.parent / "pi"
+PROJECT_DIR = Path(__file__).parent.parent.parent / "projects" / "pi"
 
 
 def _load(name: str) -> dict:

@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: invoices
+    description: "Cleaned invoice headers. One row per shopping trip."
+    columns:
+      - name: invoice_number
+        description: "Natural primary key."
+        tests:
+          - not_null
+          - unique
+
+  - name: invoice_items
+    description: "Exploded line items. One row per product per invoice."
+    columns:
+      - name: invoice_number
+        tests:
+          - not_null
+      - name: item_position
+        tests:
+          - not_null
+
+  - name: invoice_taxes
+    description: "Exploded tax breakdown. One row per tax rate per invoice."
+    columns:
+      - name: invoice_number
+        tests:
+          - not_null
+      - name: tax_rate
+        tests:
+          - not_null
+
+  - name: stores
+    description: "SCD Type 1 store dimension. One row per distinct store VAT ID."
+    columns:
+      - name: store_id
+        tests:
+          - not_null
+          - unique
+
+  - name: spending_by_day
+    description: "Daily spend aggregates per supermarket."
+    columns:
+      - name: invoice_date
+        tests:
+          - not_null
+
+  - name: spending_by_week
+    description: "Weekly spend aggregates per supermarket."
+    columns:
+      - name: week_start
+        tests:
+          - not_null
+
+  - name: top_products
+    description: "All-time product rankings by spend and frequency."
+    columns:
+      - name: description_clean
+        tests:
+          - not_null
+
+  - name: price_trends
+    description: "Weekly average unit price per product. Only products bought ≥2 times."
+    columns:
+      - name: description_clean
+        tests:
+          - not_null
+
+  - name: category_spending
+    description: "Daily spend by LLM-assigned product category."
+    columns:
+      - name: invoice_date
+        tests:
+          - not_null
+
+  - name: tax_summary
+    description: "Monthly tax base and amount per VAT rate."
+    columns:
+      - name: month_start
+        tests:
+          - not_null
