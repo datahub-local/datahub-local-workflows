@@ -1,4 +1,693 @@
 {
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-21T07:06:06.779Z",
+    "createdAt": "2026-06-21T07:06:04.474Z",
+    "versionId": "e6b40b03-049f-4843-97df-e13f4ea17745",
+    "workflowId": "rbhcstYPTJtNQcH2",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -544,
+          704
+        ],
+        "id": "fa76199f-272f-46c3-ab18-fb35227682ea",
+        "name": "When clicking 'Execute workflow’"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "d380dd6b-bd15-41c8-ae3b-9dec8ba61652",
+                "name": "FROM_DATE",
+                "value": "={{ $json.body.FROM_DATE || $json.FROM_DATE || $now.minus({days: 1}).toFormat('yyyy-MM-dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                "name": "TO_DATE",
+                "value": "={{ $json.body.TO_DATE || $json.TO_DATE || $now.toFormat('yyyy-MM-dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "5efe1c2a-750f-4d59-a75b-5e91023f92bf",
+                "name": "INVOICE_TYPE",
+                "value": "={{ $json.body.INVOICE_TYPE ||  $json.INVOICE_TYPE || 'MERCADONA' }}",
+                "type": "string"
+              },
+              {
+                "id": "2a8c3cc1-8cb2-4c96-89cc-3f42433755db",
+                "name": "TOPIC_NAME",
+                "value": "={{ $json.body.TOPIC_NAME ||  $json.TOPIC_NAME || 'bodega_invoices' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -320,
+          512
+        ],
+        "id": "9bda6234-6154-4c6b-8687-63c576a748fb",
+        "name": "set_vars"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "FROM_DATE"
+              },
+              {
+                "name": "TO_DATE"
+              },
+              {
+                "name": "INVOICE_TYPE"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -544,
+          512
+        ],
+        "id": "07f3f08a-7111-4e33-9de3-74fd4805a71e",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "filters": {
+            "q": "=from:{{ $json.FROM_FILTER }} after:{{ $('switch_invoice_type').item.json.FROM_DATE }} before:{{ $('switch_invoice_type').item.json.TO_DATE }}"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          352,
+          512
+        ],
+        "id": "31af18ee-4cee-4dd4-a77d-37185ba4105f",
+        "name": "get_messages",
+        "webhookId": "bcfe80f1-ed55-4ca0-8232-171b43bd6cd1",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GVSyKsDywK5nuwNG",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": []
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          800,
+          352
+        ],
+        "id": "632a7859-183e-46d7-b445-f940a871f991",
+        "name": "set_output"
+      },
+      {
+        "parameters": {
+          "jsCode": "let results = [];\n\nfor (item of items) {\n    for (key of Object.keys(item.binary)) {\n        results.push({\n            json: {\n                fileName: item.binary[key].fileName\n            },\n            binary: {\n                data: item.binary[key],\n            }\n        });\n    }\n}\n\nreturn results;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1024,
+          544
+        ],
+        "id": "c83e6981-d483-4411-9e7f-f03995b11a77",
+        "name": "parse_attachments"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "messageId": "={{ $json.id }}",
+          "simple": false,
+          "options": {
+            "downloadAttachments": true
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          800,
+          544
+        ],
+        "id": "f0133d6f-6095-4653-aec5-ab99e2a4cb90",
+        "name": "donwload_message",
+        "webhookId": "42a76ee5-fb83-43fa-8409-84f4468aea09",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GVSyKsDywK5nuwNG",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          576,
+          512
+        ],
+        "id": "2919493e-5acf-46f4-adac-36185cb687da",
+        "name": "loop_messages"
+      },
+      {
+        "parameters": {
+          "operation": "pdf",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          1248,
+          544
+        ],
+        "id": "977f9f05-e05a-40da-ad4f-aa675b89f873",
+        "name": "extract_data_from_pdf"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "dc0a7e30-9eb4-4add-ab08-51b14ed53ffb",
+                "name": "FROM_FILTER",
+                "value": "ticket_digital@mail.mercadona.com",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          128,
+          512
+        ],
+        "id": "79de4cc0-de49-4937-a533-80046cfe0af1",
+        "name": "set_mercadona_vars"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.INVOICE_TYPE }}",
+                      "rightValue": "MERCADONA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "5a99d316-851f-47e1-b7b6-611fa4eae0bb"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          -96,
+          512
+        ],
+        "id": "60eb7789-4f1a-4af7-b177-f9c5ffdc86e6",
+        "name": "switch_invoice_type"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('set_vars').item.json.INVOICE_TYPE }}",
+                      "rightValue": "MERCADONA",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "2bfab481-05a9-4281-b1bf-7acd15ecdb7c"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {
+            "allMatchingOutputs": true
+          }
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          1472,
+          544
+        ],
+        "id": "3ab08421-e4f1-45fa-acdd-68deaf102550",
+        "name": "switch_parse_invoice"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Invoice Example (new format as of 2026):\n/**\n * MERCADONA, S.A. A-46103834\n * C/ LOLO RICO, 1\n * 28523 RIVAS-VACIAMADRID\n * TELÉFONO: 917578853\n * 18/06/2026 17:25 OP: 3158540\n * FACTURA SIMPLIFICADA: 4693-022-777911\n * Descripción P. Unit Importe\n * 2 AGUADOY P-6X1,5L 1,62 3,24\n * 1 COCA COLA ZERO 4L 3,80\n * 1 SANDIA BAJA SEMILLAS\n * 6,595 kg 0,85 €/kg 5,61\n * TOTAL (€) 130,76\n * TARJETA BANCARIA 130,76\n * IVA BASE IMPONIBLE (€) CUOTA (€)\n * 4% 42,60 1,70\n * 10% 46,28 4,63\n * 21% 29,38 6,17\n * TOTAL 118,26 12,50\n * TARJ BANCARIA: **** **** **** 6403\n * AUT: 308795 ARC: 00 AID:\n * A0000000041010\n * Verificado por dispositivo\n * Importe: 130,76 € \n * DEBIT\n * MASTERCARD\n * SE ADMITEN DEVOLUCIONES CON TICKET\n */\nfunction parseInvoice(text) {\n\tconst lines = text.split('\\n').map(line => line.trim());\n\n\tconst nameVatRegex = /^(.+)\\s+([A-Z]-\\d+)/;\n\n\tconst store = {\n\t\tname: lines[0].match(nameVatRegex)[1],\n\t\tvat_id: lines[0].match(nameVatRegex)[2],\n\t\taddress: lines[1] + ', ' + lines[2],\n\t\tphone: lines[3].split(':')[1].trim()\n\t};\n\n\tconst dateLine = lines[4];\n\tconst [day, month, year] = dateLine.split(' ')[0].split('/');\n\tconst time = dateLine.split(' ')[1];\n\tconst invoice = {\n\t\tnumber: lines[5].split(':')[1].trim(),\n\t\toperator: dateLine.split('OP:')[1].trim(),\n\t\tdate: `${year}-${month}-${day}T${time}:00`\n\t};\n\n\tconst items = [];\n\tlet i = 6;\n\twhile (i < lines.length && !lines[i].startsWith('TOTAL (€)')) {\n\t\tlet line = lines[i];\n\n\t\t// Handle weighted product weight line: \"6,595 kg 0,85 €/kg 5,61\"\n\t\tif (line.includes('€/kg')) {\n\t\t\tconst prevLine = lines[i - 1];\n\t\t\tconst [, ...descArr] = prevLine.split(' '); // skip leading \"1\" unit count\n\t\t\tconst description = descArr.join(' ');\n\t\t\tconst weightMatch = line.match(/^([\\d,.]+)\\s+kg\\s+([\\d,.]+)\\s+€\\/kg\\s+([\\d,.]+)/);\n\t\t\tconst quantity = parseFloat(weightMatch[1].replace(',', '.'));\n\t\t\tconst unit_price = parseFloat(weightMatch[2].replace(',', '.'));\n\t\t\tconst total = parseFloat(weightMatch[3].replace(',', '.'));\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\t// Handle multiple quantity items: \"N DESC UNIT_PRICE TOTAL\"\n\t\tlet multiMatch = line.match(/^(\\d+)\\s+(.+?)\\s+([\\d,.]+)\\s+([\\d,.]+)$/);\n\t\tif (multiMatch) {\n\t\t\tconst quantity = parseInt(multiMatch[1]);\n\t\t\tconst description = multiMatch[2].trim();\n\t\t\tconst unit_price = parseFloat(multiMatch[3].replace(',', '.'));\n\t\t\tconst total = parseFloat(multiMatch[4].replace(',', '.'));\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\t// Handle single quantity items: \"1 DESC PRICE\"\n\t\tlet singleMatch = line.match(/^1\\s+(.+?)\\s+([\\d,.]+)$/);\n\t\tif (singleMatch) {\n\t\t\tconst quantity = 1;\n\t\t\tconst description = singleMatch[1].trim();\n\t\t\tconst unit_price = parseFloat(singleMatch[2].replace(',', '.'));\n\t\t\tconst total = unit_price;\n\t\t\titems.push({ description, quantity, unit_price, total });\n\t\t\ti++;\n\t\t\tcontinue;\n\t\t}\n\n\t\ti++;\n\t}\n\n\tconst totalLine = lines.find(l => l.startsWith('TOTAL (€)'));\n\tconst totalAmount = parseFloat(totalLine.split(' ')[2].replace(',', '.'));\n\n\t// Parse taxes dynamically — number of VAT rates can vary\n\tconst taxesStart = lines.indexOf('IVA BASE IMPONIBLE (€) CUOTA (€)') + 1;\n\tconst taxes = [];\n\tfor (let t = taxesStart; t < lines.length; t++) {\n\t\tif (lines[t].startsWith('TOTAL')) break;\n\t\tconst parts = lines[t].split(' ');\n\t\tif (parts.length >= 3 && /^\\d+%$/.test(parts[0])) {\n\t\t\ttaxes.push({\n\t\t\t\trate: parts[0],\n\t\t\t\tbase: parseFloat(parts[1].replace(',', '.')),\n\t\t\t\ttax: parseFloat(parts[2].replace(',', '.')),\n\t\t\t});\n\t\t}\n\t}\n\n\t// Card number: handle both \"TARJ. BANCARIA:\" (old) and \"TARJ BANCARIA:\" (new)\n\tconst cardLine = lines.find(l => /^TARJ\\.?\\s+BANCARIA:/.test(l));\n\tconst cardMatch = cardLine ? cardLine.match(/TARJ\\.?\\s+BANCARIA:\\s+(.+)/) : null;\n\tconst cardNumber = cardMatch ? cardMatch[1].trim() : 'unknown';\n\n\t// Card type: may be on same line as \"Importe:\" (old) or on following lines (new)\n\tconst importeIdx = lines.findIndex(l => l.startsWith('Importe:'));\n\tconst importeMatch = importeIdx >= 0 ? lines[importeIdx].match(/Importe:\\s*[\\d,.]+\\s*€\\s*(.*)/) : null;\n\tlet cardType = (importeMatch && importeMatch[1].trim()) || '';\n\tif (!cardType && importeIdx >= 0) {\n\t\tconst afterImporte = lines.slice(importeIdx + 1)\n\t\t\t.filter(l => l && !/^SE ADMITEN|^Verificado/.test(l));\n\t\tcardType = afterImporte.slice(0, 3).join(' ').trim();\n\t}\n\tcardType = cardType || 'UNKNOWN';\n\n\treturn {\n\t\tstore,\n\t\tinvoice,\n\t\titems,\n\t\ttotals: {\n\t\t\tamount: totalAmount,\n\t\t\tpayment_method: 'TARJETA BANCARIA',\n\t\t\tcard_type: cardType,\n\t\t\tcard_number: cardNumber\n\t\t},\n\t\ttaxes\n\t};\n}\n\nlet results = [];\n\nfor (item of items) {\n\tconst invoiceText = item.json.text;\n\n\tresults.push({\n\t\tjson: parseInvoice(invoiceText)\n\t});\n}\n\nreturn results;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1696,
+          608
+        ],
+        "id": "cdcdb94d-f974-427e-952d-dba439e98d14",
+        "name": "parse_mercadona_invoice"
+      },
+      {
+        "parameters": {
+          "topic": "={{ $('set_vars').item.json.TOPIC_NAME }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.kafka",
+        "typeVersion": 1,
+        "position": [
+          1024,
+          352
+        ],
+        "id": "c28f73d1-7fa8-4032-b1bc-84331b4a0981",
+        "name": "Kafka",
+        "credentials": {
+          "kafka": {
+            "id": "vGnDLI3UczrsivDG",
+            "name": "Kafka account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "airflow-download-invoices-from-gmail",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -544,
+          320
+        ],
+        "id": "f5a3c853-43c6-4643-8978-52e4183728d6",
+        "name": "Airflow Webhook",
+        "webhookId": "a2f3b4c5-d6e7-8901-2345-678901234567",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "3OSbNivZY7LzNGHN",
+            "name": "Header Auth account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking 'Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "set_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_vars": {
+        "main": [
+          [
+            {
+              "node": "switch_invoice_type",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "set_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get_messages": {
+        "main": [
+          [
+            {
+              "node": "loop_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_output": {
+        "main": [
+          [
+            {
+              "node": "Kafka",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "parse_attachments": {
+        "main": [
+          [
+            {
+              "node": "extract_data_from_pdf",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "donwload_message": {
+        "main": [
+          [
+            {
+              "node": "parse_attachments",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "loop_messages": {
+        "main": [
+          [
+            {
+              "node": "set_output",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "donwload_message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "extract_data_from_pdf": {
+        "main": [
+          [
+            {
+              "node": "switch_parse_invoice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "set_mercadona_vars": {
+        "main": [
+          [
+            {
+              "node": "get_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "switch_invoice_type": {
+        "main": [
+          [
+            {
+              "node": "set_mercadona_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "switch_parse_invoice": {
+        "main": [
+          [
+            {
+              "node": "parse_mercadona_invoice",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "parse_mercadona_invoice": {
+        "main": [
+          [
+            {
+              "node": "loop_messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow Webhook": {
+        "main": [
+          [
+            {
+              "node": "set_vars",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "no name",
+    "name": "Version e6b40b03",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "e6b40b03-049f-4843-97df-e13f4ea17745",
+  "connections": {
+    "When clicking 'Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "set_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_vars": {
+      "main": [
+        [
+          {
+            "node": "switch_invoice_type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "set_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_messages": {
+      "main": [
+        [
+          {
+            "node": "loop_messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_output": {
+      "main": [
+        [
+          {
+            "node": "Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_attachments": {
+      "main": [
+        [
+          {
+            "node": "extract_data_from_pdf",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "donwload_message": {
+      "main": [
+        [
+          {
+            "node": "parse_attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "loop_messages": {
+      "main": [
+        [
+          {
+            "node": "set_output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "donwload_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract_data_from_pdf": {
+      "main": [
+        [
+          {
+            "node": "switch_parse_invoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_mercadona_vars": {
+      "main": [
+        [
+          {
+            "node": "get_messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "switch_invoice_type": {
+      "main": [
+        [
+          {
+            "node": "set_mercadona_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "switch_parse_invoice": {
+      "main": [
+        [
+          {
+            "node": "parse_mercadona_invoice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_mercadona_invoice": {
+      "main": [
+        [
+          {
+            "node": "loop_messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow Webhook": {
+      "main": [
+        [
+          {
+            "node": "set_vars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-26T06:44:56.881Z",
+  "id": "rbhcstYPTJtNQcH2",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "DownloadInvoicesFromGmail",
   "nodes": [
     {
       "parameters": {},
@@ -342,195 +1031,51 @@
       }
     }
   ],
-  "connections": {
-    "When clicking 'Execute workflow’": {
-      "main": [
-        [
-          {
-            "node": "set_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "set_vars": {
-      "main": [
-        [
-          {
-            "node": "switch_invoice_type",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "When Executed by Another Workflow": {
-      "main": [
-        [
-          {
-            "node": "set_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "get_messages": {
-      "main": [
-        [
-          {
-            "node": "loop_messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "set_output": {
-      "main": [
-        [
-          {
-            "node": "Kafka",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "parse_attachments": {
-      "main": [
-        [
-          {
-            "node": "extract_data_from_pdf",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "donwload_message": {
-      "main": [
-        [
-          {
-            "node": "parse_attachments",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "loop_messages": {
-      "main": [
-        [
-          {
-            "node": "set_output",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "donwload_message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "extract_data_from_pdf": {
-      "main": [
-        [
-          {
-            "node": "switch_parse_invoice",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "set_mercadona_vars": {
-      "main": [
-        [
-          {
-            "node": "get_messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "switch_invoice_type": {
-      "main": [
-        [
-          {
-            "node": "set_mercadona_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "switch_parse_invoice": {
-      "main": [
-        [
-          {
-            "node": "parse_mercadona_invoice",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "parse_mercadona_invoice": {
-      "main": [
-        [
-          {
-            "node": "loop_messages",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Airflow Webhook": {
-      "main": [
-        [
-          {
-            "node": "set_vars",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    }
-  },
   "pinData": {
     "Airflow Webhook": [
       {
-        "headers": {
-          "host": "datahub-local-core-automation-n8n-webhook.automation.svc.cluster.local",
-          "user-agent": "python-requests/2.34.2",
-          "accept-encoding": "gzip, deflate",
-          "accept": "*/*",
-          "connection": "keep-alive",
-          "content-type": "application/json",
-          "x-n8n-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MzI4OTQ4MS04MGQ5LTRiYmEtOTA2Zi04YjQ5YWZmNmI2NWQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzQ3MjQzMzA2fQ.WH_pZUEaNva_ijlMD7BpLdzWOKQiODnSFABNNkUTcTo",
-          "content-length": "52"
+        "json": {
+          "headers": {
+            "host": "datahub-local-core-automation-n8n-webhook.automation.svc.cluster.local",
+            "user-agent": "python-requests/2.34.2",
+            "accept-encoding": "gzip, deflate",
+            "accept": "*/*",
+            "connection": "keep-alive",
+            "content-type": "application/json",
+            "x-n8n-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4MzI4OTQ4MS04MGQ5LTRiYmEtOTA2Zi04YjQ5YWZmNmI2NWQiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzQ3MjQzMzA2fQ.WH_pZUEaNva_ijlMD7BpLdzWOKQiODnSFABNNkUTcTo",
+            "content-length": "52"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "FROM_DATE": "2026-06-21",
+            "TO_DATE": "2026-06-20"
+          },
+          "webhookUrl": "https://automation-n8n.homelab.alvsanand.com/webhook/airflow-download-invoices-from-gmail",
+          "executionMode": "production"
         },
-        "params": {},
-        "query": {},
-        "body": {
-          "FROM_DATE": "2026-06-21",
-          "TO_DATE": "2026-06-20"
-        },
-        "webhookUrl": "https://automation-n8n.homelab.alvsanand.com/webhook/airflow-download-invoices-from-gmail",
-        "executionMode": "production"
+        "pairedItem": {
+          "item": 0
+        }
       }
     ]
   },
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "70ab6edfed5e49d335db704f293d96a545a20f1c152b6030fc4c9574919e0470"
-  }
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-07-26T06:44:56.881Z",
+      "createdAt": "2025-07-26T06:44:56.881Z",
+      "role": "workflow:owner",
+      "workflowId": "rbhcstYPTJtNQcH2",
+      "projectId": "zcGU09G6dy4Oah3l"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-06-21T07:06:04.472Z",
+  "versionId": "e6b40b03-049f-4843-97df-e13f4ea17745"
 }
