@@ -591,6 +591,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Download Content",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
