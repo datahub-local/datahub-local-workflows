@@ -60,6 +60,7 @@
   "isArchived": false,
   "meta": null,
   "name": "Test Form",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
