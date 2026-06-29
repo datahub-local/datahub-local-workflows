@@ -1429,6 +1429,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Image Content Generator",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
