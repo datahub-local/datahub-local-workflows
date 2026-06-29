@@ -684,6 +684,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "LinkedIn Image Creator",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
