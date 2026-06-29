@@ -85,6 +85,7 @@
   "isArchived": false,
   "meta": null,
   "name": "Catch Errors",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
