@@ -2274,6 +2274,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "LinkedIn Post Sharing",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
