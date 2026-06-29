@@ -688,6 +688,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "DownloadInvoicesFromGmail",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
