@@ -966,6 +966,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "LinkedIn Post Creator",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
