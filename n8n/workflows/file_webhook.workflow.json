@@ -406,6 +406,7 @@
   "isArchived": false,
   "meta": null,
   "name": "File Webhook",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
