@@ -1203,6 +1203,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Backup N8N Workflows",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
