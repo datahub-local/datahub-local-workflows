@@ -27,6 +27,7 @@ TABLE_NAME = "raw_invoices"
     name=TABLE_NAME,
     write_disposition="merge",
     primary_key=["invoice_number"],
+    columns={"invoice_date": {"data_type": "text"}},
 )
 def raw_invoices(bootstrap_servers: str, topic: str, group_id: str = "bodega-dlt-bronze"):
     """Micro-batch Kafka consumer: drain until 3 consecutive empty polls, then return."""
