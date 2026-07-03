@@ -88,6 +88,11 @@ def configure_iceberg_env(catalog: str, warehouse: str | None = None) -> None:
         f"{prefix}S3__SECRET_ACCESS_KEY": env("S3_SECRET_KEY", ""),
         f"{prefix}S3__PATH_STYLE_ACCESS": "true",
         f"{prefix}S3__REMOTE_SIGNING_ENABLED": "false",
+        # pyiceberg's REST catalog always requests vended credentials by default
+        # (see pyiceberg.catalog.rest.RestCatalog._config_headers). Polaris can't vend
+        # credentials for a self-hosted S3-compatible store like Garage, so disable the
+        # request and let pyiceberg fall back to the static S3 creds configured above.
+        f"{prefix}HEADER__X-ICEBERG-ACCESS-DELEGATION": "",
     }
     defaults[f"{prefix}SCOPE"] = "PRINCIPAL_ROLE:ALL"
     client_id = env("POLARIS_CLIENT_ID")
