@@ -149,7 +149,7 @@ def run(target: str):
             _delete_window_homelab(config.trino_url(), from_date, to_date)
         config.configure_iceberg_env("bronze")
         destination = dlt.destinations.filesystem(
-            bucket_url=f"s3://{config.bronze_bucket()}/{DATASET_NAME}",
+            bucket_url=f"s3://{config.bronze_bucket()}",
             credentials=config.s3_credentials(),
         )
         resource.apply_hints(table_format="iceberg")
