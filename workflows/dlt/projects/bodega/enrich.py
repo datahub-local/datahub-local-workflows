@@ -107,7 +107,8 @@ def _find_new_descriptions_local(silver_duckdb_path: str) -> list[dict]:
             existing = {
                 (r[0], r[1])
                 for r in con.execute(
-                    "SELECT description_clean, supermarket FROM bodega.products"
+                    "SELECT description_clean, supermarket FROM bodega.products "
+                    "WHERE subcategory != 'PARSE_ERROR'"
                 ).fetchall()
             }
 
@@ -140,7 +141,10 @@ def _find_new_descriptions_homelab(trino_url: str) -> list[dict]:
             existing = {
                 (r.description_clean, r.supermarket)
                 for r in conn.execute(
-                    text("SELECT description_clean, supermarket FROM silver.bodega.products")
+                    text(
+                        "SELECT description_clean, supermarket FROM silver.bodega.products "
+                        "WHERE subcategory != 'PARSE_ERROR'"
+                    )
                 )
             }
         except Exception:

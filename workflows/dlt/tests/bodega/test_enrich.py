@@ -178,7 +178,31 @@ class TestFindNewDescriptionsLocal:
         )
         con.execute(
             "CREATE TABLE bodega.products AS "
-            "SELECT 'LECHE' AS description_clean, 'MERCADONA' AS supermarket"
+            "SELECT 'LECHE' AS description_clean, 'MERCADONA' AS supermarket, "
+            "'DAIRY_EGGS' AS subcategory"
+        )
+        con.close()
+
+        from bodega.enrich import _find_new_descriptions_local
+        result = _find_new_descriptions_local(str(db))
+        assert len(result) == 1
+        assert result[0]["description_clean"] == "PAN"
+
+    def test_retries_parse_error_descriptions(self, tmp_path):
+        import duckdb
+        db = tmp_path / "silver.duckdb"
+        con = duckdb.connect(str(db))
+        con.execute("CREATE SCHEMA bodega")
+        con.execute(
+            "CREATE TABLE bodega.invoice_items AS "
+            "SELECT * FROM (VALUES "
+            "('LECHE', 'MERCADONA'), ('PAN', 'MERCADONA')) t(description_clean, supermarket)"
+        )
+        con.execute(
+            "CREATE TABLE bodega.products AS "
+            "SELECT * FROM (VALUES "
+            "('LECHE', 'MERCADONA', 'DAIRY_EGGS'), ('PAN', 'MERCADONA', 'PARSE_ERROR')) "
+            "t(description_clean, supermarket, subcategory)"
         )
         con.close()
 
