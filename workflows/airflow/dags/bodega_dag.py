@@ -15,6 +15,9 @@ ICEBERG_SECRET_ENV_VARS = S3_SECRET_ENV_VARS + (
     SecretEnvVarRef(secret_name="polaris-auth-credentials", secret_key="user", env_name="POLARIS_CLIENT_ID"),
     SecretEnvVarRef(secret_name="polaris-auth-credentials", secret_key="password", env_name="POLARIS_CLIENT_SECRET"),
 )
+OPENROUTER_SECRET_ENV_VARS = (
+    SecretEnvVarRef(secret_name="openrouter-auth-credentials", secret_key="api_key", env_name="OPENROUTER_API_KEY"),
+)
 N8N_DOWNLOAD_INVOICES_WORKFLOW_NAME = "DownloadInvoicesFromGmail"
 
 BODEGA_ENV_VARS = {
@@ -97,7 +100,7 @@ with DAG(
             task_id="dlt_enrich_bodega",
             project="bodega",
             pipeline="enrich",
-            secret_env_vars=ICEBERG_SECRET_ENV_VARS,
+            secret_env_vars=ICEBERG_SECRET_ENV_VARS + OPENROUTER_SECRET_ENV_VARS,
         )
     )
 

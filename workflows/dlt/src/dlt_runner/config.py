@@ -138,7 +138,7 @@ def ollama_base_url() -> str:
 
 
 def ollama_model() -> str:
-    return env("OLLAMA_MODEL", "lfm2.5-thinking:1.2b")
+    return env("OLLAMA_MODEL", "gemma3:4b-it-qat")
 
 
 def llm_settings() -> tuple[str, str, str]:
@@ -151,4 +151,4 @@ def llm_settings() -> tuple[str, str, str]:
 
 def llm_timeout() -> float:
     """Timeout in seconds for LLM chat-completion requests."""
-    return float(env("LLM_TIMEOUT_SECONDS", "120"))
+    return float(env("LLM_TIMEOUT_SECONDS", "300"))

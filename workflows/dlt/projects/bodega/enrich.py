@@ -32,10 +32,11 @@ Allowed categories: FRUITS_VEGETABLES, MEAT_FISH, DAIRY_EGGS, BAKERY_PASTRY, BEV
 SNACKS_CONFECTIONERY, CLEANING_HOUSEHOLD, PERSONAL_CARE, BABY_PRODUCTS, FROZEN_FOODS,
 CANNED_PRESERVED, PASTA_GRAINS, CONDIMENTS_SAUCES, READY_MEALS, OTHER.
 
-Return ONLY a JSON array, one object per description, in the same order, with fields:
+Return ONLY a JSON object of the form {"items": [...]}, where "items" is an array
+with one object per description, in the same order, with fields:
   category (one of the allowed values), subcategory (specific label, max 30 chars),
   is_weighted (true if typically sold by kg/weight, else false).
-No explanation, no markdown, just the JSON array."""
+No explanation, no markdown, just the JSON object."""
 
 
 def _categorize_batch(descriptions: list[str], base_url: str, api_key: str, model_id: str) -> list[dict]:
