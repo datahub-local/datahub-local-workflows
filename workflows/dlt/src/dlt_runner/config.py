@@ -118,3 +118,37 @@ def trino_url() -> str:
     port = env("TRINO_PORT", "8080")
     user = env("TRINO_USER", "dbt")
     return f"trino://{user}@{host}:{port}"
+
+
+def llm_provider() -> str:
+    """LLM provider to use for enrichment. Values: 'openrouter' or 'ollama' (default)."""
+    return env("LLM_PROVIDER", "ollama")
+
+
+def openrouter_api_key() -> str:
+    return os.environ["OPENROUTER_API_KEY"]
+
+
+def openrouter_model() -> str:
+    return env("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash")
+
+
+def ollama_base_url() -> str:
+    return env("OLLAMA_BASE_URL", "http://datahub-local-core-data-ollama:11434/v1")
+
+
+def ollama_model() -> str:
+    return env("OLLAMA_MODEL", "lfm2.5-thinking:1.2b")
+
+
+def llm_settings() -> tuple[str, str, str]:
+    """Return (base_url, api_key, model_id) for the configured LLM provider."""
+    provider = llm_provider()
+    if provider == "ollama":
+        return ollama_base_url(), "", ollama_model()
+    return "https://openrouter.ai/api/v1", openrouter_api_key(), openrouter_model()
+
+
+def llm_timeout() -> float:
+    """Timeout in seconds for LLM chat-completion requests."""
+    return float(env("LLM_TIMEOUT_SECONDS", "120"))

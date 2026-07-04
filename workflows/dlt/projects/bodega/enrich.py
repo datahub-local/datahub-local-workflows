@@ -15,7 +15,7 @@ import logging
 from datetime import datetime, timezone
 
 import dlt
-import httpx
+from dlt_runner.llm import call_llm
 
 from . import config
 
@@ -39,25 +39,16 @@ No explanation, no markdown, just the JSON array."""
 
 
 def _categorize_batch(descriptions: list[str], base_url: str, api_key: str, model_id: str) -> list[dict]:
-    headers = {"Content-Type": "application/json"}
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
     try:
-        resp = httpx.post(
-            f"{base_url}/chat/completions",
-            headers=headers,
-            json={
-                "model": model_id,
-                "messages": [
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user",   "content": json.dumps(descriptions)},
-                ],
-                "response_format": {"type": "json_object"},
-            },
-            timeout=60,
+        content = call_llm(
+            json.dumps(descriptions),
+            base_url=base_url,
+            api_key=api_key,
+            model_id=model_id,
+            system_prompt=SYSTEM_PROMPT,
+            timeout=config.llm_timeout(),
+            response_format={"type": "json_object"},
         )
-        resp.raise_for_status()
-        content = resp.json()["choices"][0]["message"]["content"]
         parsed = json.loads(content)
         items = parsed if isinstance(parsed, list) else parsed.get("items", parsed.get("results", []))
         if len(items) == len(descriptions):

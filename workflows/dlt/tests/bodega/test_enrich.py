@@ -11,7 +11,7 @@ import pytest
 
 class TestCategorizeBatch:
     def _call(self, descriptions, api_response):
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps(api_response)}}]
             }
@@ -32,7 +32,7 @@ class TestCategorizeBatch:
     def test_handles_wrapped_items_key(self):
         descs = ["LECHE ENTERA"]
         api_resp = {"items": [{"category": "DAIRY_EGGS", "subcategory": "Milk", "is_weighted": False}]}
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps(api_resp)}}]
             }
@@ -41,14 +41,14 @@ class TestCategorizeBatch:
         assert results[0]["category"] == "DAIRY_EGGS"
 
     def test_falls_back_to_other_on_network_error(self):
-        with patch("bodega.enrich.httpx.post", side_effect=Exception("network")):
+        with patch("dlt_runner.llm.httpx.post", side_effect=Exception("network")):
             from bodega.enrich import _categorize_batch
             results = _categorize_batch(["PRODUCTO X"], base_url="https://example.com/v1", api_key="k", model_id="m")
         assert results[0]["category"] == "OTHER"
         assert results[0]["subcategory"] == "PARSE_ERROR"
 
     def test_falls_back_to_other_on_count_mismatch(self):
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             # API returns fewer items than descriptions
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps([{"category": "OTHER"}])}}]
@@ -59,7 +59,7 @@ class TestCategorizeBatch:
 
     def test_ollama_sends_no_auth_header(self):
         """Empty api_key (Ollama default) must not send an Authorization header."""
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps([{"category": "OTHER", "subcategory": "", "is_weighted": False}])}}]
             }
@@ -70,7 +70,7 @@ class TestCategorizeBatch:
 
     def test_openrouter_sends_bearer_token(self):
         """Non-empty api_key (OpenRouter) must include Authorization header."""
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps([{"category": "OTHER", "subcategory": "", "is_weighted": False}])}}]
             }
@@ -82,7 +82,7 @@ class TestCategorizeBatch:
 
 class TestProductsResource:
     def _run(self, new_descs, api_response):
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.return_value = {
                 "choices": [{"message": {"content": json.dumps(api_response)}}]
             }
@@ -129,7 +129,7 @@ class TestProductsResource:
         new_descs = [{"description_clean": f"P{i}", "supermarket": "MERCADONA"} for i in range(65)]
         api_resp_30 = [{"category": "OTHER", "subcategory": "", "is_weighted": False}] * 30
         api_resp_05 = [{"category": "OTHER", "subcategory": "", "is_weighted": False}] * 5
-        with patch("bodega.enrich.httpx.post") as mock_post:
+        with patch("dlt_runner.llm.httpx.post") as mock_post:
             mock_post.return_value.json.side_effect = [
                 {"choices": [{"message": {"content": json.dumps(api_resp_30)}}]},
                 {"choices": [{"message": {"content": json.dumps(api_resp_30)}}]},

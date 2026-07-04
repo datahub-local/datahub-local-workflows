@@ -12,6 +12,13 @@ from dlt_runner.config import VALID_TARGETS as VALID_TARGETS
 from dlt_runner.config import configure_iceberg_env as configure_iceberg_env
 from dlt_runner.config import duckdb_path as duckdb_path
 from dlt_runner.config import env as env
+from dlt_runner.config import llm_provider as llm_provider
+from dlt_runner.config import llm_settings as llm_settings
+from dlt_runner.config import llm_timeout as llm_timeout
+from dlt_runner.config import ollama_base_url as ollama_base_url
+from dlt_runner.config import ollama_model as ollama_model
+from dlt_runner.config import openrouter_api_key as openrouter_api_key
+from dlt_runner.config import openrouter_model as openrouter_model
 from dlt_runner.config import polaris_uri as polaris_uri
 from dlt_runner.config import s3_credentials as s3_credentials
 from dlt_runner.config import s3_endpoint as s3_endpoint
@@ -43,32 +50,3 @@ def ingest_from_date() -> str | None:
 def ingest_to_date() -> str | None:
     """End (inclusive) of the invoice_date reconciliation window, if scoped."""
     return env("BODEGA_TO_DATE")
-
-
-def llm_provider() -> str:
-    """LLM provider to use for enrichment. Values: 'openrouter' or 'ollama' (default)."""
-    return env("LLM_PROVIDER", "ollama")
-
-
-def openrouter_api_key() -> str:
-    return os.environ["OPENROUTER_API_KEY"]
-
-
-def openrouter_model() -> str:
-    return env("OPENROUTER_MODEL", "deepseek/deepseek-v4-flash")
-
-
-def ollama_base_url() -> str:
-    return env("OLLAMA_BASE_URL", "http://datahub-local-core-data-ollama:11434/v1")
-
-
-def ollama_model() -> str:
-    return env("OLLAMA_MODEL", "lfm2.5-thinking:1.2b")
-
-
-def llm_settings() -> tuple[str, str, str]:
-    """Return (base_url, api_key, model_id) for the configured LLM provider."""
-    provider = llm_provider()
-    if provider == "ollama":
-        return ollama_base_url(), "", ollama_model()
-    return "https://openrouter.ai/api/v1", openrouter_api_key(), openrouter_model()
