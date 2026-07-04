@@ -23,5 +23,9 @@ SELECT
     p.category,
     p.subcategory
 FROM weekly w
-JOIN repeat_products r USING (description_clean, supermarket)
-LEFT JOIN {{ source('bodega_enrich', 'products') }} p USING (description_clean, supermarket)
+JOIN repeat_products r
+    ON  w.description_clean = r.description_clean
+    AND w.supermarket        = r.supermarket
+LEFT JOIN {{ source('bodega_enrich', 'products') }} p
+    ON  w.description_clean = p.description_clean
+    AND w.supermarket        = p.supermarket

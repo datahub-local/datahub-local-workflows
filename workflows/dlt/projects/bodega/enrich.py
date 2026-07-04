@@ -11,6 +11,7 @@ Already-categorised products are never re-queried.
 from __future__ import annotations
 
 import json
+import logging
 from datetime import datetime, timezone
 
 import dlt
@@ -21,6 +22,8 @@ from . import config
 PIPELINE_NAME = "bodega_enrich"
 DATASET_NAME = "bodega"
 TABLE_NAME = "products"
+
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """You are an expert at categorising Spanish supermarket products.
 Given a list of Mercadona product descriptions (abbreviated Spanish text), classify each one.
@@ -59,8 +62,12 @@ def _categorize_batch(descriptions: list[str], base_url: str, api_key: str, mode
         items = parsed if isinstance(parsed, list) else parsed.get("items", parsed.get("results", []))
         if len(items) == len(descriptions):
             return items
+        logger.warning(
+            "LLM returned %d categorized items for a batch of %d descriptions; marking batch as PARSE_ERROR",
+            len(items), len(descriptions),
+        )
     except Exception:
-        pass
+        logger.warning("Failed to categorize batch of %d descriptions", len(descriptions), exc_info=True)
     return [{"category": "OTHER", "subcategory": "PARSE_ERROR", "is_weighted": False}] * len(descriptions)
 
 
@@ -146,6 +153,7 @@ def _find_new_descriptions_homelab(trino_url: str) -> list[dict]:
                 )
             }
         except Exception:
+            logger.debug("silver.bodega.products not found; assuming no existing products (first run?)", exc_info=True)
             existing = set()
 
         all_items = [
@@ -174,6 +182,7 @@ def run(target: str):
             credentials=config.s3_credentials(),
         )
 
+    logger.info("bodega_enrich: found %d new product descriptions to categorize", len(new_descs))
     if not new_descs:
         return "No new product descriptions to categorise."
 
@@ -186,4 +195,6 @@ def run(target: str):
         destination=destination,
         dataset_name=DATASET_NAME,
     )
-    return pipeline.run(resource)
+    load_info = pipeline.run(resource)
+    logger.info("%s: row counts %s", PIPELINE_NAME, pipeline.last_trace.last_normalize_info.row_counts)
+    return load_info

@@ -11,13 +11,21 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import logging
 import sys
 
 
 SEP = "#" * 60
 
+logger = logging.getLogger(__name__)
+
 
 def main(argv: list[str] | None = None) -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s|[%(levelname)s]|%(name)s|%(message)s",
+    )
+
     parser = argparse.ArgumentParser(prog="dlt_runner")
     parser.add_argument("--pipeline", required=True)
     parser.add_argument("--project", required=True)
@@ -31,7 +39,15 @@ def main(argv: list[str] | None = None) -> None:
             f"project '{parsed.project}' does not support pipeline '{parsed.pipeline}'"
         )
 
-    module.run(parsed.target)
+    logger.info("Starting pipeline=%s project=%s target=%s", parsed.pipeline, parsed.project, parsed.target)
+    try:
+        module.run(parsed.target)
+    except Exception:
+        logger.exception(
+            "Pipeline failed: pipeline=%s project=%s target=%s", parsed.pipeline, parsed.project, parsed.target
+        )
+        raise
+    logger.info("Pipeline succeeded: pipeline=%s project=%s target=%s", parsed.pipeline, parsed.project, parsed.target)
 
 
 if __name__ == "__main__":

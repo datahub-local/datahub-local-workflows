@@ -11,6 +11,7 @@ strings in Bronze; explosion into rows happens in Silver.
 from __future__ import annotations
 
 import json
+import logging
 from datetime import datetime, timedelta, timezone
 
 import dlt
@@ -21,6 +22,8 @@ from . import config
 PIPELINE_NAME = "bodega_ingest"
 DATASET_NAME = "bodega"
 TABLE_NAME = "raw_invoices"
+
+logger = logging.getLogger(__name__)
 
 
 @dlt.resource(
@@ -124,7 +127,7 @@ def _delete_window_homelab(trino_url: str, from_date: str, to_date: str) -> None
                 {"from_date": from_date, "to_date": _exclusive_end(to_date)},
             )
         except Exception:
-            pass  # table doesn't exist yet on the first run
+            logger.debug("bronze.bodega.raw_invoices not found; skipping delete window (first run?)", exc_info=True)
 
 
 def run(target: str):
@@ -156,4 +159,6 @@ def run(target: str):
         destination=destination,
         dataset_name=DATASET_NAME,
     )
-    return pipeline.run(resource)
+    load_info = pipeline.run(resource)
+    logger.info("%s: row counts %s", PIPELINE_NAME, pipeline.last_trace.last_normalize_info.row_counts)
+    return load_info
