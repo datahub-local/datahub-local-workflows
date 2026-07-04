@@ -16,7 +16,7 @@ from dlt_runner.config import polaris_uri as polaris_uri
 from dlt_runner.config import s3_credentials as s3_credentials
 from dlt_runner.config import s3_endpoint as s3_endpoint
 from dlt_runner.config import bronze_bucket as bronze_bucket
-from dlt_runner.config import temp_bucket as temp_bucket
+from dlt_runner.config import silver_bucket as silver_bucket
 from dlt_runner.config import trino_url as trino_url
 from dlt_runner.config import validate_target as validate_target
 

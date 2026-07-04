@@ -40,6 +40,11 @@ def bronze_bucket() -> str:
     return env("DLT_BRONZE_BUCKET", "datahub-local-bronze")
 
 
+def silver_bucket() -> str:
+    """S3 bucket for the silver medallion layer (must match Polaris allowed locations)."""
+    return env("DLT_SILVER_BUCKET", "datahub-local-silver")
+
+
 def duckdb_path(catalog: str) -> str:
     default_dir = env("DBT_DUCKDB_DIR", "/tmp/duckdb")
     return env(_DUCKDB_ENV[catalog], f"{default_dir}/{catalog}.duckdb")

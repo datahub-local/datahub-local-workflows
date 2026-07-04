@@ -170,7 +170,7 @@ def run(target: str):
         new_descs = _find_new_descriptions_homelab(config.trino_url())
         config.configure_iceberg_env("silver")
         destination = dlt.destinations.filesystem(
-            bucket_url=f"s3://{config.temp_bucket()}/{DATASET_NAME}",
+            bucket_url=f"s3://{config.silver_bucket()}/{DATASET_NAME}",
             credentials=config.s3_credentials(),
         )
 

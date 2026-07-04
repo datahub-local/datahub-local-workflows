@@ -41,6 +41,12 @@ class TestTempBucket:
         assert shared_config.temp_bucket() == "datahub-local-temp"
 
 
+class TestSilverBucket:
+    def test_default_silver_bucket(self, monkeypatch):
+        monkeypatch.delenv("DLT_SILVER_BUCKET", raising=False)
+        assert shared_config.silver_bucket() == "datahub-local-silver"
+
+
 class TestPostgresDsn:
     def test_builds_dsn_from_jdbc_url(self, monkeypatch):
         monkeypatch.delenv("EXAMPLE_DB_DSN", raising=False)
