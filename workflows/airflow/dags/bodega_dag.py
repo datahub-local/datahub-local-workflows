@@ -56,11 +56,13 @@ with DAG(
         "from_date": Param(
             default=None,
             type=["string", "null"],
+            format="date",
             description="Start date (YYYY-MM-DD). Defaults to 7 days before today (run's wall-clock date).",
         ),
         "to_date": Param(
             default=None,
             type=["string", "null"],
+            format="date",
             description="End date (YYYY-MM-DD). Defaults to today (run's wall-clock date).",
         ),
     },
