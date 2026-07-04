@@ -11,7 +11,7 @@ strings in Bronze; explosion into rows happens in Silver.
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import dlt
 from confluent_kafka import Consumer, KafkaError
@@ -80,6 +80,53 @@ def raw_invoices(bootstrap_servers: str, topic: str, group_id: str = "bodega-dlt
         consumer.close()
 
 
+def _exclusive_end(to_date: str) -> str:
+    return (datetime.strptime(to_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
+
+
+def _delete_window_local(duckdb_path: str, from_date: str, to_date: str) -> None:
+    """Purge existing rows in the [from_date, to_date] window before re-ingesting it.
+
+    Kafka's merge write disposition only upserts by invoice_number, so an invoice that
+    disappeared from the source (e.g. corrected/removed upstream) would otherwise never
+    be removed from bronze on re-run. Scoping a delete to the reconciliation window makes
+    re-running the same from_date/to_date fully idempotent.
+    """
+    import duckdb
+
+    con = duckdb.connect(duckdb_path)
+    try:
+        table_exists = con.execute(
+            "SELECT COUNT(*) FROM information_schema.tables "
+            "WHERE table_schema='bodega' AND table_name='raw_invoices'"
+        ).fetchone()[0]
+        if not table_exists:
+            return
+        con.execute(
+            "DELETE FROM bodega.raw_invoices WHERE invoice_date >= ? AND invoice_date < ?",
+            [from_date, _exclusive_end(to_date)],
+        )
+    finally:
+        con.close()
+
+
+def _delete_window_homelab(trino_url: str, from_date: str, to_date: str) -> None:
+    from sqlalchemy import create_engine, text
+
+    engine = create_engine(trino_url)
+    with engine.connect() as conn:
+        try:
+            conn.execute(
+                text(
+                    "DELETE FROM bronze.bodega.raw_invoices "
+                    "WHERE invoice_date >= :from_date AND invoice_date < :to_date"
+                ),
+                {"from_date": from_date, "to_date": _exclusive_end(to_date)},
+            )
+        except Exception:
+            pass  # table doesn't exist yet on the first run
+
+
 def run(target: str):
     config.validate_target(target)
 
@@ -88,9 +135,15 @@ def run(target: str):
         topic=config.kafka_topic(),
     )
 
+    from_date, to_date = config.ingest_from_date(), config.ingest_to_date()
+
     if target == "local":
+        if from_date and to_date:
+            _delete_window_local(config.duckdb_path("bronze"), from_date, to_date)
         destination = dlt.destinations.duckdb(config.duckdb_path("bronze"))
     else:
+        if from_date and to_date:
+            _delete_window_homelab(config.trino_url(), from_date, to_date)
         config.configure_iceberg_env("bronze")
         destination = dlt.destinations.filesystem(
             bucket_url=f"s3://{config.bronze_bucket()}/{DATASET_NAME}",

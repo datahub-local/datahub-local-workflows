@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from airflow import DAG
+from airflow.sdk import Param
 
 from utils.dbt import DbtTaskConfig, SecretEnvVarRef, create_dbt_task
 from utils.dlt import DltTaskConfig, create_dlt_task
@@ -33,6 +34,13 @@ default_args = {
 }
 
 
+
+# Defaults are computed via Jinja/macros at task render time (wall-clock "now"), not
+# with datetime.now() in the DAG constructor — the latter re-evaluates on every
+# DAG-file parse and bumps the DAG version on no real change.
+FROM_DATE_EXPR = "{{ params.from_date or macros.ds_add(macros.datetime.now() | ds, -7) }}"
+TO_DATE_EXPR = "{{ params.to_date or (macros.datetime.now() | ds) }}"
+
 with DAG(
     dag_id="bodega_daily",
     default_args=default_args,
@@ -41,12 +49,24 @@ with DAG(
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["dbt", "dlt", "n8n"],
+    params={
+        "from_date": Param(
+            default=None,
+            type=["string", "null"],
+            description="Start date (YYYY-MM-DD). Defaults to 7 days before today (run's wall-clock date).",
+        ),
+        "to_date": Param(
+            default=None,
+            type=["string", "null"],
+            description="End date (YYYY-MM-DD). Defaults to today (run's wall-clock date).",
+        ),
+    },
 ) as dag:
     n8n_download_invoices = create_n8n_task(
         N8nTaskConfig(
             task_id="n8n_download_invoices",
             workflow_name=N8N_DOWNLOAD_INVOICES_WORKFLOW_NAME,
-            params={"FROM_DATE": "{{ data_interval_start | ds }}", "TO_DATE": "{{ macros.ds_add(data_interval_end | ds, +1) }}"},
+            params={"FROM_DATE": FROM_DATE_EXPR, "TO_DATE": TO_DATE_EXPR},
         )
     )
 
@@ -55,7 +75,11 @@ with DAG(
             task_id="dlt_ingest_bodega",
             project="bodega",
             pipeline="ingest",
-            env_vars=BODEGA_ENV_VARS,
+            env_vars={
+                **BODEGA_ENV_VARS,
+                "BODEGA_FROM_DATE": FROM_DATE_EXPR,
+                "BODEGA_TO_DATE": TO_DATE_EXPR,
+            },
             secret_env_vars=ICEBERG_SECRET_ENV_VARS,
         )
     )

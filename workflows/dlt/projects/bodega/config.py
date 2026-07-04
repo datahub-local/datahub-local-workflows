@@ -35,6 +35,16 @@ def kafka_topic() -> str:
     return env("KAFKA_TOPIC_BODEGA", "bodega_invoices")
 
 
+def ingest_from_date() -> str | None:
+    """Start (inclusive) of the invoice_date reconciliation window, if scoped."""
+    return env("BODEGA_FROM_DATE")
+
+
+def ingest_to_date() -> str | None:
+    """End (inclusive) of the invoice_date reconciliation window, if scoped."""
+    return env("BODEGA_TO_DATE")
+
+
 def llm_provider() -> str:
     """LLM provider to use for enrichment. Values: 'openrouter' or 'ollama' (default)."""
     return env("LLM_PROVIDER", "ollama")

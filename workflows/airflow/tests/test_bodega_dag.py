@@ -34,7 +34,26 @@ def test_n8n_download_invoices():
     task = mod.dag.get_task("n8n_download_invoices")
     assert task.op_kwargs["workflow_name"] == mod.N8N_DOWNLOAD_INVOICES_WORKFLOW_NAME
     assert task.op_kwargs["workflow_name"] == "DownloadInvoicesFromGmail"
-    assert task.op_kwargs["params"] == {"FROM_DATE": "{{ data_interval_start | ds }}", "TO_DATE": "{{ macros.ds_add(data_interval_end | ds, +1) }}"}
+    assert task.op_kwargs["params"] == {"FROM_DATE": mod.FROM_DATE_EXPR, "TO_DATE": mod.TO_DATE_EXPR}
+
+
+def test_dag_params_default_to_none():
+    # Defaults must be static (no datetime.now()) so DAG parsing doesn't bump the DAG
+    # version on every parse; the rolling window is computed via Jinja macros instead.
+    # Types are nullable ["string", "null"] so the Trigger DAG UI doesn't treat them
+    # as required and disable submit when left blank.
+    dag = _dag()
+    assert set(dag.params) == {"from_date", "to_date"}
+    assert dag.params["from_date"] is None
+    assert dag.params["to_date"] is None
+
+
+def test_date_exprs_fall_back_to_macros():
+    mod = importlib.import_module("dags.bodega_dag")
+    assert "macros.ds_add(macros.datetime.now() | ds, -7)" in mod.FROM_DATE_EXPR
+    assert "params.from_date or" in mod.FROM_DATE_EXPR
+    assert "macros.datetime.now() | ds" in mod.TO_DATE_EXPR
+    assert "params.to_date or" in mod.TO_DATE_EXPR
 
 
 def test_dlt_ingest_arguments():
@@ -71,6 +90,14 @@ def test_ingest_kafka_env_vars():
     assert "KAFKA_BOOTSTRAP_SERVERS" in env_map
     assert "redpanda" in env_map["KAFKA_BOOTSTRAP_SERVERS"].value
     assert env_map["KAFKA_TOPIC_BODEGA"].value == "bodega_invoices"
+
+
+def test_ingest_date_window_env_vars():
+    mod = importlib.import_module("dags.bodega_dag")
+    ingest = mod.dag.get_task("dlt_ingest_bodega")
+    env_map = {e.name: e for e in ingest.env_vars}
+    assert env_map["BODEGA_FROM_DATE"].value == mod.FROM_DATE_EXPR
+    assert env_map["BODEGA_TO_DATE"].value == mod.TO_DATE_EXPR
 
 
 def test_ingest_s3_secrets():

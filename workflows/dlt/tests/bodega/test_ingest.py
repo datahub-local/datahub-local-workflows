@@ -165,3 +165,57 @@ class TestRawInvoicesKafkaBehaviour:
 
         records, _ = _collect([_make_msg(SAMPLE_INVOICE), eof_msg])
         assert len(records) == 1
+
+
+class TestDeleteWindowLocal:
+    def test_noop_when_table_missing(self, tmp_path):
+        import duckdb
+
+        db = tmp_path / "bronze.duckdb"
+        duckdb.connect(str(db)).close()
+
+        from bodega.ingest import _delete_window_local
+        _delete_window_local(str(db), "2025-07-01", "2025-07-31")  # should not raise
+
+    def test_deletes_only_rows_within_window(self, tmp_path):
+        import duckdb
+
+        db = tmp_path / "bronze.duckdb"
+        con = duckdb.connect(str(db))
+        con.execute("CREATE SCHEMA bodega")
+        con.execute(
+            "CREATE TABLE bodega.raw_invoices AS SELECT * FROM (VALUES "
+            "('IN-WINDOW', '2025-07-16T09:31:00'), "
+            "('BEFORE', '2025-06-30T23:59:59'), "
+            "('ON-BOUNDARY', '2025-08-01T00:00:00'), "
+            "('AFTER', '2025-08-02T00:00:00')"
+            ") t(invoice_number, invoice_date)"
+        )
+        con.close()
+
+        from bodega.ingest import _delete_window_local
+        _delete_window_local(str(db), "2025-07-01", "2025-07-31")
+
+        con = duckdb.connect(str(db))
+        remaining = {r[0] for r in con.execute("SELECT invoice_number FROM bodega.raw_invoices").fetchall()}
+        con.close()
+        assert remaining == {"BEFORE", "ON-BOUNDARY", "AFTER"}
+
+
+class TestDeleteWindowHomelab:
+    def test_swallows_missing_table_error(self):
+        from bodega.ingest import _delete_window_homelab
+
+        with patch("sqlalchemy.create_engine") as mock_create_engine:
+            conn = mock_create_engine.return_value.connect.return_value.__enter__.return_value
+            conn.execute.side_effect = RuntimeError("table not found")
+            _delete_window_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31")  # should not raise
+
+    def test_issues_delete_with_exclusive_end_date(self):
+        from bodega.ingest import _delete_window_homelab
+
+        with patch("sqlalchemy.create_engine") as mock_create_engine:
+            conn = mock_create_engine.return_value.connect.return_value.__enter__.return_value
+            _delete_window_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31")
+            params = conn.execute.call_args.args[1]
+            assert params == {"from_date": "2025-07-01", "to_date": "2025-08-01"}
