@@ -1,0 +1,33 @@
+slice_name: Bodega - Biggest price moves
+description: First vs. last observed average unit price; repeat purchases only.
+viz_type: table
+params:
+  datasource: 0__table
+  viz_type: table
+  query_mode: raw
+  all_columns:
+  - description_clean
+  - category
+  - supermarket
+  - purchases
+  - first_price
+  - last_price
+  - change_pct
+  order_by_cols:
+  - '["change_pct", false]'
+  row_limit: 20
+  server_page_length: 20
+  column_config:
+    first_price:
+      d3NumberFormat: ',.2f'
+    last_price:
+      d3NumberFormat: ',.2f'
+    change_pct:
+      d3NumberFormat: +,.1f
+  table_timestamp_format: smart_date
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 3760bb56-2a61-475c-a98d-390131280de1
+version: 1.0.0
+dataset_uuid: c9a0e3c2-1128-4154-8883-ff8b2ee5bd2e

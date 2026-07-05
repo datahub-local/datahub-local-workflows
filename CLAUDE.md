@@ -4,12 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository overview
 
-A monorepo of data workflow definitions for a local/homelab Datahub stack. Four separate sub-projects, each with their own `pyproject.toml` and `uv` environment:
+A monorepo of data workflow definitions for a local/homelab Datahub stack. Five separate sub-projects; the Python ones have their own `pyproject.toml` and `uv` environment:
 
 - `workflows/dbt/` — dbt Core pipelines on **Trino** (homelab) / **DuckDB** (local), Iceberg + Apache Polaris, medallion architecture; a thin Python `dbt_runner` wraps `dbt build`
 - `workflows/dlt/` — [dlt](https://dlthub.com) ingest/export pipelines (CSV → bronze; silver/gold → Postgres) that run *around* dbt
 - `workflows/airflow/` — Airflow DAGs that orchestrate the dlt + dbt tasks via Kubernetes pods
 - `n8n/` — n8n workflow JSON exports and prompts (no Python code)
+- `superset/` — Superset dashboard export bundles per project (`superset/projects/<name>/dashboard_export/` YAML) plus a Helm release (`superset/release/`) that ships them as ConfigMaps labeled `superset_dashboard=1` for the dashboard sidecar in datahub-local-core. After editing YAML: `python3 superset/scripts/build_bundles.py` rebuilds the reproducible zips under `release/files/`, then `helmfile apply` from `superset/release/` deploys them. Object `uuid`s are the stable identity across re-imports — never regenerate them once deployed.
 
 ## Naming conventions
 

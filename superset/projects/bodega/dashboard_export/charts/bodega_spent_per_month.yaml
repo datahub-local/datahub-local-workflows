@@ -1,0 +1,28 @@
+slice_name: Bodega - Spent per month
+description: Total grocery spend per month, with trendline.
+viz_type: big_number
+params:
+  datasource: 0__table
+  viz_type: big_number
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metric:
+    expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_amount
+      type: DOUBLE
+    label: Spent
+    optionName: metric_bodega_spent
+  show_trend_line: true
+  start_y_axis_at_zero: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: c80d76d0-1315-4744-9e67-cdb6deb8095f
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4

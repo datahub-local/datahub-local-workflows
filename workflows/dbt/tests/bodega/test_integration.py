@@ -33,9 +33,11 @@ _INV1 = (
     json.dumps([{"rate": "10%", "base": "2.64", "tax": "0.26"}]),
     "MERCADONA", 0, "2026-01-15T18:31:00+00:00",
 )
+# Same store as INV-1 but with raw formatting variants (name casing, address spelling):
+# the stores model must still collapse both invoices into one row per VAT ID.
 _INV2 = (
-    "INV-2", "2026-01-16T10:00:00", "OP1", "Mercadona Centro", "B12345678",
-    "C/ Mayor 1", "900111222", 5.25, "CASH", None, None,
+    "INV-2", "2026-01-16T10:00:00", "OP1", "MERCADONA CENTRO ", "B12345678",
+    "Calle Mayor, 1", "900111222", 5.25, "CASH", None, None,
     json.dumps([
         {"description": "Leche Entera",   "quantity": "3",   "unit_price": "0.85", "total": "2.55"},
         {"description": "Manzana Golden", "quantity": "1.5", "unit_price": "1.80", "total": "2.70"},
@@ -165,6 +167,17 @@ def test_silver_invoice_taxes_exploded(con):
 
 def test_silver_stores_dedups_by_vat(con):
     assert _count(con, "silver.bodega.stores") == 1
+
+
+def test_silver_stores_latest_invoice_wins(con):
+    # INV-2 is the most recent invoice, so its descriptive fields win.
+    row = con.execute(
+        "SELECT name, address, first_seen_date, last_seen_date FROM silver.bodega.stores"
+    ).fetchone()
+    assert row[0] == "MERCADONA CENTRO"
+    assert row[1] == "Calle Mayor, 1"
+    assert str(row[2]) == "2026-01-15"
+    assert str(row[3]) == "2026-01-16"
 
 
 def test_gold_top_products_joins_categories(con):

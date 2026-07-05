@@ -1,0 +1,31 @@
+slice_name: Bodega - Category totals
+description: Total spend per category over the selected range.
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: category
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_spent
+      type: DOUBLE
+    label: Spent
+    optionName: metric_bodega_cat_total
+  orientation: horizontal
+  x_axis_sort: Spent
+  x_axis_sort_asc: false
+  show_legend: false
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 25
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: c5f52d02-4b96-41a0-bf8d-3bc5aaeacffd
+version: 1.0.0
+dataset_uuid: 011087c7-60b6-4a59-8205-bd8a074f1e85

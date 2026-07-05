@@ -1,0 +1,31 @@
+slice_name: Bodega - Weekly grocery spend
+description: Total spent per week, all supermarkets.
+viz_type: echarts_timeseries_line
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_line
+  x_axis: week_start
+  time_grain_sqla: P1W
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_amount
+      type: DOUBLE
+    label: Weekly spend
+    optionName: metric_bodega_weekly
+  area: true
+  opacity: 0.1
+  markerEnabled: false
+  show_legend: false
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: f3509e0a-a68c-469d-adb2-28ff8cf0022f
+version: 1.0.0
+dataset_uuid: 2a3f0226-6d1e-48ca-b475-1a2f91b553b7

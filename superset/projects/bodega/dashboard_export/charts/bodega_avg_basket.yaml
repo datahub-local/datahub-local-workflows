@@ -1,0 +1,25 @@
+slice_name: Bodega - Average basket
+description: Average invoice total per month.
+viz_type: big_number
+params:
+  datasource: 0__table
+  viz_type: big_number
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metric:
+    expressionType: SQL
+    sqlExpression: SUM(total_amount) / SUM(invoice_count)
+    label: Average basket
+    optionName: metric_bodega_avg_basket
+  show_trend_line: true
+  start_y_axis_at_zero: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: a6dd6a60-3d25-4892-9dff-d521a40bc7ab
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4

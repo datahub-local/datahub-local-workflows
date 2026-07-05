@@ -1,0 +1,566 @@
+dashboard_title: Bodega - Household grocery analytics
+description: 'Five-tab dashboard over the bodega dbt gold layer: overview, categories, products, prices and taxes.'
+css: ''
+slug: bodega
+uuid: eed0ce52-9bd2-426e-bdc0-28ef8f51b3f5
+position:
+  DASHBOARD_VERSION_KEY: v2
+  ROOT_ID:
+    type: ROOT
+    id: ROOT_ID
+    children:
+    - GRID_ID
+  GRID_ID:
+    type: GRID
+    id: GRID_ID
+    parents:
+    - ROOT_ID
+    children:
+    - TABS-bodega
+  HEADER_ID:
+    type: HEADER
+    id: HEADER_ID
+    meta:
+      text: Bodega - Household grocery analytics
+  TABS-bodega:
+    type: TABS
+    id: TABS-bodega
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    children:
+    - TAB-overview
+    - TAB-categories
+    - TAB-products
+    - TAB-prices
+    - TAB-taxes
+    meta: {}
+  TAB-overview:
+    type: TAB
+    id: TAB-overview
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-overview-kpis
+    - ROW-overview-trends
+    - ROW-overview-supermarket
+    meta:
+      text: Overview
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-spent-month:
+    type: CHART
+    id: CHART-spent-month
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-kpis
+    children: []
+    meta:
+      chartId: 101
+      uuid: c80d76d0-1315-4744-9e67-cdb6deb8095f
+      width: 3
+      height: 28
+      sliceName: Bodega - Spent per month
+  CHART-trips:
+    type: CHART
+    id: CHART-trips
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-kpis
+    children: []
+    meta:
+      chartId: 102
+      uuid: 716c4afe-5b50-4aa3-9b09-42525dc1796b
+      width: 3
+      height: 28
+      sliceName: Bodega - Shopping trips per month
+  CHART-avg-basket:
+    type: CHART
+    id: CHART-avg-basket
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-kpis
+    children: []
+    meta:
+      chartId: 103
+      uuid: a6dd6a60-3d25-4892-9dff-d521a40bc7ab
+      width: 3
+      height: 28
+      sliceName: Bodega - Average basket
+  CHART-items:
+    type: CHART
+    id: CHART-items
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-kpis
+    children: []
+    meta:
+      chartId: 104
+      uuid: 6bd4f15e-843c-4d97-acee-36e0a4749f95
+      width: 3
+      height: 28
+      sliceName: Bodega - Items bought per month
+  ROW-overview-kpis:
+    type: ROW
+    id: ROW-overview-kpis
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    children:
+    - CHART-spent-month
+    - CHART-trips
+    - CHART-avg-basket
+    - CHART-items
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-weekly-spend:
+    type: CHART
+    id: CHART-weekly-spend
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-trends
+    children: []
+    meta:
+      chartId: 105
+      uuid: f3509e0a-a68c-469d-adb2-28ff8cf0022f
+      width: 8
+      height: 50
+      sliceName: Bodega - Weekly grocery spend
+  CHART-weekday-basket:
+    type: CHART
+    id: CHART-weekday-basket
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-trends
+    children: []
+    meta:
+      chartId: 106
+      uuid: 3e82f3ab-9b5e-49c0-8895-fb01b367597a
+      width: 4
+      height: 50
+      sliceName: Bodega - Average basket by weekday
+  ROW-overview-trends:
+    type: ROW
+    id: ROW-overview-trends
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    children:
+    - CHART-weekly-spend
+    - CHART-weekday-basket
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-supermarket:
+    type: CHART
+    id: CHART-supermarket
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    - ROW-overview-supermarket
+    children: []
+    meta:
+      chartId: 107
+      uuid: fa5f2cdb-b88c-4a04-a292-79964ce7bc65
+      width: 12
+      height: 50
+      sliceName: Bodega - Monthly spend by supermarket
+  ROW-overview-supermarket:
+    type: ROW
+    id: ROW-overview-supermarket
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-overview
+    children:
+    - CHART-supermarket
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  TAB-categories:
+    type: TAB
+    id: TAB-categories
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-categories-charts
+    - ROW-categories-table
+    meta:
+      text: Categories
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-cat-monthly:
+    type: CHART
+    id: CHART-cat-monthly
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-categories
+    - ROW-categories-charts
+    children: []
+    meta:
+      chartId: 108
+      uuid: 64a808c4-94fa-435a-9904-b319da95fdb0
+      width: 8
+      height: 50
+      sliceName: Bodega - Monthly spend by category
+  CHART-cat-totals:
+    type: CHART
+    id: CHART-cat-totals
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-categories
+    - ROW-categories-charts
+    children: []
+    meta:
+      chartId: 109
+      uuid: c5f52d02-4b96-41a0-bf8d-3bc5aaeacffd
+      width: 4
+      height: 50
+      sliceName: Bodega - Category totals
+  ROW-categories-charts:
+    type: ROW
+    id: ROW-categories-charts
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-categories
+    children:
+    - CHART-cat-monthly
+    - CHART-cat-totals
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-subcategories:
+    type: CHART
+    id: CHART-subcategories
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-categories
+    - ROW-categories-table
+    children: []
+    meta:
+      chartId: 110
+      uuid: 79b1f53c-213b-4a3a-ab31-a318bad7f830
+      width: 12
+      height: 50
+      sliceName: Bodega - Top subcategories
+  ROW-categories-table:
+    type: ROW
+    id: ROW-categories-table
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-categories
+    children:
+    - CHART-subcategories
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  TAB-products:
+    type: TAB
+    id: TAB-products
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-products
+    meta:
+      text: Products
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-top-products:
+    type: CHART
+    id: CHART-top-products
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    - ROW-products
+    children: []
+    meta:
+      chartId: 111
+      uuid: 770e0ef5-bf54-4c05-b637-a0dd4d362933
+      width: 6
+      height: 60
+      sliceName: Bodega - Top products by total spend
+  CHART-frequent:
+    type: CHART
+    id: CHART-frequent
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    - ROW-products
+    children: []
+    meta:
+      chartId: 112
+      uuid: ada5ccac-19af-40c1-b369-1e6e2ca3f11c
+      width: 6
+      height: 60
+      sliceName: Bodega - Most frequently bought
+  ROW-products:
+    type: ROW
+    id: ROW-products
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    children:
+    - CHART-top-products
+    - CHART-frequent
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  TAB-prices:
+    type: TAB
+    id: TAB-prices
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-prices-charts
+    - ROW-prices-table
+    meta:
+      text: Prices
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-price-index:
+    type: CHART
+    id: CHART-price-index
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    - ROW-prices-charts
+    children: []
+    meta:
+      chartId: 113
+      uuid: 1623d781-e9bc-4975-867b-7d7f8f7b7b29
+      width: 8
+      height: 50
+      sliceName: Bodega - Staple price index
+  CHART-basket-index:
+    type: CHART
+    id: CHART-basket-index
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    - ROW-prices-charts
+    children: []
+    meta:
+      chartId: 114
+      uuid: 18db84a0-6e03-4cdf-92d6-f572a9d4fdda
+      width: 4
+      height: 50
+      sliceName: Bodega - Basket price index
+  ROW-prices-charts:
+    type: ROW
+    id: ROW-prices-charts
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    children:
+    - CHART-price-index
+    - CHART-basket-index
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-price-movers:
+    type: CHART
+    id: CHART-price-movers
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    - ROW-prices-table
+    children: []
+    meta:
+      chartId: 115
+      uuid: 3760bb56-2a61-475c-a98d-390131280de1
+      width: 12
+      height: 50
+      sliceName: Bodega - Biggest price moves
+  ROW-prices-table:
+    type: ROW
+    id: ROW-prices-table
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    children:
+    - CHART-price-movers
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  TAB-taxes:
+    type: TAB
+    id: TAB-taxes
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-taxes
+    meta:
+      text: Taxes
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-vat-monthly:
+    type: CHART
+    id: CHART-vat-monthly
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-taxes
+    - ROW-taxes
+    children: []
+    meta:
+      chartId: 116
+      uuid: 1a0eae45-b30a-477f-b5e7-08e4cca37a82
+      width: 8
+      height: 50
+      sliceName: Bodega - Monthly VAT by rate
+  CHART-vat-totals:
+    type: CHART
+    id: CHART-vat-totals
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-taxes
+    - ROW-taxes
+    children: []
+    meta:
+      chartId: 117
+      uuid: 2d429033-60ca-4a71-8761-876cf564fbe8
+      width: 4
+      height: 50
+      sliceName: Bodega - VAT totals by rate
+  ROW-taxes:
+    type: ROW
+    id: ROW-taxes
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-taxes
+    children:
+    - CHART-vat-monthly
+    - CHART-vat-totals
+    meta:
+      background: BACKGROUND_TRANSPARENT
+metadata:
+  color_scheme: supersetColors
+  refresh_frequency: 0
+  expanded_slices: {}
+  label_colors: {}
+  timed_refresh_immune_slices: []
+  cross_filters_enabled: true
+  native_filter_configuration:
+  - id: NATIVE_FILTER-bodega-time
+    name: Date range
+    filterType: filter_time
+    targets: []
+    defaultDataMask:
+      extraFormData:
+        time_range: Last year
+      filterState:
+        value: Last year
+    controlValues: {}
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: ''
+  - id: NATIVE_FILTER-bodega-supermarket
+    name: Supermarket
+    filterType: filter_select
+    targets:
+    - column:
+        name: supermarket
+      datasetUuid: 67f9204f-2050-4498-8728-2ce7648c3ed4
+    defaultDataMask:
+      extraFormData: {}
+      filterState: {}
+    controlValues:
+      multiSelect: true
+      enableEmptyFilter: false
+      defaultToFirstItem: false
+      searchAllOptions: false
+      inverseSelection: false
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: ''
+  - id: NATIVE_FILTER-bodega-category
+    name: Category
+    filterType: filter_select
+    targets:
+    - column:
+        name: category
+      datasetUuid: 011087c7-60b6-4a59-8205-bd8a074f1e85
+    defaultDataMask:
+      extraFormData: {}
+      filterState: {}
+    controlValues:
+      multiSelect: true
+      enableEmptyFilter: false
+      defaultToFirstItem: false
+      searchAllOptions: false
+      inverseSelection: false
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: ''
+version: 1.0.0

@@ -1,0 +1,27 @@
+slice_name: Bodega - Most frequently bought
+description: Staples ranked by the number of shopping trips they appear in.
+viz_type: table
+params:
+  datasource: 0__table
+  viz_type: table
+  query_mode: raw
+  all_columns:
+  - description_clean
+  - category
+  - purchase_count
+  - avg_unit_price
+  - last_purchased_date
+  order_by_cols:
+  - '["purchase_count", false]'
+  row_limit: 15
+  server_page_length: 15
+  column_config:
+    avg_unit_price:
+      d3NumberFormat: ',.2f'
+  table_timestamp_format: smart_date
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: ada5ccac-19af-40c1-b369-1e6e2ca3f11c
+version: 1.0.0
+dataset_uuid: 4d176c08-d0fb-441a-a99e-9d9e55932ce4

@@ -1,0 +1,25 @@
+slice_name: Bodega - Basket price index
+description: Average price index across all repeat products (100 = first observed price).
+viz_type: big_number
+params:
+  datasource: 0__table
+  viz_type: big_number
+  x_axis: week_start
+  time_grain_sqla: P1M
+  metric:
+    expressionType: SIMPLE
+    aggregate: AVG
+    column:
+      column_name: price_index
+      type: DOUBLE
+    label: Basket price index
+    optionName: metric_bodega_basket_idx
+  show_trend_line: true
+  start_y_axis_at_zero: false
+  y_axis_format: ',.1f'
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 18db84a0-6e03-4cdf-92d6-f572a9d4fdda
+version: 1.0.0
+dataset_uuid: 98faa30d-92b6-4f3d-88cb-1a6c5a48dea9

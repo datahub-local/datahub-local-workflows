@@ -1,0 +1,32 @@
+slice_name: Bodega - Monthly VAT by rate
+description: Tax paid per month, split by VAT rate.
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: month_start
+  time_grain_sqla: P1M
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: tax_amount
+      type: DOUBLE
+    label: VAT
+    optionName: metric_bodega_vat_monthly
+  groupby:
+  - tax_rate
+  stack: Stack
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 1000
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 1a0eae45-b30a-477f-b5e7-08e4cca37a82
+version: 1.0.0
+dataset_uuid: 99358036-f481-403e-b11f-4c33c0f9f508

@@ -1,0 +1,25 @@
+slice_name: Bodega - Average basket by weekday
+description: Mean invoice total per day of week (1 Mon - 7 Sun).
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: weekday
+  metrics:
+  - expressionType: SQL
+    sqlExpression: SUM(total_amount) / SUM(invoice_count)
+    label: Average basket
+    optionName: metric_bodega_weekday
+  show_legend: false
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 10
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 3e82f3ab-9b5e-49c0-8895-fb01b367597a
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4

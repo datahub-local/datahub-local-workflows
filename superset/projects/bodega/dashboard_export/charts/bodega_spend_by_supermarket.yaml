@@ -1,0 +1,32 @@
+slice_name: Bodega - Monthly spend by supermarket
+description: Where the money goes each month.
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_amount
+      type: DOUBLE
+    label: Spent
+    optionName: metric_bodega_super
+  groupby:
+  - supermarket
+  stack: Stack
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 1000
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: fa5f2cdb-b88c-4a04-a292-79964ce7bc65
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4

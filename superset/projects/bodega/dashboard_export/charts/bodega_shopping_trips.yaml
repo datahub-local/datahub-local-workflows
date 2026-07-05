@@ -1,0 +1,25 @@
+slice_name: Bodega - Shopping trips per month
+description: Number of invoices per month.
+viz_type: big_number
+params:
+  datasource: 0__table
+  viz_type: big_number
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metric:
+    expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: invoice_count
+      type: BIGINT
+    label: Trips
+    optionName: metric_bodega_trips
+  show_trend_line: true
+  start_y_axis_at_zero: true
+  y_axis_format: SMART_NUMBER
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 716c4afe-5b50-4aa3-9b09-42525dc1796b
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4

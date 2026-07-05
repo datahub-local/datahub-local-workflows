@@ -1,0 +1,32 @@
+slice_name: Bodega - Monthly spend by category
+description: LLM-assigned categories from the enrich pipeline; unmatched products fall into OTHER.
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_spent
+      type: DOUBLE
+    label: Spent
+    optionName: metric_bodega_cat_monthly
+  groupby:
+  - category
+  stack: Stack
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 5000
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 64a808c4-94fa-435a-9904-b319da95fdb0
+version: 1.0.0
+dataset_uuid: 011087c7-60b6-4a59-8205-bd8a074f1e85

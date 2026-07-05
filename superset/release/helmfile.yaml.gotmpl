@@ -1,0 +1,23 @@
+---
+environments:
+  default:
+    values:
+      - values/default.yaml.gotmpl
+---
+helmDefaults:
+  wait: true
+  timeout: 600
+  recreatePods: false
+  force: false
+
+commonLabels:
+  provider: "{{ .Values.release_name }}-helm"
+
+releases:
+  - name: "{{ .Values.release_name }}-superset"
+    # Must be the namespace the Superset dashboard sidecar watches
+    # (its own namespace unless SIDECAR_NAMESPACE says otherwise).
+    namespace: data
+    chart: "."
+    values:
+      - values/default.yaml.gotmpl

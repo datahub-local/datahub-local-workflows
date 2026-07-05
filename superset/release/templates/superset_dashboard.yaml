@@ -1,0 +1,20 @@
+#{{- $files := .Files.Glob "files/*.zip" }}
+#{{- range $path, $fileContents := $files }}
+#{{- $dashboardName := regexReplaceAll "[^A-Za-z0-9-]+" (regexReplaceAll "(^.*/)(.*)\\.zip$" $path "${2}") "" }}
+#{{- $options := index ($.Values.superset_dashboards | default dict) $dashboardName | default dict }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    superset_dashboard: "1"
+  name: {{ $.Values.release_name }}-superset-dashboard-{{ $dashboardName }}
+  #{{- if $options }}
+  annotations:
+    #{{- range $key, $value := $options }}
+    superset-dashboard/{{ $key }}: {{ $value | quote }}
+    #{{- end }}
+  #{{- end }}
+binaryData:
+  {{ $dashboardName }}.zip: {{ $.Files.Get $path | b64enc }}
+#{{- end }}

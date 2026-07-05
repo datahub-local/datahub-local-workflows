@@ -7,6 +7,7 @@ This repository serves as a centralized collection of workflow definitions for u
 Each subdirectory (e.g., `n8n/`) contains workflows for a specific tool or platform.
 
 - `n8n/` includes n8n workflow definitions and related files.
+- `superset/` includes Superset dashboard definitions per project and a Helm release that deploys them as ConfigMaps.
 - `workflows/` is the main directory for all workflow definitions, organized by tool or format. For example:
 - `workflows/airflow/` is an Airflow project to orchestrate data workflows.
 - `workflows/dbt/` is a dbt Core project (Trino / DuckDB, Iceberg + Apache Polaris) for the data transformation pipelines.

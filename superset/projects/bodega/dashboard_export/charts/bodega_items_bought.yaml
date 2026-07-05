@@ -1,0 +1,25 @@
+slice_name: Bodega - Items bought per month
+description: Line items bought per month.
+viz_type: big_number
+params:
+  datasource: 0__table
+  viz_type: big_number
+  x_axis: invoice_date
+  time_grain_sqla: P1M
+  metric:
+    expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_items
+      type: BIGINT
+    label: Items
+    optionName: metric_bodega_items
+  show_trend_line: true
+  start_y_axis_at_zero: true
+  y_axis_format: SMART_NUMBER
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 6bd4f15e-843c-4d97-acee-36e0a4749f95
+version: 1.0.0
+dataset_uuid: 67f9204f-2050-4498-8728-2ce7648c3ed4
