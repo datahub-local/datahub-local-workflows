@@ -1,0 +1,31 @@
+slice_name: Bodega - Invoice items by spend
+description: Line items of the selected invoice ranked by amount, top 15.
+viz_type: echarts_timeseries_bar
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_bar
+  x_axis: description_clean
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: total_amount
+      type: DOUBLE
+    label: Spent
+    optionName: metric_bodega_inv_items
+  orientation: horizontal
+  x_axis_sort: Spent
+  x_axis_sort_asc: false
+  show_legend: false
+  rich_tooltip: true
+  y_axis_format: SMART_NUMBER
+  currency_format:
+    symbol: EUR
+    symbolPosition: prefix
+  row_limit: 15
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 768c48b6-e60a-4f3a-b318-9f4038121130
+version: 1.0.0
+dataset_uuid: 2fcc3db9-6666-4c13-a7c7-69acc7e3a976

@@ -1,0 +1,36 @@
+slice_name: Bodega - Invoice line items
+description: Line items of the invoice(s) selected in the Invoice filter, in receipt order.
+viz_type: table
+params:
+  datasource: 0__table
+  viz_type: table
+  query_mode: raw
+  all_columns:
+  - item_position
+  - description_clean
+  - category
+  - subcategory
+  - quantity
+  - unit
+  - unit_price
+  - total_amount
+  order_by_cols:
+  - '["invoice_date", false]'
+  - '["invoice_number", true]'
+  - '["item_position", true]'
+  row_limit: 500
+  server_page_length: 25
+  column_config:
+    quantity:
+      d3NumberFormat: ',.3~f'
+    unit_price:
+      d3NumberFormat: ',.2f'
+    total_amount:
+      d3NumberFormat: ',.2f'
+  table_timestamp_format: smart_date
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: a9342f90-32b2-4f05-86b8-eafac355c703
+version: 1.0.0
+dataset_uuid: 2fcc3db9-6666-4c13-a7c7-69acc7e3a976

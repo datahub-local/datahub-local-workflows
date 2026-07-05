@@ -1,5 +1,5 @@
 dashboard_title: Bodega - Household grocery analytics
-description: 'Five-tab dashboard over the bodega dbt gold layer: overview, categories, products, prices and taxes.'
+description: 'Six-tab dashboard over the bodega dbt gold layer: overview, categories, products, prices, taxes and invoices.'
 css: ''
 slug: bodega
 uuid: eed0ce52-9bd2-426e-bdc0-28ef8f51b3f5
@@ -34,6 +34,7 @@ position:
     - TAB-products
     - TAB-prices
     - TAB-taxes
+    - TAB-invoices
     meta: {}
   TAB-overview:
     type: TAB
@@ -492,6 +493,151 @@ position:
     - CHART-vat-totals
     meta:
       background: BACKGROUND_TRANSPARENT
+  TAB-invoices:
+    type: TAB
+    id: TAB-invoices
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    children:
+    - ROW-invoices-list
+    - ROW-invoices-summary
+    - ROW-invoices-detail-table
+    - ROW-invoices-detail-charts
+    meta:
+      text: Invoices
+      defaultText: Tab title
+      placeholder: Tab title
+  CHART-invoice-list:
+    type: CHART
+    id: CHART-invoice-list
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    - ROW-invoices-list
+    children: []
+    meta:
+      chartId: 118
+      uuid: 0461a17c-e3fd-4c4d-bf6a-95ecada82bf3
+      width: 12
+      height: 50
+      sliceName: Bodega - Invoice list
+  ROW-invoices-list:
+    type: ROW
+    id: ROW-invoices-list
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    children:
+    - CHART-invoice-list
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-invoice-summary:
+    type: CHART
+    id: CHART-invoice-summary
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    - ROW-invoices-summary
+    children: []
+    meta:
+      chartId: 122
+      uuid: 8eb005cc-b1a7-4e96-b70f-f670539f7469
+      width: 12
+      height: 20
+      sliceName: Bodega - Invoice summary
+  ROW-invoices-summary:
+    type: ROW
+    id: ROW-invoices-summary
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    children:
+    - CHART-invoice-summary
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-invoice-lines:
+    type: CHART
+    id: CHART-invoice-lines
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    - ROW-invoices-detail-table
+    children: []
+    meta:
+      chartId: 119
+      uuid: a9342f90-32b2-4f05-86b8-eafac355c703
+      width: 12
+      height: 50
+      sliceName: Bodega - Invoice line items
+  ROW-invoices-detail-table:
+    type: ROW
+    id: ROW-invoices-detail-table
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    children:
+    - CHART-invoice-lines
+    meta:
+      background: BACKGROUND_TRANSPARENT
+  CHART-invoice-items-spend:
+    type: CHART
+    id: CHART-invoice-items-spend
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    - ROW-invoices-detail-charts
+    children: []
+    meta:
+      chartId: 120
+      uuid: 768c48b6-e60a-4f3a-b318-9f4038121130
+      width: 7
+      height: 50
+      sliceName: Bodega - Invoice items by spend
+  CHART-invoice-categories:
+    type: CHART
+    id: CHART-invoice-categories
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    - ROW-invoices-detail-charts
+    children: []
+    meta:
+      chartId: 121
+      uuid: 3b74c2cc-7d7e-40c1-ad8f-0c106261001f
+      width: 5
+      height: 50
+      sliceName: Bodega - Invoice spend by category
+  ROW-invoices-detail-charts:
+    type: ROW
+    id: ROW-invoices-detail-charts
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-invoices
+    children:
+    - CHART-invoice-items-spend
+    - CHART-invoice-categories
+    meta:
+      background: BACKGROUND_TRANSPARENT
 metadata:
   color_scheme: supersetColors
   refresh_frequency: 0
@@ -563,4 +709,29 @@ metadata:
       excluded: []
     type: NATIVE_FILTER
     description: ''
+  - id: NATIVE_FILTER-bodega-invoice
+    name: Invoice
+    filterType: filter_select
+    targets:
+    - column:
+        name: invoice_label
+      datasetUuid: 763787a8-8731-4aec-b90d-6abfd983e72f
+    defaultDataMask:
+      extraFormData: {}
+      filterState: {}
+    controlValues:
+      multiSelect: false
+      enableEmptyFilter: false
+      defaultToFirstItem: false
+      searchAllOptions: true
+      inverseSelection: false
+    cascadeParentIds: []
+    scope:
+      rootPath:
+      - ROOT_ID
+      excluded: []
+    type: NATIVE_FILTER
+    description: Only affects the invoice datasets (the only ones with invoice_number);
+      scope must stay ROOT_ID because hand-written exports carry no chartsInScope
+      and Superset ignores rootPath/excluded without it.
 version: 1.0.0

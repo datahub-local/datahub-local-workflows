@@ -1,0 +1,74 @@
+slice_name: Bodega - Invoice summary
+description: One-row header for the invoice selected in the list above (shop, address,
+  phone, payment, totals). Every field is max_by(field, invoice_datetime) and a HAVING
+  clause hides the row unless the active filters match exactly one invoice, so nothing
+  is shown until an invoice is selected. Metric cells never emit cross-filters.
+viz_type: table
+params:
+  datasource: 0__table
+  viz_type: table
+  query_mode: aggregate
+  groupby: []
+  metrics:
+  - expressionType: SQL
+    sqlExpression: max_by(invoice_label, invoice_datetime)
+    hasCustomLabel: true
+    label: Invoice
+    optionName: metric_summary_invoice
+  - expressionType: SQL
+    sqlExpression: max_by(store_name, invoice_datetime)
+    hasCustomLabel: true
+    label: Shop
+    optionName: metric_summary_shop
+  - expressionType: SQL
+    sqlExpression: max_by(store_address, invoice_datetime)
+    hasCustomLabel: true
+    label: Address
+    optionName: metric_summary_address
+  - expressionType: SQL
+    sqlExpression: max_by(store_phone, invoice_datetime)
+    hasCustomLabel: true
+    label: Phone
+    optionName: metric_summary_phone
+  - expressionType: SQL
+    sqlExpression: max_by(payment_detail, invoice_datetime)
+    hasCustomLabel: true
+    label: Payment
+    optionName: metric_summary_payment
+  - expressionType: SQL
+    sqlExpression: max_by(invoice_items, invoice_datetime)
+    hasCustomLabel: true
+    label: Items
+    optionName: metric_summary_items
+  - expressionType: SQL
+    sqlExpression: max_by(invoice_total, invoice_datetime)
+    hasCustomLabel: true
+    label: Total
+    optionName: metric_summary_total
+  - expressionType: SQL
+    sqlExpression: max_by(invoice_tax, invoice_datetime)
+    hasCustomLabel: true
+    label: Tax
+    optionName: metric_summary_tax
+  adhoc_filters:
+  - expressionType: SQL
+    clause: HAVING
+    sqlExpression: count(distinct invoice_label) = 1
+    subject: null
+    operator: null
+    comparator: null
+    filterOptionName: filter_summary_single_invoice
+  row_limit: 1
+  show_cell_bars: false
+  column_config:
+    Total:
+      d3NumberFormat: ',.2f'
+    Tax:
+      d3NumberFormat: ',.2f'
+  table_timestamp_format: smart_date
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 8eb005cc-b1a7-4e96-b70f-f670539f7469
+version: 1.0.0
+dataset_uuid: 763787a8-8731-4aec-b90d-6abfd983e72f

@@ -1,0 +1,60 @@
+slice_name: Bodega - Invoice list
+description: All invoices in the selected range, newest first. Click an invoice (first
+  column) to drill into it below and again to clear it. The other columns are aggregate
+  metrics, so a click on them never emits a stray cross-filter.
+viz_type: table
+params:
+  datasource: 0__table
+  viz_type: table
+  query_mode: aggregate
+  groupby:
+  - invoice_label
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: invoice_items
+      type: BIGINT
+    hasCustomLabel: true
+    label: Items
+    optionName: metric_invoice_items
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: invoice_total
+      type: DOUBLE
+    hasCustomLabel: true
+    label: Total
+    optionName: metric_invoice_total
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: invoice_tax
+      type: DOUBLE
+    hasCustomLabel: true
+    label: Tax
+    optionName: metric_invoice_tax
+  timeseries_limit_metric:
+    expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: invoice_datetime
+      type: TIMESTAMP
+    hasCustomLabel: true
+    label: Newest first
+    optionName: metric_invoice_sort
+  order_desc: true
+  row_limit: 500
+  server_page_length: 15
+  column_config:
+    Total:
+      d3NumberFormat: ',.2f'
+    Tax:
+      d3NumberFormat: ',.2f'
+  table_timestamp_format: smart_date
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 0461a17c-e3fd-4c4d-bf6a-95ecada82bf3
+version: 1.0.0
+dataset_uuid: 763787a8-8731-4aec-b90d-6abfd983e72f
