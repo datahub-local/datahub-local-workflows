@@ -1842,7 +1842,12 @@
       "recurrenceRules": []
     },
     "node:schedule_trigger": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        null
+      ],
+      "recurrenceRuleSignatures": [
+        null
+      ]
     }
   },
   "tags": [],
