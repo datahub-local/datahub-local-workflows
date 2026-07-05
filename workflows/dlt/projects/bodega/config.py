@@ -56,3 +56,8 @@ def ingest_batch_timestamp() -> str | None:
     """DAG-run-stable timestamp n8n stamps on Kafka messages, used to tell rows
     refreshed by the current reconciliation run apart from stale leftovers."""
     return env("BODEGA_BATCH_TIMESTAMP")
+
+
+def product_language() -> str:
+    """Language of the raw product descriptions fed to the enrich LLM prompt."""
+    return env("BODEGA_PRODUCT_LANGUAGE", "Spanish")

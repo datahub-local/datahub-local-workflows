@@ -10,9 +10,12 @@ Already-categorised products are never re-queried.
 
 from __future__ import annotations
 
+import csv
 import json
 import logging
 from datetime import datetime, timezone
+from pathlib import Path
+from string import Template
 
 import dlt
 from dlt_runner.llm import call_llm
@@ -23,20 +26,45 @@ PIPELINE_NAME = "bodega_enrich"
 DATASET_NAME = "bodega"
 TABLE_NAME = "products"
 
+CATEGORIES_FILE = Path(__file__).parent / "categories.csv"
+
 logger = logging.getLogger(__name__)
 
-SYSTEM_PROMPT = """You are an expert at categorising Spanish supermarket products.
-Given a list of Mercadona product descriptions (abbreviated Spanish text), classify each one.
 
-Allowed categories: FRUITS_VEGETABLES, MEAT_FISH, DAIRY_EGGS, BAKERY_PASTRY, BEVERAGES,
-SNACKS_CONFECTIONERY, CLEANING_HOUSEHOLD, PERSONAL_CARE, BABY_PRODUCTS, FROZEN_FOODS,
-CANNED_PRESERVED, PASTA_GRAINS, CONDIMENTS_SAUCES, READY_MEALS, OTHER.
+def _load_categories() -> list[dict]:
+    with CATEGORIES_FILE.open(newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def _format_categories(categories: list[dict]) -> str:
+    lines = []
+    for c in categories:
+        line = f"- {c['category']}: {c['description']}"
+        if c.get("examples"):
+            line += f" (e.g. {c['examples']})"
+        lines.append(line)
+    return "\n".join(lines)
+
+
+SYSTEM_PROMPT_TEMPLATE = Template("""You are an expert at categorising $language supermarket products.
+You will be given a list of raw product descriptions written in $language (abbreviated text);
+classify each one using the categories below (category names, descriptions and examples are in English).
+
+Allowed categories:
+$categories
 
 Return ONLY a JSON object of the form {"items": [...]}, where "items" is an array
 with one object per description, in the same order, with fields:
-  category (one of the allowed values), subcategory (specific label, max 30 chars),
+  category (one of the allowed values), subcategory (specific label IN ENGLISH, max 30 chars),
   is_weighted (true if typically sold by kg/weight, else false).
-No explanation, no markdown, just the JSON object."""
+No explanation, no markdown, just the JSON object.""")
+
+
+def _build_system_prompt() -> str:
+    return SYSTEM_PROMPT_TEMPLATE.substitute(
+        language=config.product_language(),
+        categories=_format_categories(_load_categories()),
+    )
 
 
 def _categorize_batch(descriptions: list[str], base_url: str, api_key: str, model_id: str) -> list[dict]:
@@ -46,7 +74,7 @@ def _categorize_batch(descriptions: list[str], base_url: str, api_key: str, mode
             base_url=base_url,
             api_key=api_key,
             model_id=model_id,
-            system_prompt=SYSTEM_PROMPT,
+            system_prompt=_build_system_prompt(),
             timeout=config.llm_timeout(),
             response_format={"type": "json_object"},
         )
