@@ -44,6 +44,11 @@ default_args = {
 FROM_DATE_EXPR = "{{ params.from_date or macros.ds_add(macros.datetime.now() | ds, -7) }}"
 TO_DATE_EXPR = "{{ params.to_date or (macros.datetime.now() | ds) }}"
 
+# Airflow's logical run timestamp (stable across every task in the same DagRun), used to
+# tag n8n's Kafka messages and let dlt_ingest tell "refreshed this run" apart from stale
+# leftovers when reconciling the [from_date, to_date] window.
+BATCH_TIMESTAMP_EXPR = "{{ ts }}"
+
 with DAG(
     dag_id="bodega_daily",
     default_args=default_args,
@@ -71,7 +76,11 @@ with DAG(
         N8nTaskConfig(
             task_id="n8n_download_invoices",
             workflow_name=N8N_DOWNLOAD_INVOICES_WORKFLOW_NAME,
-            params={"FROM_DATE": FROM_DATE_EXPR, "TO_DATE": TO_DATE_EXPR},
+            params={
+                "FROM_DATE": FROM_DATE_EXPR,
+                "TO_DATE": TO_DATE_EXPR,
+                "BATCH_TIMESTAMP": BATCH_TIMESTAMP_EXPR,
+            },
         )
     )
 
@@ -84,6 +93,7 @@ with DAG(
                 **BODEGA_ENV_VARS,
                 "BODEGA_FROM_DATE": FROM_DATE_EXPR,
                 "BODEGA_TO_DATE": TO_DATE_EXPR,
+                "BODEGA_BATCH_TIMESTAMP": BATCH_TIMESTAMP_EXPR,
             },
             secret_env_vars=ICEBERG_SECRET_ENV_VARS,
         )

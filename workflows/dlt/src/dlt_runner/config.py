@@ -122,7 +122,7 @@ def trino_url() -> str:
 
 def llm_provider() -> str:
     """LLM provider to use for enrichment. Values: 'openrouter' or 'ollama' (default)."""
-    return env("LLM_PROVIDER", "ollama")
+    return env("LLM_PROVIDER", "openrouter")
 
 
 def openrouter_api_key() -> str:

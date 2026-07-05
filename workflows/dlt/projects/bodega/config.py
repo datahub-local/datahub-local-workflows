@@ -50,3 +50,9 @@ def ingest_from_date() -> str | None:
 def ingest_to_date() -> str | None:
     """End (inclusive) of the invoice_date reconciliation window, if scoped."""
     return env("BODEGA_TO_DATE")
+
+
+def ingest_batch_timestamp() -> str | None:
+    """DAG-run-stable timestamp n8n stamps on Kafka messages, used to tell rows
+    refreshed by the current reconciliation run apart from stale leftovers."""
+    return env("BODEGA_BATCH_TIMESTAMP")

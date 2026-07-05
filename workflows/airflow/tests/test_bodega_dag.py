@@ -34,7 +34,11 @@ def test_n8n_download_invoices():
     task = mod.dag.get_task("n8n_download_invoices")
     assert task.op_kwargs["workflow_name"] == mod.N8N_DOWNLOAD_INVOICES_WORKFLOW_NAME
     assert task.op_kwargs["workflow_name"] == "DownloadInvoicesFromGmail"
-    assert task.op_kwargs["params"] == {"FROM_DATE": mod.FROM_DATE_EXPR, "TO_DATE": mod.TO_DATE_EXPR}
+    assert task.op_kwargs["params"] == {
+        "FROM_DATE": mod.FROM_DATE_EXPR,
+        "TO_DATE": mod.TO_DATE_EXPR,
+        "BATCH_TIMESTAMP": mod.BATCH_TIMESTAMP_EXPR,
+    }
 
 
 def test_dag_params_default_to_none():
@@ -98,6 +102,7 @@ def test_ingest_date_window_env_vars():
     env_map = {e.name: e for e in ingest.env_vars}
     assert env_map["BODEGA_FROM_DATE"].value == mod.FROM_DATE_EXPR
     assert env_map["BODEGA_TO_DATE"].value == mod.TO_DATE_EXPR
+    assert env_map["BODEGA_BATCH_TIMESTAMP"].value == mod.BATCH_TIMESTAMP_EXPR
 
 
 def test_ingest_s3_secrets():

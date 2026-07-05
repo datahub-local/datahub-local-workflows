@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
     name=TABLE_NAME,
     write_disposition="merge",
     primary_key=["invoice_number"],
-    columns={"invoice_date": {"data_type": "text"}},
+    columns={"invoice_date": {"data_type": "text"}, "_batch_timestamp": {"data_type": "text"}},
 )
 def raw_invoices(bootstrap_servers: str, topic: str, group_id: str = "bodega-dlt-bronze"):
     """Micro-batch Kafka consumer: drain until 3 consecutive empty polls, then return."""
@@ -77,6 +77,7 @@ def raw_invoices(bootstrap_servers: str, topic: str, group_id: str = "bodega-dlt
                 "supermarket":        "MERCADONA",
                 "_kafka_offset":      msg.offset(),
                 "_ingested_at":       ingested_at,
+                "_batch_timestamp":   data.get("batch_timestamp"),
             }
             consumer.commit(message=msg, asynchronous=False)
     finally:
@@ -87,13 +88,16 @@ def _exclusive_end(to_date: str) -> str:
     return (datetime.strptime(to_date, "%Y-%m-%d") + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-def _delete_window_local(duckdb_path: str, from_date: str, to_date: str) -> None:
-    """Purge existing rows in the [from_date, to_date] window before re-ingesting it.
+def _delete_stale_local(duckdb_path: str, from_date: str, to_date: str, batch_timestamp: str) -> None:
+    """Remove rows in the [from_date, to_date] window that this run's Kafka batch didn't refresh.
 
     Kafka's merge write disposition only upserts by invoice_number, so an invoice that
     disappeared from the source (e.g. corrected/removed upstream) would otherwise never
-    be removed from bronze on re-run. Scoping a delete to the reconciliation window makes
-    re-running the same from_date/to_date fully idempotent.
+    be removed from bronze. n8n re-publishes every invoice in the window on each run and
+    stamps every message with the current DAG run's batch timestamp, so any row in the
+    window that doesn't carry that timestamp after ingest is stale and can be dropped.
+    Running this *after* the ingest (not before) means a failed/partial Kafka drain leaves
+    existing data untouched instead of deleting it with nothing to replace it.
     """
     import duckdb
 
@@ -106,14 +110,15 @@ def _delete_window_local(duckdb_path: str, from_date: str, to_date: str) -> None
         if not table_exists:
             return
         con.execute(
-            "DELETE FROM bodega.raw_invoices WHERE invoice_date >= ? AND invoice_date < ?",
-            [from_date, _exclusive_end(to_date)],
+            "DELETE FROM bodega.raw_invoices WHERE invoice_date >= ? AND invoice_date < ? "
+            "AND (_batch_timestamp IS NULL OR _batch_timestamp != ?)",
+            [from_date, _exclusive_end(to_date), batch_timestamp],
         )
     finally:
         con.close()
 
 
-def _delete_window_homelab(trino_url: str, from_date: str, to_date: str) -> None:
+def _delete_stale_homelab(trino_url: str, from_date: str, to_date: str, batch_timestamp: str) -> None:
     from sqlalchemy import create_engine, text
 
     engine = create_engine(trino_url)
@@ -122,12 +127,13 @@ def _delete_window_homelab(trino_url: str, from_date: str, to_date: str) -> None
             conn.execute(
                 text(
                     "DELETE FROM bronze.bodega.raw_invoices "
-                    "WHERE invoice_date >= :from_date AND invoice_date < :to_date"
+                    "WHERE invoice_date >= :from_date AND invoice_date < :to_date "
+                    "AND (_batch_timestamp IS NULL OR _batch_timestamp != :batch_timestamp)"
                 ),
-                {"from_date": from_date, "to_date": _exclusive_end(to_date)},
+                {"from_date": from_date, "to_date": _exclusive_end(to_date), "batch_timestamp": batch_timestamp},
             )
         except Exception:
-            logger.debug("bronze.bodega.raw_invoices not found; skipping delete window (first run?)", exc_info=True)
+            logger.debug("bronze.bodega.raw_invoices not found; skipping stale cleanup (first run?)", exc_info=True)
 
 
 def run(target: str):
@@ -139,14 +145,11 @@ def run(target: str):
     )
 
     from_date, to_date = config.ingest_from_date(), config.ingest_to_date()
+    batch_timestamp = config.ingest_batch_timestamp()
 
     if target == "local":
-        if from_date and to_date:
-            _delete_window_local(config.duckdb_path("bronze"), from_date, to_date)
         destination = dlt.destinations.duckdb(config.duckdb_path("bronze"))
     else:
-        if from_date and to_date:
-            _delete_window_homelab(config.trino_url(), from_date, to_date)
         config.configure_iceberg_env("bronze")
         destination = dlt.destinations.filesystem(
             bucket_url=f"s3://{config.bronze_bucket()}",
@@ -160,5 +163,17 @@ def run(target: str):
         dataset_name=DATASET_NAME,
     )
     load_info = pipeline.run(resource)
-    logger.info("%s: row counts %s", PIPELINE_NAME, pipeline.last_trace.last_normalize_info.row_counts)
+    row_counts = pipeline.last_trace.last_normalize_info.row_counts
+    logger.info("%s: row counts %s", PIPELINE_NAME, row_counts)
+
+    if row_counts.get(TABLE_NAME) and from_date and to_date and batch_timestamp:
+        # Only reconcile if this run actually delivered fresh rows for the window — a run
+        # with zero rows means nothing was republished (e.g. no fresh n8n batch, or a bare
+        # ingest retry), not that the whole window disappeared. Cleaning up on a no-op run
+        # would delete every previously-ingested row as "stale".
+        if target == "local":
+            _delete_stale_local(config.duckdb_path("bronze"), from_date, to_date, batch_timestamp)
+        else:
+            _delete_stale_homelab(config.trino_url(), from_date, to_date, batch_timestamp)
+
     return load_info

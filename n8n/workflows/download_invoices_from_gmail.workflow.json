@@ -44,6 +44,12 @@
                 "name": "TOPIC_NAME",
                 "value": "={{ $json.body.TOPIC_NAME ||  $json.TOPIC_NAME || 'bodega_invoices' }}",
                 "type": "string"
+              },
+              {
+                "id": "7c1e4f2b-3a5d-4e9c-9f21-6b8d0a2e5c17",
+                "name": "BATCH_TIMESTAMP",
+                "value": "={{ $json.body.BATCH_TIMESTAMP || $json.BATCH_TIMESTAMP || $now.toISO() }}",
+                "type": "string"
               }
             ]
           },
@@ -70,6 +76,9 @@
               },
               {
                 "name": "INVOICE_TYPE"
+              },
+              {
+                "name": "BATCH_TIMESTAMP"
               }
             ]
           }
@@ -109,7 +118,14 @@
       {
         "parameters": {
           "assignments": {
-            "assignments": []
+            "assignments": [
+              {
+                "id": "4d9b6f81-2c7e-4a3d-8f5b-1e6a9c0d3b42",
+                "name": "batch_timestamp",
+                "value": "={{ $('set_vars').item.json.BATCH_TIMESTAMP }}",
+                "type": "string"
+              }
+            ]
           },
           "includeOtherFields": true,
           "options": {}
@@ -728,6 +744,12 @@
               "name": "TOPIC_NAME",
               "value": "={{ $json.body.TOPIC_NAME ||  $json.TOPIC_NAME || 'bodega_invoices' }}",
               "type": "string"
+            },
+            {
+              "id": "7c1e4f2b-3a5d-4e9c-9f21-6b8d0a2e5c17",
+              "name": "BATCH_TIMESTAMP",
+              "value": "={{ $json.body.BATCH_TIMESTAMP || $json.BATCH_TIMESTAMP || $now.toISO() }}",
+              "type": "string"
             }
           ]
         },
@@ -754,6 +776,9 @@
             },
             {
               "name": "INVOICE_TYPE"
+            },
+            {
+              "name": "BATCH_TIMESTAMP"
             }
           ]
         }
@@ -793,7 +818,14 @@
     {
       "parameters": {
         "assignments": {
-          "assignments": []
+          "assignments": [
+            {
+              "id": "4d9b6f81-2c7e-4a3d-8f5b-1e6a9c0d3b42",
+              "name": "batch_timestamp",
+              "value": "={{ $('set_vars').item.json.BATCH_TIMESTAMP }}",
+              "type": "string"
+            }
+          ]
         },
         "includeOtherFields": true,
         "options": {}

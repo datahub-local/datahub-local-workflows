@@ -106,6 +106,15 @@ class TestRawInvoicesFlattening:
         records, _ = _collect([_make_msg(SAMPLE_INVOICE, offset=42), None, None, None])
         assert records[0]["_kafka_offset"] == 42
 
+    def test_batch_timestamp_stored(self):
+        invoice = {**SAMPLE_INVOICE, "batch_timestamp": "2026-07-05T08:00:00+00:00"}
+        records, _ = _collect([_make_msg(invoice), None, None, None])
+        assert records[0]["_batch_timestamp"] == "2026-07-05T08:00:00+00:00"
+
+    def test_batch_timestamp_defaults_to_none_when_missing(self):
+        records, _ = _collect([_make_msg(SAMPLE_INVOICE), None, None, None])
+        assert records[0]["_batch_timestamp"] is None
+
 
 class TestRawInvoicesKafkaBehaviour:
     def test_stops_after_three_consecutive_idle_polls(self):
@@ -167,17 +176,17 @@ class TestRawInvoicesKafkaBehaviour:
         assert len(records) == 1
 
 
-class TestDeleteWindowLocal:
+class TestDeleteStaleLocal:
     def test_noop_when_table_missing(self, tmp_path):
         import duckdb
 
         db = tmp_path / "bronze.duckdb"
         duckdb.connect(str(db)).close()
 
-        from bodega.ingest import _delete_window_local
-        _delete_window_local(str(db), "2025-07-01", "2025-07-31")  # should not raise
+        from bodega.ingest import _delete_stale_local
+        _delete_stale_local(str(db), "2025-07-01", "2025-07-31", "batch-1")  # should not raise
 
-    def test_deletes_only_rows_within_window(self, tmp_path):
+    def test_deletes_only_stale_rows_within_window(self, tmp_path):
         import duckdb
 
         db = tmp_path / "bronze.duckdb"
@@ -185,37 +194,69 @@ class TestDeleteWindowLocal:
         con.execute("CREATE SCHEMA bodega")
         con.execute(
             "CREATE TABLE bodega.raw_invoices AS SELECT * FROM (VALUES "
-            "('IN-WINDOW', '2025-07-16T09:31:00'), "
-            "('BEFORE', '2025-06-30T23:59:59'), "
-            "('ON-BOUNDARY', '2025-08-01T00:00:00'), "
-            "('AFTER', '2025-08-02T00:00:00')"
-            ") t(invoice_number, invoice_date)"
+            "('REFRESHED', '2025-07-16T09:31:00', 'batch-1'), "
+            "('STALE', '2025-07-17T09:31:00', 'batch-0'), "
+            "('LEGACY-UNTAGGED', '2025-07-18T09:31:00', NULL), "
+            "('BEFORE', '2025-06-30T23:59:59', 'batch-0'), "
+            "('ON-BOUNDARY', '2025-08-01T00:00:00', 'batch-0'), "
+            "('AFTER', '2025-08-02T00:00:00', 'batch-0')"
+            ") t(invoice_number, invoice_date, _batch_timestamp)"
         )
         con.close()
 
-        from bodega.ingest import _delete_window_local
-        _delete_window_local(str(db), "2025-07-01", "2025-07-31")
+        from bodega.ingest import _delete_stale_local
+        _delete_stale_local(str(db), "2025-07-01", "2025-07-31", "batch-1")
 
         con = duckdb.connect(str(db))
         remaining = {r[0] for r in con.execute("SELECT invoice_number FROM bodega.raw_invoices").fetchall()}
         con.close()
-        assert remaining == {"BEFORE", "ON-BOUNDARY", "AFTER"}
+        assert remaining == {"REFRESHED", "BEFORE", "ON-BOUNDARY", "AFTER"}
 
 
-class TestDeleteWindowHomelab:
+class TestDeleteStaleHomelab:
     def test_swallows_missing_table_error(self):
-        from bodega.ingest import _delete_window_homelab
+        from bodega.ingest import _delete_stale_homelab
 
         with patch("sqlalchemy.create_engine") as mock_create_engine:
             conn = mock_create_engine.return_value.connect.return_value.__enter__.return_value
             conn.execute.side_effect = RuntimeError("table not found")
-            _delete_window_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31")  # should not raise
+            _delete_stale_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31", "batch-1")  # should not raise
 
-    def test_issues_delete_with_exclusive_end_date(self):
-        from bodega.ingest import _delete_window_homelab
+    def test_issues_delete_with_exclusive_end_date_and_batch_timestamp(self):
+        from bodega.ingest import _delete_stale_homelab
 
         with patch("sqlalchemy.create_engine") as mock_create_engine:
             conn = mock_create_engine.return_value.connect.return_value.__enter__.return_value
-            _delete_window_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31")
+            _delete_stale_homelab("trino://dbt@host:8080", "2025-07-01", "2025-07-31", "batch-1")
             params = conn.execute.call_args.args[1]
-            assert params == {"from_date": "2025-07-01", "to_date": "2025-08-01"}
+            assert params == {"from_date": "2025-07-01", "to_date": "2025-08-01", "batch_timestamp": "batch-1"}
+
+
+class TestRunStaleCleanupGuard:
+    """A run that ingests zero rows must not trigger the stale-window cleanup —
+    otherwise a bare retry (no fresh n8n batch) would delete every valid row in the
+    window, since none of them carry the new run's batch timestamp."""
+
+    def _run(self, tmp_path, monkeypatch, poll_responses):
+        monkeypatch.setenv("KAFKA_BOOTSTRAP_SERVERS", "server:9093")
+        monkeypatch.setenv("DBT_DUCKDB_DIR", str(tmp_path))
+        monkeypatch.setenv("BODEGA_FROM_DATE", "2025-07-01")
+        monkeypatch.setenv("BODEGA_TO_DATE", "2025-07-31")
+        monkeypatch.setenv("BODEGA_BATCH_TIMESTAMP", "batch-1")
+
+        with patch("bodega.ingest.Consumer") as MockConsumer, \
+             patch("bodega.ingest._delete_stale_local") as mock_delete:
+            MockConsumer.return_value.poll.side_effect = poll_responses
+            from bodega import ingest
+            ingest.run("local")
+        return mock_delete
+
+    def test_skips_cleanup_when_zero_rows_ingested(self, tmp_path, monkeypatch):
+        mock_delete = self._run(tmp_path, monkeypatch, [None, None, None])
+        mock_delete.assert_not_called()
+
+    def test_runs_cleanup_when_rows_ingested(self, tmp_path, monkeypatch):
+        mock_delete = self._run(tmp_path, monkeypatch, [_make_msg(SAMPLE_INVOICE), None, None, None])
+        mock_delete.assert_called_once_with(
+            str(tmp_path / "bronze.duckdb"), "2025-07-01", "2025-07-31", "batch-1"
+        )
