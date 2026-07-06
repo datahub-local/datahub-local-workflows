@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-06-21T07:06:06.779Z",
-    "createdAt": "2026-06-21T07:06:04.474Z",
-    "versionId": "e6b40b03-049f-4843-97df-e13f4ea17745",
+    "updatedAt": "2026-07-05T14:19:38.830Z",
+    "createdAt": "2026-07-05T14:19:28.310Z",
+    "versionId": "417ba91b-a2bc-42be-ab6a-d419574dc99b",
     "workflowId": "rbhcstYPTJtNQcH2",
     "nodes": [
       {
@@ -11,10 +11,10 @@
         "type": "n8n-nodes-base.manualTrigger",
         "typeVersion": 1,
         "position": [
-          -544,
-          704
+          432,
+          656
         ],
-        "id": "fa76199f-272f-46c3-ab18-fb35227682ea",
+        "id": "ec06463b-450e-46bb-a2a5-a73083e4e822",
         "name": "When clicking 'Execute workflow’"
       },
       {
@@ -58,10 +58,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -320,
-          512
+          656,
+          464
         ],
-        "id": "9bda6234-6154-4c6b-8687-63c576a748fb",
+        "id": "d7c03f5b-acf9-49b7-a140-00ed1359143f",
         "name": "set_vars"
       },
       {
@@ -86,10 +86,10 @@
         "type": "n8n-nodes-base.executeWorkflowTrigger",
         "typeVersion": 1.1,
         "position": [
-          -544,
-          512
+          432,
+          464
         ],
-        "id": "07f3f08a-7111-4e33-9de3-74fd4805a71e",
+        "id": "400958b9-5433-4a10-959d-4347bbeab364",
         "name": "When Executed by Another Workflow"
       },
       {
@@ -102,10 +102,10 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          352,
-          512
+          1328,
+          464
         ],
-        "id": "31af18ee-4cee-4dd4-a77d-37185ba4105f",
+        "id": "c182e048-ce45-403e-9a12-73c68bebfbbe",
         "name": "get_messages",
         "webhookId": "bcfe80f1-ed55-4ca0-8232-171b43bd6cd1",
         "credentials": {
@@ -133,10 +133,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          800,
-          352
+          1776,
+          304
         ],
-        "id": "632a7859-183e-46d7-b445-f940a871f991",
+        "id": "49fb26d2-516c-4146-935b-c0b443f87742",
         "name": "set_output"
       },
       {
@@ -146,10 +146,10 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1024,
-          544
+          2000,
+          496
         ],
-        "id": "c83e6981-d483-4411-9e7f-f03995b11a77",
+        "id": "7fec2e9a-9b5c-4030-841b-03a07337217e",
         "name": "parse_attachments"
       },
       {
@@ -164,10 +164,10 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          800,
-          544
+          1776,
+          496
         ],
-        "id": "f0133d6f-6095-4653-aec5-ab99e2a4cb90",
+        "id": "e090062a-c9d9-4b8d-80a5-3f65632d2a97",
         "name": "donwload_message",
         "webhookId": "42a76ee5-fb83-43fa-8409-84f4468aea09",
         "credentials": {
@@ -184,10 +184,10 @@
         "type": "n8n-nodes-base.splitInBatches",
         "typeVersion": 3,
         "position": [
-          576,
-          512
+          1552,
+          464
         ],
-        "id": "2919493e-5acf-46f4-adac-36185cb687da",
+        "id": "ed4492bd-424e-4031-b608-247bec594b1d",
         "name": "loop_messages"
       },
       {
@@ -198,10 +198,10 @@
         "type": "n8n-nodes-base.extractFromFile",
         "typeVersion": 1,
         "position": [
-          1248,
-          544
+          2224,
+          496
         ],
-        "id": "977f9f05-e05a-40da-ad4f-aa675b89f873",
+        "id": "d156b1d1-7719-4e4e-8291-ef5a5793c6f7",
         "name": "extract_data_from_pdf"
       },
       {
@@ -221,10 +221,10 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          128,
-          512
+          1104,
+          464
         ],
-        "id": "79de4cc0-de49-4937-a533-80046cfe0af1",
+        "id": "262b870f-86d8-4a24-9c8d-472c00b75926",
         "name": "set_mercadona_vars"
       },
       {
@@ -260,10 +260,10 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -96,
-          512
+          880,
+          464
         ],
-        "id": "60eb7789-4f1a-4af7-b177-f9c5ffdc86e6",
+        "id": "e83b6931-d787-4dac-86d0-e0f02ddc95ce",
         "name": "switch_invoice_type"
       },
       {
@@ -301,10 +301,10 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          1472,
-          544
+          2448,
+          496
         ],
-        "id": "3ab08421-e4f1-45fa-acdd-68deaf102550",
+        "id": "1e2411ba-8949-482d-a6b1-6eacd70fa19c",
         "name": "switch_parse_invoice"
       },
       {
@@ -314,24 +314,26 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1696,
-          608
+          2672,
+          560
         ],
-        "id": "cdcdb94d-f974-427e-952d-dba439e98d14",
+        "id": "c00b91ac-cc7c-4ca8-91de-eeafc2185199",
         "name": "parse_mercadona_invoice"
       },
       {
         "parameters": {
           "topic": "={{ $('set_vars').item.json.TOPIC_NAME }}",
-          "options": {}
+          "options": {
+            "acks": true
+          }
         },
         "type": "n8n-nodes-base.kafka",
         "typeVersion": 1,
         "position": [
-          1024,
-          352
+          2000,
+          304
         ],
-        "id": "c28f73d1-7fa8-4032-b1bc-84331b4a0981",
+        "id": "5e3d618e-1933-4830-a895-6a198da3a590",
         "name": "Kafka",
         "credentials": {
           "kafka": {
@@ -350,10 +352,10 @@
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -544,
-          320
+          432,
+          272
         ],
-        "id": "f5a3c853-43c6-4643-8978-52e4183728d6",
+        "id": "1152bf0b-dd78-4627-97f6-4b0854689d1c",
         "name": "Airflow Webhook",
         "webhookId": "a2f3b4c5-d6e7-8901-2345-678901234567",
         "credentials": {
@@ -529,11 +531,11 @@
     },
     "nodeGroups": [],
     "authors": "no name",
-    "name": "Version e6b40b03",
+    "name": "Version 417ba91b",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "e6b40b03-049f-4843-97df-e13f4ea17745",
+  "activeVersionId": "417ba91b-a2bc-42be-ab6a-d419574dc99b",
   "connections": {
     "When clicking 'Execute workflow’": {
       "main": [
@@ -711,10 +713,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -544,
-        704
+        432,
+        656
       ],
-      "id": "fa76199f-272f-46c3-ab18-fb35227682ea",
+      "id": "ec06463b-450e-46bb-a2a5-a73083e4e822",
       "name": "When clicking 'Execute workflow’"
     },
     {
@@ -758,10 +760,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -320,
-        512
+        656,
+        464
       ],
-      "id": "9bda6234-6154-4c6b-8687-63c576a748fb",
+      "id": "d7c03f5b-acf9-49b7-a140-00ed1359143f",
       "name": "set_vars"
     },
     {
@@ -786,10 +788,10 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -544,
-        512
+        432,
+        464
       ],
-      "id": "07f3f08a-7111-4e33-9de3-74fd4805a71e",
+      "id": "400958b9-5433-4a10-959d-4347bbeab364",
       "name": "When Executed by Another Workflow"
     },
     {
@@ -802,10 +804,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        352,
-        512
+        1328,
+        464
       ],
-      "id": "31af18ee-4cee-4dd4-a77d-37185ba4105f",
+      "id": "c182e048-ce45-403e-9a12-73c68bebfbbe",
       "name": "get_messages",
       "webhookId": "bcfe80f1-ed55-4ca0-8232-171b43bd6cd1",
       "credentials": {
@@ -833,10 +835,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        800,
-        352
+        1776,
+        304
       ],
-      "id": "632a7859-183e-46d7-b445-f940a871f991",
+      "id": "49fb26d2-516c-4146-935b-c0b443f87742",
       "name": "set_output"
     },
     {
@@ -846,10 +848,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1024,
-        544
+        2000,
+        496
       ],
-      "id": "c83e6981-d483-4411-9e7f-f03995b11a77",
+      "id": "7fec2e9a-9b5c-4030-841b-03a07337217e",
       "name": "parse_attachments"
     },
     {
@@ -864,10 +866,10 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        800,
-        544
+        1776,
+        496
       ],
-      "id": "f0133d6f-6095-4653-aec5-ab99e2a4cb90",
+      "id": "e090062a-c9d9-4b8d-80a5-3f65632d2a97",
       "name": "donwload_message",
       "webhookId": "42a76ee5-fb83-43fa-8409-84f4468aea09",
       "credentials": {
@@ -884,10 +886,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        576,
-        512
+        1552,
+        464
       ],
-      "id": "2919493e-5acf-46f4-adac-36185cb687da",
+      "id": "ed4492bd-424e-4031-b608-247bec594b1d",
       "name": "loop_messages"
     },
     {
@@ -898,10 +900,10 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        1248,
-        544
+        2224,
+        496
       ],
-      "id": "977f9f05-e05a-40da-ad4f-aa675b89f873",
+      "id": "d156b1d1-7719-4e4e-8291-ef5a5793c6f7",
       "name": "extract_data_from_pdf"
     },
     {
@@ -921,10 +923,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        128,
-        512
+        1104,
+        464
       ],
-      "id": "79de4cc0-de49-4937-a533-80046cfe0af1",
+      "id": "262b870f-86d8-4a24-9c8d-472c00b75926",
       "name": "set_mercadona_vars"
     },
     {
@@ -960,10 +962,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -96,
-        512
+        880,
+        464
       ],
-      "id": "60eb7789-4f1a-4af7-b177-f9c5ffdc86e6",
+      "id": "e83b6931-d787-4dac-86d0-e0f02ddc95ce",
       "name": "switch_invoice_type"
     },
     {
@@ -1001,10 +1003,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        1472,
-        544
+        2448,
+        496
       ],
-      "id": "3ab08421-e4f1-45fa-acdd-68deaf102550",
+      "id": "1e2411ba-8949-482d-a6b1-6eacd70fa19c",
       "name": "switch_parse_invoice"
     },
     {
@@ -1014,24 +1016,26 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1696,
-        608
+        2672,
+        560
       ],
-      "id": "cdcdb94d-f974-427e-952d-dba439e98d14",
+      "id": "c00b91ac-cc7c-4ca8-91de-eeafc2185199",
       "name": "parse_mercadona_invoice"
     },
     {
       "parameters": {
         "topic": "={{ $('set_vars').item.json.TOPIC_NAME }}",
-        "options": {}
+        "options": {
+          "acks": true
+        }
       },
       "type": "n8n-nodes-base.kafka",
       "typeVersion": 1,
       "position": [
-        1024,
-        352
+        2000,
+        304
       ],
-      "id": "c28f73d1-7fa8-4032-b1bc-84331b4a0981",
+      "id": "5e3d618e-1933-4830-a895-6a198da3a590",
       "name": "Kafka",
       "credentials": {
         "kafka": {
@@ -1050,10 +1054,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -544,
-        320
+        432,
+        272
       ],
-      "id": "f5a3c853-43c6-4643-8978-52e4183728d6",
+      "id": "1152bf0b-dd78-4627-97f6-4b0854689d1c",
       "name": "Airflow Webhook",
       "webhookId": "a2f3b4c5-d6e7-8901-2345-678901234567",
       "credentials": {
@@ -1109,6 +1113,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-06-21T07:06:04.472Z",
-  "versionId": "e6b40b03-049f-4843-97df-e13f4ea17745"
+  "updatedAt": "2026-07-05T14:19:28.300Z",
+  "versionId": "417ba91b-a2bc-42be-ab6a-d419574dc99b"
 }
