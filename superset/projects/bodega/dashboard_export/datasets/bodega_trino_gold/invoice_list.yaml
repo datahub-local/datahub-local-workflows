@@ -9,11 +9,10 @@ catalog: null
 sql: |-
   -- invoice_label must stay byte-identical to the one in invoice_lines: it is the
   -- cross-filter / Invoice-filter key linking the list to the drill-down charts.
-  -- Kept short and human-readable (no visible invoice id); datetime-to-the-minute
-  -- plus supermarket is unique in practice for household groceries.
   SELECT
       i.invoice_number,
       date_format(i.invoice_datetime, '%Y-%m-%d %H:%i') || ' ' || i.supermarket
+          || ' · ' || i.invoice_number
           AS invoice_label,
       i.invoice_datetime,
       i.invoice_date,

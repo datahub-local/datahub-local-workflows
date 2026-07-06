@@ -12,6 +12,7 @@ sql: |-
   SELECT
       i.invoice_number,
       date_format(inv.invoice_datetime, '%Y-%m-%d %H:%i') || ' ' || inv.supermarket
+          || ' · ' || i.invoice_number
           AS invoice_label,
       i.invoice_date,
       i.item_position,
