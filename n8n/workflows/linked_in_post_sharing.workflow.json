@@ -3161,7 +3161,8 @@
         -2320
       ],
       "id": "829c548e-3346-48b4-aba0-7a279af974f0",
-      "name": "Sticky Note"
+      "name": "Sticky Note",
+      "disabled": true
     },
     {
       "parameters": {},
@@ -3886,6 +3887,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-25T17:54:29.325Z",
-  "versionId": "147a9d08-e3bf-4519-b610-6c75f83d55b7"
+  "updatedAt": "2026-07-06T15:06:55.659Z",
+  "versionId": "b4863d11-3510-47ad-9f31-de5e95ce2438"
 }
