@@ -227,6 +227,19 @@
       },
       {
         "parameters": {
+          "jsCode": "// Randomly pick variety directives so consecutive posts never share the same shape.\n// Duplicated entries act as weights.\nconst pick = (arr) => arr[Math.floor(Math.random() * arr.length)];\n\nconst hook = pick([\n  'CONTRARIAN CLAIM: open with a blunt statement that challenges accepted practice',\n  'WAR STORY: open with a concrete incident or observation from production work',\n  'HARD NUMBER: open with a specific figure, cost, or metric and why it matters',\n  'MISCONCEPTION: open by naming a common misconception and correcting it',\n  'NEWS REACTION: open with your immediate, opinionated take on the announcement or release',\n  'TRADE-OFF: open by framing the underlying trade-off most people ignore',\n]);\n\nconst format = pick([\n  'PURE PROSE: no bullet points at all, 3-5 flowing paragraphs',\n  'PURE PROSE: no bullet points at all, 3-5 flowing paragraphs',\n  'PUNCHY: several very short paragraphs, at least two of them a single sentence',\n  'PUNCHY: several very short paragraphs, at least two of them a single sentence',\n  'ONE BULLET BLOCK: exactly one bullet list of 3-4 short items, with prose before and after',\n]);\n\nconst length = pick([\n  'SHORT: aim for roughly 40% of the word limit',\n  'MEDIUM: aim for roughly 70% of the word limit',\n  'MEDIUM: aim for roughly 70% of the word limit',\n  'FULL: use most of the word limit',\n]);\n\nconst closing = pick([\n  'DIRECT QUESTION: end the body with one specific question to technical peers',\n  'DIRECT QUESTION: end the body with one specific question to technical peers',\n  'SHARED EXPERIENCE: end by inviting others to share how they handle it, phrased as a statement, no question mark',\n  'HOT TAKE: end the body on a blunt one-line statement, no question, no invitation',\n  'HOT TAKE: end the body on a blunt one-line statement, no question, no invitation',\n  'NONE: end when the argument is complete, with no closing question or invitation',\n]);\n\nconst VARIETY_DIRECTIVES = [\n  `- Hook \u2014 ${hook}.`,\n  `- Format \u2014 ${format}.`,\n  `- Length \u2014 ${length}.`,\n  `- Closing \u2014 ${closing}. The \"Source here\" line and hashtags always follow the body regardless.`,\n].join('\\n');\n\nreturn [{ json: { ...$input.first().json, VARIETY_DIRECTIVES } }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          640,
+          160
+        ],
+        "id": "a3f1c2d4-5e6b-4a7c-8d9e-0f1a2b3c4d5e",
+        "name": "set_variety_directives"
+      },
+      {
+        "parameters": {
           "assignments": {
             "assignments": [
               {
@@ -266,7 +279,7 @@
           "workflowInputs": {
             "mappingMode": "defineBelow",
             "value": {
-              "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"CONTENT\": $('main_trigger').item.json.CONTENT,\n} }}",
+              "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"CONTENT\": $('main_trigger').item.json.CONTENT,\n\"VARIETY_DIRECTIVES\": $('set_variety_directives').item.json.VARIETY_DIRECTIVES,\n} }}",
               "template_name": "prompts/linkedin_post.md"
             },
             "matchingColumns": [],
@@ -365,7 +378,7 @@
           "workflowInputs": {
             "mappingMode": "defineBelow",
             "value": {
-              "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"URL\": $('main_trigger').item.json.URL,\n\"TEXT\": $json.text,\n} }}",
+              "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"URL\": $('main_trigger').item.json.URL,\n\"TEXT\": $json.text,\n\"VARIETY_DIRECTIVES\": $('set_variety_directives').item.json.VARIETY_DIRECTIVES,\n} }}",
               "template_name": "prompts/linkedin_post_review.md"
             },
             "matchingColumns": [],
@@ -641,7 +654,7 @@
         "main": [
           [
             {
-              "node": "download_post_prompt",
+              "node": "set_variety_directives",
               "type": "main",
               "index": 0
             }
@@ -763,6 +776,17 @@
             }
           ]
         ]
+      },
+      "set_variety_directives": {
+        "main": [
+          [
+            {
+              "node": "download_post_prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "nodeGroups": [],
@@ -835,7 +859,7 @@
       "main": [
         [
           {
-            "node": "download_post_prompt",
+            "node": "set_variety_directives",
             "type": "main",
             "index": 0
           }
@@ -954,6 +978,17 @@
             "node": "create_post_ai",
             "type": "ai_languageModel",
             "index": 1
+          }
+        ]
+      ]
+    },
+    "set_variety_directives": {
+      "main": [
+        [
+          {
+            "node": "download_post_prompt",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1189,6 +1224,19 @@
     },
     {
       "parameters": {
+        "jsCode": "// Randomly pick variety directives so consecutive posts never share the same shape.\n// Duplicated entries act as weights.\nconst pick = (arr) => arr[Math.floor(Math.random() * arr.length)];\n\nconst hook = pick([\n  'CONTRARIAN CLAIM: open with a blunt statement that challenges accepted practice',\n  'WAR STORY: open with a concrete incident or observation from production work',\n  'HARD NUMBER: open with a specific figure, cost, or metric and why it matters',\n  'MISCONCEPTION: open by naming a common misconception and correcting it',\n  'NEWS REACTION: open with your immediate, opinionated take on the announcement or release',\n  'TRADE-OFF: open by framing the underlying trade-off most people ignore',\n]);\n\nconst format = pick([\n  'PURE PROSE: no bullet points at all, 3-5 flowing paragraphs',\n  'PURE PROSE: no bullet points at all, 3-5 flowing paragraphs',\n  'PUNCHY: several very short paragraphs, at least two of them a single sentence',\n  'PUNCHY: several very short paragraphs, at least two of them a single sentence',\n  'ONE BULLET BLOCK: exactly one bullet list of 3-4 short items, with prose before and after',\n]);\n\nconst length = pick([\n  'SHORT: aim for roughly 40% of the word limit',\n  'MEDIUM: aim for roughly 70% of the word limit',\n  'MEDIUM: aim for roughly 70% of the word limit',\n  'FULL: use most of the word limit',\n]);\n\nconst closing = pick([\n  'DIRECT QUESTION: end the body with one specific question to technical peers',\n  'DIRECT QUESTION: end the body with one specific question to technical peers',\n  'SHARED EXPERIENCE: end by inviting others to share how they handle it, phrased as a statement, no question mark',\n  'HOT TAKE: end the body on a blunt one-line statement, no question, no invitation',\n  'HOT TAKE: end the body on a blunt one-line statement, no question, no invitation',\n  'NONE: end when the argument is complete, with no closing question or invitation',\n]);\n\nconst VARIETY_DIRECTIVES = [\n  `- Hook \u2014 ${hook}.`,\n  `- Format \u2014 ${format}.`,\n  `- Length \u2014 ${length}.`,\n  `- Closing \u2014 ${closing}. The \"Source here\" line and hashtags always follow the body regardless.`,\n].join('\\n');\n\nreturn [{ json: { ...$input.first().json, VARIETY_DIRECTIVES } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        160
+      ],
+      "id": "a3f1c2d4-5e6b-4a7c-8d9e-0f1a2b3c4d5e",
+      "name": "set_variety_directives"
+    },
+    {
+      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -1228,7 +1276,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"CONTENT\": $('main_trigger').item.json.CONTENT,\n} }}",
+            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"CONTENT\": $('main_trigger').item.json.CONTENT,\n\"VARIETY_DIRECTIVES\": $('set_variety_directives').item.json.VARIETY_DIRECTIVES,\n} }}",
             "template_name": "prompts/linkedin_post.md"
           },
           "matchingColumns": [],
@@ -1327,7 +1375,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"URL\": $('main_trigger').item.json.URL,\n\"TEXT\": $json.text,\n} }}",
+            "template_vars": "={{ {\n\"RULES\": $('set_workflow_vars').item.json.RULES,\n\"EXTRA_RULES\": $('main_trigger').item.json.EXTRA_RULES,\n\"URL\": $('main_trigger').item.json.URL,\n\"TEXT\": $json.text,\n\"VARIETY_DIRECTIVES\": $('set_variety_directives').item.json.VARIETY_DIRECTIVES,\n} }}",
             "template_name": "prompts/linkedin_post_review.md"
           },
           "matchingColumns": [],
