@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-02-02T19:10:12.115Z",
-    "createdAt": "2026-02-02T19:09:36.108Z",
-    "versionId": "a74e6eb7-36e4-4ed6-b5ba-7d3b4d42456e",
+    "updatedAt": "2026-07-07T16:15:08.191Z",
+    "createdAt": "2026-07-07T16:15:01.908Z",
+    "versionId": "ef4631bd-8d20-4a73-813e-bf0cd7c80587",
     "workflowId": "qUfjfWLGEjV96ljf",
     "nodes": [
       {
@@ -431,11 +431,11 @@
     },
     "nodeGroups": [],
     "authors": "no name",
-    "name": "Version a74e6eb7",
+    "name": "Version ef4631bd",
     "description": "",
-    "autosaved": true
+    "autosaved": false
   },
-  "activeVersionId": "a74e6eb7-36e4-4ed6-b5ba-7d3b4d42456e",
+  "activeVersionId": "ef4631bd-8d20-4a73-813e-bf0cd7c80587",
   "connections": {
     "main_trigger": {
       "main": [
@@ -871,7 +871,8 @@
   "pinData": {},
   "settings": {
     "executionOrder": "v1",
-    "callerPolicy": "workflowsFromSameOwner"
+    "callerPolicy": "workflowsFromSameOwner",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -885,6 +886,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-02-02T19:09:37.113Z",
-  "versionId": "a74e6eb7-36e4-4ed6-b5ba-7d3b4d42456e"
+  "updatedAt": "2026-07-07T16:15:01.905Z",
+  "versionId": "ef4631bd-8d20-4a73-813e-bf0cd7c80587"
 }
