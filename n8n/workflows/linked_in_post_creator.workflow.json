@@ -143,7 +143,7 @@
               {
                 "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
                 "name": "text",
-                "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
+                "value": "={{ /<output>([\\s\\S]*?)<\\/output>/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
                 "type": "string"
               }
             ]
@@ -1140,7 +1140,7 @@
             {
               "id": "7f8f3783-1e58-470f-8731-866fff1519a3",
               "name": "text",
-              "value": "={{ /.*<output>(([\\s\\S]+)*)<\\/output>.*/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
+              "value": "={{ /<output>([\\s\\S]*?)<\\/output>/.exec($json.text)?.[1].trim().replace(\"SOME_URL\", $('set_workflow_vars').item.json.URL) || $json.text }}",
               "type": "string"
             }
           ]

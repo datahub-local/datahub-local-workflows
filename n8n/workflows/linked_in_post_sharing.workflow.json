@@ -1311,7 +1311,7 @@
             "mode": "list",
             "cachedResultName": "workflows"
           },
-          "message": "=Waiting for final approval the image for a LinkedIn Post...\n\n## IMAGE PROMPT USED ##\n{{ $('execute_image_creator').item.json.ogImageUrl || \"NONE\" }}",
+          "message": "=Waiting for final approval of the image for a LinkedIn Post...\n\n## IMAGE PROMPT USED ##\n{{ $('execute_image_creator').item.json.prompt || \"NONE\" }}",
           "approvalOptions": {
             "values": {
               "approvalType": "double"
@@ -3582,7 +3582,7 @@
           "mode": "list",
           "cachedResultName": "workflows"
         },
-        "message": "=Waiting for final approval the image for a LinkedIn Post...\n\n## IMAGE PROMPT USED ##\n{{ $('execute_image_creator').item.json.ogImageUrl || \"NONE\" }}",
+        "message": "=Waiting for final approval of the image for a LinkedIn Post...\n\n## IMAGE PROMPT USED ##\n{{ $('execute_image_creator').item.json.prompt || \"NONE\" }}",
         "approvalOptions": {
           "values": {
             "approvalType": "double"
