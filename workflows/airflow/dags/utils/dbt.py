@@ -79,7 +79,6 @@ def create_dbt_task(task_config: DbtTaskConfig) -> KubernetesJobOperator:
         ttl_seconds_after_finished=86400,
         wait_until_job_complete=True,
         backoff_limit=0,
-        retries=0,
         get_logs=True,
         log_events_on_failure=True,
         log_pod_spec_on_failure=True,
