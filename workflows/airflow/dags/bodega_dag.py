@@ -42,7 +42,7 @@ default_args = {
 # with datetime.now() in the DAG constructor — the latter re-evaluates on every
 # DAG-file parse and bumps the DAG version on no real change.
 FROM_DATE_EXPR = "{{ params.from_date or macros.ds_add(macros.datetime.now() | ds, -7) }}"
-TO_DATE_EXPR = "{{ params.to_date or (macros.datetime.now() | ds) }}"
+TO_DATE_EXPR = "{{ params.to_date or macros.ds_add(macros.datetime.now() | ds, 1) }}"
 
 # Airflow's logical run timestamp (stable across every task in the same DagRun), used to
 # tag n8n's Kafka messages and let dlt_ingest tell "refreshed this run" apart from stale
