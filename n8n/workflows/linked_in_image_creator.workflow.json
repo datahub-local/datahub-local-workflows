@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-07-08T19:37:29.948Z",
-    "createdAt": "2026-07-08T19:37:28.279Z",
-    "versionId": "4dd2f179-d50f-4bb6-89e5-d4270b5a4d41",
+    "updatedAt": "2026-07-10T17:02:03.276Z",
+    "createdAt": "2026-07-10T17:01:44.712Z",
+    "versionId": "9c6fbfcb-9ca3-4a33-952c-416016167ee7",
     "workflowId": "a9tFFs8qkRu8taC2",
     "nodes": [
       {
@@ -25,13 +25,13 @@
               {
                 "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
                 "name": "IMAGE_MODEL",
-                "value": "google/gemini-3.1-flash-image-preview",
+                "value": "google/gemini-3.1-flash-image",
                 "type": "string"
               },
               {
                 "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
                 "name": "IMAGE_MODEL_FALLBACK",
-                "value": "google/gemini-2.5-flash-image",
+                "value": "google/gemini-3.1-flash-lite-image",
                 "type": "string"
               },
               {
@@ -456,11 +456,11 @@
     },
     "nodeGroups": [],
     "authors": "no name",
-    "name": "Version 4dd2f179",
+    "name": "Version 9c6fbfcb",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "4dd2f179-d50f-4bb6-89e5-d4270b5a4d41",
+  "activeVersionId": "9c6fbfcb-9ca3-4a33-952c-416016167ee7",
   "connections": {
     "set_workflow_vars": {
       "main": [
@@ -608,13 +608,13 @@
             {
               "id": "52b87bd1-627b-4af4-b73a-433a1b3caccd",
               "name": "IMAGE_MODEL",
-              "value": "google/gemini-3.1-flash-image-preview",
+              "value": "google/gemini-3.1-flash-image",
               "type": "string"
             },
             {
               "id": "708efbf7-5a7f-4dd7-a5b4-1eb73ac77883",
               "name": "IMAGE_MODEL_FALLBACK",
-              "value": "google/gemini-2.5-flash-image",
+              "value": "google/gemini-3.1-flash-lite-image",
               "type": "string"
             },
             {
@@ -938,6 +938,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-07-08T19:37:28.274Z",
-  "versionId": "4dd2f179-d50f-4bb6-89e5-d4270b5a4d41"
+  "updatedAt": "2026-07-10T17:01:44.711Z",
+  "versionId": "9c6fbfcb-9ca3-4a33-952c-416016167ee7"
 }
