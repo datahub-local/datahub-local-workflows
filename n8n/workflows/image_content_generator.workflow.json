@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-04-30T11:38:38.818Z",
-    "createdAt": "2026-04-30T11:38:36.892Z",
-    "versionId": "598eae73-1794-476a-9131-def40a50f746",
+    "updatedAt": "2026-07-10T17:03:16.209Z",
+    "createdAt": "2026-07-10T17:03:05.103Z",
+    "versionId": "3cff8f4c-3230-483c-965d-951748f1467e",
     "workflowId": "8cRfhWwzFYvma7OI",
     "nodes": [
       {
@@ -173,14 +173,14 @@
               {
                 "fieldLabel": "Image Model",
                 "fieldType": "dropdown",
-                "defaultValue": "gemini-3.1-flash-image-preview",
+                "defaultValue": "google/gemini-3.1-flash-image",
                 "fieldOptions": {
                   "values": [
                     {
-                      "option": "gemini-3.1-flash-image-preview"
+                      "option": "google/gemini-3.1-flash-image"
                     },
                     {
-                      "option": "google/gemini-2.5-flash-image"
+                      "option": "google/gemini-3.1-flash-lite-image"
                     }
                   ]
                 }
@@ -258,7 +258,7 @@
         "type": "n8n-nodes-base.form",
         "position": [
           1552,
-          -56
+          -64
         ],
         "typeVersion": 2.3,
         "webhookId": "d1a9f3e2-3333-4abc-8def-000000000003"
@@ -292,7 +292,7 @@
         "type": "n8n-nodes-base.if",
         "position": [
           1776,
-          -56
+          -64
         ],
         "typeVersion": 2
       },
@@ -305,7 +305,7 @@
         "type": "n8n-nodes-base.code",
         "position": [
           2000,
-          -56
+          -64
         ],
         "typeVersion": 2
       },
@@ -318,7 +318,7 @@
         "type": "n8n-nodes-base.code",
         "position": [
           2000,
-          136
+          144
         ],
         "typeVersion": 2
       },
@@ -365,7 +365,7 @@
         "type": "n8n-nodes-base.form",
         "position": [
           3120,
-          40
+          48
         ],
         "typeVersion": 2.3,
         "webhookId": "d1a9f3e2-4444-4abc-8def-000000000004"
@@ -399,7 +399,7 @@
         "type": "n8n-nodes-base.if",
         "position": [
           3344,
-          40
+          48
         ],
         "typeVersion": 2
       },
@@ -583,7 +583,7 @@
         "typeVersion": 3.2,
         "position": [
           2224,
-          136
+          144
         ],
         "id": "e8eb6a64-8ca6-48f1-957b-0ec838e64ad6",
         "name": "Merge Prompts"
@@ -610,7 +610,7 @@
         "type": "n8n-nodes-base.code",
         "position": [
           2672,
-          40
+          48
         ],
         "typeVersion": 2
       },
@@ -672,7 +672,7 @@
         "typeVersion": 1.1,
         "position": [
           2896,
-          40
+          48
         ],
         "id": "f2edf5ca-bd95-4e82-87e4-f869c041f5fc",
         "name": "Insert Temp File"
@@ -726,7 +726,7 @@
         "typeVersion": 4.4,
         "position": [
           2448,
-          40
+          48
         ],
         "id": "6a9789a1-f4c1-4563-a2d1-f11f21bf5864",
         "name": "generate_image",
@@ -748,7 +748,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1.1,
         "position": [
-          1336,
+          1344,
           240
         ],
         "id": "38a87179-dc5c-480f-b3d4-9bcf2b60533f",
@@ -768,7 +768,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1.1,
         "position": [
-          1208,
+          1216,
           240
         ],
         "id": "416334ff-9d98-4120-9d49-c620beaebb4c",
@@ -1100,11 +1100,11 @@
     },
     "nodeGroups": [],
     "authors": "no name",
-    "name": "Version 598eae73",
+    "name": "Version 3cff8f4c",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "598eae73-1794-476a-9131-def40a50f746",
+  "activeVersionId": "3cff8f4c-3230-483c-965d-951748f1467e",
   "connections": {
     "Init: Diagram Generator Form": {
       "main": [
@@ -1598,14 +1598,14 @@
             {
               "fieldLabel": "Image Model",
               "fieldType": "dropdown",
-              "defaultValue": "gemini-3.1-flash-image-preview",
+              "defaultValue": "google/gemini-3.1-flash-image",
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "gemini-3.1-flash-image-preview"
+                    "option": "google/gemini-3.1-flash-image"
                   },
                   {
-                    "option": "google/gemini-2.5-flash-image"
+                    "option": "google/gemini-3.1-flash-lite-image"
                   }
                 ]
               }
@@ -1683,7 +1683,7 @@
       "type": "n8n-nodes-base.form",
       "position": [
         1552,
-        -56
+        -64
       ],
       "typeVersion": 2.3,
       "webhookId": "d1a9f3e2-3333-4abc-8def-000000000003"
@@ -1717,7 +1717,7 @@
       "type": "n8n-nodes-base.if",
       "position": [
         1776,
-        -56
+        -64
       ],
       "typeVersion": 2
     },
@@ -1730,7 +1730,7 @@
       "type": "n8n-nodes-base.code",
       "position": [
         2000,
-        -56
+        -64
       ],
       "typeVersion": 2
     },
@@ -1743,7 +1743,7 @@
       "type": "n8n-nodes-base.code",
       "position": [
         2000,
-        136
+        144
       ],
       "typeVersion": 2
     },
@@ -1790,7 +1790,7 @@
       "type": "n8n-nodes-base.form",
       "position": [
         3120,
-        40
+        48
       ],
       "typeVersion": 2.3,
       "webhookId": "d1a9f3e2-4444-4abc-8def-000000000004"
@@ -1824,7 +1824,7 @@
       "type": "n8n-nodes-base.if",
       "position": [
         3344,
-        40
+        48
       ],
       "typeVersion": 2
     },
@@ -2008,7 +2008,7 @@
       "typeVersion": 3.2,
       "position": [
         2224,
-        136
+        144
       ],
       "id": "e8eb6a64-8ca6-48f1-957b-0ec838e64ad6",
       "name": "Merge Prompts"
@@ -2035,7 +2035,7 @@
       "type": "n8n-nodes-base.code",
       "position": [
         2672,
-        40
+        48
       ],
       "typeVersion": 2
     },
@@ -2097,7 +2097,7 @@
       "typeVersion": 1.1,
       "position": [
         2896,
-        40
+        48
       ],
       "id": "f2edf5ca-bd95-4e82-87e4-f869c041f5fc",
       "name": "Insert Temp File"
@@ -2151,7 +2151,7 @@
       "typeVersion": 4.4,
       "position": [
         2448,
-        40
+        48
       ],
       "id": "6a9789a1-f4c1-4563-a2d1-f11f21bf5864",
       "name": "generate_image",
@@ -2173,7 +2173,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        1336,
+        1344,
         240
       ],
       "id": "38a87179-dc5c-480f-b3d4-9bcf2b60533f",
@@ -2193,7 +2193,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        1208,
+        1216,
         240
       ],
       "id": "416334ff-9d98-4120-9d49-c620beaebb4c",
@@ -2223,6 +2223,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-04-30T11:38:38.156Z",
-  "versionId": "598eae73-1794-476a-9131-def40a50f746"
+  "updatedAt": "2026-07-10T17:03:05.102Z",
+  "versionId": "3cff8f4c-3230-483c-965d-951748f1467e"
 }
