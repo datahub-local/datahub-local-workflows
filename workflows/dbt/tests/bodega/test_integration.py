@@ -48,11 +48,15 @@ _INV2 = (
 RAW_ROWS = [_INV1, _INV2]
 
 # Product dimension the dlt enrich step would categorise (silver.bodega.products).
-PRODUCT_COLUMNS = ["description_clean", "supermarket", "category", "subcategory", "is_weighted"]
+# LECHE ENTERA appears twice (the Iceberg filesystem destination downgrades dlt's
+# merge to append): the gold models must dedupe to the latest categorized_at row
+# without fanning out the joined invoice lines.
+PRODUCT_COLUMNS = ["description_clean", "supermarket", "category", "subcategory", "is_weighted", "categorized_at"]
 PRODUCT_ROWS = [
-    ("LECHE ENTERA",   "MERCADONA", "DAIRY_EGGS",        "Milk",  False),
-    ("PAN INTEGRAL",   "MERCADONA", "BAKERY_PASTRY",     "Bread", False),
-    ("MANZANA GOLDEN", "MERCADONA", "FRUITS_VEGETABLES", "Apple", True),
+    ("LECHE ENTERA",   "MERCADONA", "OTHER",             "PARSE_ERROR", False, "2026-01-16T00:00:00+00:00"),
+    ("LECHE ENTERA",   "MERCADONA", "DAIRY_EGGS",        "Milk",  False, "2026-01-17T00:00:00+00:00"),
+    ("PAN INTEGRAL",   "MERCADONA", "BAKERY_PASTRY",     "Bread", False, "2026-01-17T00:00:00+00:00"),
+    ("MANZANA GOLDEN", "MERCADONA", "FRUITS_VEGETABLES", "Apple", True,  "2026-01-17T00:00:00+00:00"),
 ]
 
 ROOT = Path(__file__).parent.parent.parent
@@ -188,12 +192,32 @@ def test_gold_top_products_joins_categories(con):
     assert len(rows) == 3
 
 
+def test_gold_top_products_dedupes_product_dimension(con):
+    # The duplicated LECHE ENTERA product row must neither fan out the join
+    # (inflating spend) nor win with its stale PARSE_ERROR categorisation.
+    count, spent = con.execute(
+        "SELECT COUNT(*), SUM(total_spent) FROM gold.bodega.top_products"
+        " WHERE description_clean = 'LECHE ENTERA'"
+    ).fetchone()
+    assert count == 1
+    assert spent == pytest.approx(1.70 + 2.55)
+
+
 def test_gold_price_trends_keeps_only_repeat_products(con):
     # Only Leche Entera is bought in both invoices (>= 2 line items).
     products = {r[0] for r in con.execute(
         "SELECT DISTINCT description_clean FROM gold.bodega.price_trends"
     ).fetchall()}
     assert products == {"LECHE ENTERA"}
+
+
+def test_gold_price_trends_blended_price(con):
+    # price = total spent / total quantity: (1.70 + 2.55) / (2 + 3) = 0.85 €/unit.
+    row = con.execute(
+        "SELECT price, is_weighted FROM gold.bodega.price_trends WHERE description_clean = 'LECHE ENTERA'"
+    ).fetchone()
+    assert row[0] == pytest.approx(0.85)
+    assert row[1] is False
 
 
 def test_gold_category_spending_in_gold_catalog(con):

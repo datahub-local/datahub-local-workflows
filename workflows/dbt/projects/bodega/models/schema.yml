@@ -60,7 +60,9 @@ models:
           - not_null
 
   - name: price_trends
-    description: "Weekly average unit price per product. Only products bought ≥2 times."
+    description: >
+      Weekly blended price per product (total spent / total quantity: €/kg for
+      weighted products, €/unit otherwise). Only products bought ≥2 times.
     columns:
       - name: description_clean
         tests:
