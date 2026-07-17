@@ -1,7 +1,7 @@
 slice_name: Bodega - Purchase history
 description: Every purchase of the selected product, newest first — quantity, unit
   price (€/kg or €/unit) and total paid. Shows all products until one is clicked
-  above.
+  in the frequent-products table above. Cell clicks here emit no cross-filter.
 viz_type: table
 params:
   datasource: 0__table

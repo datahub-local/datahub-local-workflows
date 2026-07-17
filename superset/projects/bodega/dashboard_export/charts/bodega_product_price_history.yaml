@@ -1,7 +1,7 @@
 slice_name: Bodega - Product price history
 description: Weekly price paid per product and supermarket — €/kg for weighed products,
-  €/unit otherwise. Click a product above to focus it; shows the 5 most-purchased
-  products until one is selected.
+  €/unit otherwise. Click a product in the frequent-products table above to focus
+  it; shows the 5 most-purchased products until one is selected.
 viz_type: echarts_timeseries_line
 params:
   datasource: 0__table

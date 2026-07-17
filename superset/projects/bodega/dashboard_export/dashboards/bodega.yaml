@@ -708,6 +708,78 @@ metadata:
   label_colors: {}
   timed_refresh_immune_slices: []
   cross_filters_enabled: true
+  # Cross-filter emission is disabled (chartsInScope: []) for charts whose clicks
+  # would emit the WRONG filter in Superset 6.1.0:
+  #   - horizontal echarts bars: the series data is transposed to [value, category],
+  #     but EchartsTimeseries.tsx emits props.data[0] as the x-axis cross-filter,
+  #     i.e. the metric VALUE instead of the category (109, 111, 120, 121);
+  #   - raw-mode tables: every cell emits "clicked column = cell value", so a click
+  #     on a price filters by that number (115, 119, 124).
+  # Dashboard hydration RECOMPUTES chartsInScope from crossFilters.scope
+  # (getCrossFiltersConfiguration in dashboard/util/crossFilters.ts), so the
+  # written chartsInScope value is irrelevant at render time — the scope must
+  # itself resolve to nothing: excluded lists EVERY chartId on the dashboard.
+  # The importer (update_cross_filter_scoping) remaps the entry keys, the id
+  # field and the excluded ids by uuid, so the exclusion survives import.
+  # Correct emitters (aggregate tables, vertical/grouped bars, lines with
+  # dimensions) carry no entry and keep the default all-charts scope.
+  chart_configuration:
+    '109':
+      id: 109
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '111':
+      id: 111
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '115':
+      id: 115
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '119':
+      id: 119
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '120':
+      id: 120
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '121':
+      id: 121
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
+    '124':
+      id: 124
+      crossFilters:
+        scope:
+          rootPath:
+          - ROOT_ID
+          excluded: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125]
+        chartsInScope: []
   native_filter_configuration:
   - id: NATIVE_FILTER-bodega-time
     name: Date range

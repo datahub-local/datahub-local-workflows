@@ -1,6 +1,7 @@
 slice_name: Bodega - Top products by total spend
-description: Top 10 in the selected date range. Click a bar to see the product's
-  price and purchase history below.
+description: Top 10 in the selected date range. To drill into a product, click its
+  name in the table on the right (bar clicks are disabled — horizontal bars emit
+  the metric value as cross-filter in Superset 6.1.0).
 viz_type: echarts_timeseries_bar
 params:
   datasource: 0__table
