@@ -1,39 +1,41 @@
-table_name: price_movers
-main_dttm_col: last_week
-description: First vs. last observed blended price (€/kg or €/unit) per repeat product, with percentage change.
+table_name: product_purchases
+main_dttm_col: invoice_date
+description: One row per purchased line item (silver layer), for the Products tab
+  ranking and drill-down. unit_price is €/kg for weighed lines and €/unit otherwise.
 default_endpoint: null
 offset: 0
 cache_timeout: null
 schema: null
 catalog: null
 sql: |-
-  WITH bounds AS (
+  SELECT
+      i.invoice_number,
+      i.invoice_date,
+      i.description_clean,
+      COALESCE(p.category, 'OTHER') AS category,
+      p.subcategory,
+      i.supermarket,
+      i.quantity,
+      i.unit_price,
+      i.total_amount,
+      COALESCE(p.is_weighted, false) AS is_weighted,
+      CASE WHEN COALESCE(p.is_weighted, false) THEN '€/kg' ELSE '€/unit' END
+          AS price_unit
+  FROM silver.bodega.invoice_items i
+  LEFT JOIN (
+      -- products is merge-by-key in dlt but the Iceberg filesystem destination
+      -- falls back to append, so dedupe to the latest categorisation per key
       SELECT
           description_clean,
           supermarket,
-          category,
-          CASE WHEN is_weighted THEN '€/kg' ELSE '€/unit' END AS price_unit,
-          min_by(price, week_start) AS first_price,
-          max_by(price, week_start) AS last_price,
-          MIN(week_start)           AS first_week,
-          MAX(week_start)           AS last_week,
-          SUM(purchase_count)       AS purchases
-      FROM bodega.price_trends
-      GROUP BY description_clean, supermarket, category, is_weighted
-  )
-  SELECT
-      description_clean,
-      supermarket,
-      category,
-      price_unit,
-      purchases,
-      first_week,
-      last_week,
-      first_price,
-      last_price,
-      (last_price - first_price) / first_price * 100 AS change_pct
-  FROM bounds
-  WHERE first_week < last_week
+          max_by(category, categorized_at)    AS category,
+          max_by(subcategory, categorized_at) AS subcategory,
+          max_by(is_weighted, categorized_at) AS is_weighted
+      FROM silver.bodega.products
+      GROUP BY description_clean, supermarket
+  ) p
+      ON  i.description_clean = p.description_clean
+      AND i.supermarket       = p.supermarket
 params: null
 template_params: null
 filter_select_enabled: true
@@ -41,7 +43,7 @@ fetch_values_predicate: null
 extra: null
 normalize_columns: false
 always_filter_main_dttm: false
-uuid: c9a0e3c2-1128-4154-8883-ff8b2ee5bd2e
+uuid: 0c943d64-a79a-4f41-9208-4dc62e74b95e
 metrics:
 - metric_name: count
   verbose_name: COUNT(*)
@@ -51,9 +53,17 @@ metrics:
   d3format: null
   extra: null
   warning_text: null
+- metric_name: price
+  verbose_name: Price (€/kg or €/unit)
+  metric_type: null
+  expression: SUM(total_amount) / NULLIF(SUM(quantity), 0)
+  description: Blended price paid — €/kg for weighed products, €/unit otherwise.
+  d3format: ',.2f'
+  extra: null
+  warning_text: null
 columns:
-- column_name: description_clean
-  verbose_name: Product
+- column_name: invoice_number
+  verbose_name: null
   is_dttm: false
   is_active: true
   type: VARCHAR
@@ -64,8 +74,20 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: supermarket
-  verbose_name: Supermarket
+- column_name: invoice_date
+  verbose_name: Date
+  is_dttm: true
+  is_active: true
+  type: DATE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: description_clean
+  verbose_name: Product
   is_dttm: false
   is_active: true
   type: VARCHAR
@@ -88,8 +110,8 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: price_unit
-  verbose_name: Unit
+- column_name: subcategory
+  verbose_name: Subcategory
   is_dttm: false
   is_active: true
   type: VARCHAR
@@ -100,11 +122,11 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: purchases
-  verbose_name: Purchases
+- column_name: supermarket
+  verbose_name: Supermarket
   is_dttm: false
   is_active: true
-  type: BIGINT
+  type: VARCHAR
   advanced_data_type: null
   groupby: true
   filterable: true
@@ -112,35 +134,47 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: first_week
+- column_name: quantity
+  verbose_name: Qty
+  is_dttm: false
+  is_active: true
+  type: DOUBLE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: unit_price
+  verbose_name: Unit price
+  is_dttm: false
+  is_active: true
+  type: DOUBLE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: total_amount
+  verbose_name: Total
+  is_dttm: false
+  is_active: true
+  type: DOUBLE
+  advanced_data_type: null
+  groupby: true
+  filterable: true
+  expression: null
+  description: null
+  python_date_format: null
+  extra: null
+- column_name: is_weighted
   verbose_name: null
-  is_dttm: true
-  is_active: true
-  type: DATE
-  advanced_data_type: null
-  groupby: true
-  filterable: true
-  expression: null
-  description: null
-  python_date_format: null
-  extra: null
-- column_name: last_week
-  verbose_name: null
-  is_dttm: true
-  is_active: true
-  type: DATE
-  advanced_data_type: null
-  groupby: true
-  filterable: true
-  expression: null
-  description: null
-  python_date_format: null
-  extra: null
-- column_name: first_price
-  verbose_name: First price
   is_dttm: false
   is_active: true
-  type: DOUBLE
+  type: BOOLEAN
   advanced_data_type: null
   groupby: true
   filterable: true
@@ -148,23 +182,11 @@ columns:
   description: null
   python_date_format: null
   extra: null
-- column_name: last_price
-  verbose_name: Last price
+- column_name: price_unit
+  verbose_name: Unit
   is_dttm: false
   is_active: true
-  type: DOUBLE
-  advanced_data_type: null
-  groupby: true
-  filterable: true
-  expression: null
-  description: null
-  python_date_format: null
-  extra: null
-- column_name: change_pct
-  verbose_name: Change %
-  is_dttm: false
-  is_active: true
-  type: DOUBLE
+  type: VARCHAR
   advanced_data_type: null
   groupby: true
   filterable: true

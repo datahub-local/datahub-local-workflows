@@ -1,0 +1,36 @@
+slice_name: Bodega - Product price history
+description: Weekly price paid per product and supermarket — €/kg for weighed products,
+  €/unit otherwise. Click a product above to focus it; shows the 5 most-purchased
+  products until one is selected.
+viz_type: echarts_timeseries_line
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_line
+  x_axis: invoice_date
+  time_grain_sqla: P1W
+  metrics:
+  - price
+  groupby:
+  - description_clean
+  - supermarket
+  series_limit: 5
+  series_limit_metric:
+    expressionType: SIMPLE
+    aggregate: COUNT_DISTINCT
+    column:
+      column_name: invoice_number
+      type: VARCHAR
+    hasCustomLabel: true
+    label: Purchases
+    optionName: metric_bodega_prod_hist_limit
+  markerEnabled: true
+  markerSize: 4
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: ',.2f'
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: e064e636-18dc-4d2e-ba6b-335e6709c22a
+version: 1.0.0
+dataset_uuid: 0c943d64-a79a-4f41-9208-4dc62e74b95e

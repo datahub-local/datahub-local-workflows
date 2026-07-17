@@ -1,0 +1,40 @@
+slice_name: Bodega - Staple prices (€/unit)
+description: Weekly price per unit of the most-purchased packaged staples. Repeat
+  purchases only, top 5 by purchase count.
+viz_type: echarts_timeseries_line
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_line
+  x_axis: week_start
+  time_grain_sqla: P1W
+  metrics:
+  - price
+  groupby:
+  - description_clean
+  adhoc_filters:
+  - clause: WHERE
+    expressionType: SIMPLE
+    subject: is_weighted
+    operator: ==
+    operatorId: EQUALS
+    comparator: false
+  series_limit: 5
+  series_limit_metric:
+    expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: purchase_count
+      type: BIGINT
+    hasCustomLabel: true
+    label: Purchases
+    optionName: metric_bodega_staple_unit_limit
+  markerEnabled: false
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: ',.2f'
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: 5bf9f711-4c25-470b-9f85-65fc2e8caab7
+version: 1.0.0
+dataset_uuid: c947daad-ec3b-4496-acd8-133feb508668

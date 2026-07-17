@@ -1,0 +1,40 @@
+slice_name: Bodega - Staple prices (€/kg)
+description: Weekly price per kilogram of the most-purchased weighed staples (fruit,
+  vegetables, meat…). Repeat purchases only, top 5 by purchase count.
+viz_type: echarts_timeseries_line
+params:
+  datasource: 0__table
+  viz_type: echarts_timeseries_line
+  x_axis: week_start
+  time_grain_sqla: P1W
+  metrics:
+  - price
+  groupby:
+  - description_clean
+  adhoc_filters:
+  - clause: WHERE
+    expressionType: SIMPLE
+    subject: is_weighted
+    operator: ==
+    operatorId: EQUALS
+    comparator: true
+  series_limit: 5
+  series_limit_metric:
+    expressionType: SIMPLE
+    aggregate: SUM
+    column:
+      column_name: purchase_count
+      type: BIGINT
+    hasCustomLabel: true
+    label: Purchases
+    optionName: metric_bodega_staple_kg_limit
+  markerEnabled: false
+  show_legend: true
+  rich_tooltip: true
+  y_axis_format: ',.2f'
+  time_range: No filter
+query_context: null
+cache_timeout: null
+uuid: b420cdf4-b5e3-44ff-be21-8d713ba776ca
+version: 1.0.0
+dataset_uuid: c947daad-ec3b-4496-acd8-133feb508668

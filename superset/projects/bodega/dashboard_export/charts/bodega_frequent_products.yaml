@@ -1,27 +1,64 @@
 slice_name: Bodega - Most frequently bought
-description: Staples ranked by the number of shopping trips they appear in.
+description: Products ranked by the number of shopping trips they appear in. Click
+  a product (first column) to see its price and purchase history below; the other
+  columns are aggregate metrics, so a click on them never emits a stray cross-filter.
 viz_type: table
 params:
   datasource: 0__table
   viz_type: table
-  query_mode: raw
-  all_columns:
+  query_mode: aggregate
+  groupby:
   - description_clean
-  - category
-  - purchase_count
-  - avg_unit_price
-  - last_purchased_date
-  order_by_cols:
-  - '["purchase_count", false]'
-  row_limit: 15
+  metrics:
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: category
+      type: VARCHAR
+    hasCustomLabel: true
+    label: Category
+    optionName: metric_bodega_freq_category
+  - expressionType: SIMPLE
+    aggregate: COUNT_DISTINCT
+    column:
+      column_name: invoice_number
+      type: VARCHAR
+    hasCustomLabel: true
+    label: Purchases
+    optionName: metric_bodega_freq_purchases
+  - price
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: price_unit
+      type: VARCHAR
+    hasCustomLabel: true
+    label: Unit
+    optionName: metric_bodega_freq_unit
+  - expressionType: SIMPLE
+    aggregate: MAX
+    column:
+      column_name: invoice_date
+      type: DATE
+    hasCustomLabel: true
+    label: Last bought
+    optionName: metric_bodega_freq_last
+  timeseries_limit_metric:
+    expressionType: SIMPLE
+    aggregate: COUNT_DISTINCT
+    column:
+      column_name: invoice_number
+      type: VARCHAR
+    hasCustomLabel: true
+    label: Most purchases first
+    optionName: metric_bodega_freq_sort
+  order_desc: true
+  row_limit: 500
   server_page_length: 15
-  column_config:
-    avg_unit_price:
-      d3NumberFormat: ',.2f'
   table_timestamp_format: smart_date
   time_range: No filter
 query_context: null
 cache_timeout: null
 uuid: ada5ccac-19af-40c1-b369-1e6e2ca3f11c
 version: 1.0.0
-dataset_uuid: 4d176c08-d0fb-441a-a99e-9d9e55932ce4
+dataset_uuid: 0c943d64-a79a-4f41-9208-4dc62e74b95e

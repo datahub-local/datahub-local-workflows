@@ -1,5 +1,6 @@
 slice_name: Bodega - Top products by total spend
-description: All-time ranking, top 10.
+description: Top 10 in the selected date range. Click a bar to see the product's
+  price and purchase history below.
 viz_type: echarts_timeseries_bar
 params:
   datasource: 0__table
@@ -9,8 +10,9 @@ params:
   - expressionType: SIMPLE
     aggregate: SUM
     column:
-      column_name: total_spent
+      column_name: total_amount
       type: DOUBLE
+    hasCustomLabel: true
     label: Total spent
     optionName: metric_bodega_top_spend
   orientation: horizontal
@@ -28,4 +30,4 @@ query_context: null
 cache_timeout: null
 uuid: 770e0ef5-bf54-4c05-b637-a0dd4d362933
 version: 1.0.0
-dataset_uuid: 4d176c08-d0fb-441a-a99e-9d9e55932ce4
+dataset_uuid: 0c943d64-a79a-4f41-9208-4dc62e74b95e

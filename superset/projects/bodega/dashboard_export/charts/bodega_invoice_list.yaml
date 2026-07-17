@@ -44,7 +44,7 @@ params:
     label: Newest first
     optionName: metric_invoice_sort
   order_desc: true
-  row_limit: 500
+  row_limit: 2000
   server_page_length: 15
   column_config:
     Total:

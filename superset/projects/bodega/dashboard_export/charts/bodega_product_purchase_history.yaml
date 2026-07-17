@@ -1,25 +1,24 @@
-slice_name: Bodega - Invoice line items
-description: Line items of the invoice(s) selected in the Invoice filter, in receipt order.
+slice_name: Bodega - Purchase history
+description: Every purchase of the selected product, newest first — quantity, unit
+  price (€/kg or €/unit) and total paid. Shows all products until one is clicked
+  above.
 viz_type: table
 params:
   datasource: 0__table
   viz_type: table
   query_mode: raw
   all_columns:
-  - item_position
+  - invoice_date
   - description_clean
-  - category
-  - subcategory
+  - supermarket
   - quantity
-  - unit
   - unit_price
+  - price_unit
   - total_amount
   order_by_cols:
   - '["invoice_date", false]'
-  - '["invoice_number", true]'
-  - '["item_position", true]'
   row_limit: 5000
-  server_page_length: 25
+  server_page_length: 15
   column_config:
     quantity:
       d3NumberFormat: ',.3~f'
@@ -31,6 +30,6 @@ params:
   time_range: No filter
 query_context: null
 cache_timeout: null
-uuid: a9342f90-32b2-4f05-86b8-eafac355c703
+uuid: 11d75b93-cca0-45de-ab11-d5382c6d634e
 version: 1.0.0
-dataset_uuid: 2fcc3db9-6666-4c13-a7c7-69acc7e3a976
+dataset_uuid: 0c943d64-a79a-4f41-9208-4dc62e74b95e

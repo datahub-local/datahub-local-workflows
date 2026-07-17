@@ -1,5 +1,5 @@
 slice_name: Bodega - Biggest price moves
-description: First vs. last observed average unit price; repeat purchases only.
+description: First vs. last observed price (€/kg or €/unit); repeat purchases only.
 viz_type: table
 params:
   datasource: 0__table
@@ -9,13 +9,14 @@ params:
   - description_clean
   - category
   - supermarket
+  - price_unit
   - purchases
   - first_price
   - last_price
   - change_pct
   order_by_cols:
   - '["change_pct", false]'
-  row_limit: 20
+  row_limit: 500
   server_page_length: 20
   column_config:
     first_price:

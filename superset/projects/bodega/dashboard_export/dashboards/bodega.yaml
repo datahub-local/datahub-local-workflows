@@ -299,6 +299,7 @@ position:
     - TABS-bodega
     children:
     - ROW-products
+    - ROW-products-detail
     meta:
       text: Products
       defaultText: Tab title
@@ -348,6 +349,51 @@ position:
     - CHART-frequent
     meta:
       background: BACKGROUND_TRANSPARENT
+  CHART-product-price-history:
+    type: CHART
+    id: CHART-product-price-history
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    - ROW-products-detail
+    children: []
+    meta:
+      chartId: 123
+      uuid: e064e636-18dc-4d2e-ba6b-335e6709c22a
+      width: 6
+      height: 50
+      sliceName: Bodega - Product price history
+  CHART-product-purchases:
+    type: CHART
+    id: CHART-product-purchases
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    - ROW-products-detail
+    children: []
+    meta:
+      chartId: 124
+      uuid: 11d75b93-cca0-45de-ab11-d5382c6d634e
+      width: 6
+      height: 50
+      sliceName: Bodega - Purchase history
+  ROW-products-detail:
+    type: ROW
+    id: ROW-products-detail
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-products
+    children:
+    - CHART-product-price-history
+    - CHART-product-purchases
+    meta:
+      background: BACKGROUND_TRANSPARENT
   TAB-prices:
     type: TAB
     id: TAB-prices
@@ -362,9 +408,9 @@ position:
       text: Prices
       defaultText: Tab title
       placeholder: Tab title
-  CHART-price-index:
+  CHART-staple-prices-kg:
     type: CHART
-    id: CHART-price-index
+    id: CHART-staple-prices-kg
     parents:
     - ROOT_ID
     - GRID_ID
@@ -374,10 +420,26 @@ position:
     children: []
     meta:
       chartId: 113
-      uuid: 1623d781-e9bc-4975-867b-7d7f8f7b7b29
-      width: 8
+      uuid: b420cdf4-b5e3-44ff-be21-8d713ba776ca
+      width: 4
       height: 50
-      sliceName: Bodega - Staple price index
+      sliceName: Bodega - Staple prices (€/kg)
+  CHART-staple-prices-unit:
+    type: CHART
+    id: CHART-staple-prices-unit
+    parents:
+    - ROOT_ID
+    - GRID_ID
+    - TABS-bodega
+    - TAB-prices
+    - ROW-prices-charts
+    children: []
+    meta:
+      chartId: 125
+      uuid: 5bf9f711-4c25-470b-9f85-65fc2e8caab7
+      width: 4
+      height: 50
+      sliceName: Bodega - Staple prices (€/unit)
   CHART-basket-index:
     type: CHART
     id: CHART-basket-index
@@ -393,7 +455,7 @@ position:
       uuid: 18db84a0-6e03-4cdf-92d6-f572a9d4fdda
       width: 4
       height: 50
-      sliceName: Bodega - Basket price index
+      sliceName: Bodega - Staples vs first purchase
   ROW-prices-charts:
     type: ROW
     id: ROW-prices-charts
@@ -403,7 +465,8 @@ position:
     - TABS-bodega
     - TAB-prices
     children:
-    - CHART-price-index
+    - CHART-staple-prices-kg
+    - CHART-staple-prices-unit
     - CHART-basket-index
     meta:
       background: BACKGROUND_TRANSPARENT

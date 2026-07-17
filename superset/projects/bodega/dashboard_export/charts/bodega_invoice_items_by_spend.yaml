@@ -1,5 +1,5 @@
 slice_name: Bodega - Invoice items by spend
-description: Line items of the selected invoice ranked by amount, top 15.
+description: Line items of the selected invoice ranked by amount.
 viz_type: echarts_timeseries_bar
 params:
   datasource: 0__table
@@ -22,7 +22,7 @@ params:
   currency_format:
     symbol: EUR
     symbolPosition: prefix
-  row_limit: 15
+  row_limit: 500
   time_range: No filter
 query_context: null
 cache_timeout: null

@@ -7,8 +7,8 @@ Six-tab Superset dashboard over the bodega dbt gold layer
 |---|---|---|
 | Overview | 4 KPI tiles (spent, trips, avg basket, items) · weekly spend line · avg basket by weekday · monthly spend stacked by supermarket | `spending_by_day`, `spending_by_week` |
 | Categories | monthly spend stacked by category · category totals (horizontal bar) · top subcategories table | `category_spending` |
-| Products | top products by spend (horizontal bar) · most frequently bought table | `top_products` |
-| Prices | staple price index line (top 5 by purchases) · basket price index KPI · biggest price moves table | `price_index`, `price_movers` (virtual) |
+| Products | top products by spend (horizontal bar) · most frequently bought table · product price history line · purchase history table (drill-down via product click) | `product_purchases` (virtual) |
+| Prices | staple prices €/kg line · staple prices €/unit line · staples-vs-first-purchase KPI · biggest price moves table | `price_trends`, `price_index`, `price_movers` (virtual) |
 | Taxes | monthly VAT stacked by rate · VAT totals table | `tax_summary` |
 | Invoices | invoice list table · one-row invoice summary table · line-items table · items by spend (horizontal bar) · spend by category (horizontal bar) | `invoice_list`, `invoice_lines` (virtual) |
 
@@ -40,10 +40,17 @@ default CSP (`script-src` without `'unsafe-eval'`) blocks.
 
 Notes:
 
-- `price_index` and `price_movers` are **virtual datasets** over
-  `gold.bodega.price_trends`: unit prices span an order of magnitude across
-  products, so trends are indexed to 100 at each product's first observed week
-  instead of plotted on raw axes.
+- Prices are the blended `price` column of `gold.bodega.price_trends`
+  (`total spent / total quantity`): receipts print €/kg for weighed lines and
+  €/unit otherwise, so the two staple-price charts split on `is_weighted` (LLM
+  enrichment) to keep each axis in one dimension. `price_index` and
+  `price_movers` are **virtual datasets** over the same table: the KPI indexes
+  each product to 100 at its first observed week, the movers table compares
+  first vs. last observed price.
+- The Products tab mirrors the Invoices drill-down: the frequent-products table
+  runs in aggregate mode (`description_clean` is the only clickable dimension)
+  and the top-products bar emits the same column, so clicking either filters
+  the price/purchase-history charts below via cross-filtering.
 - The `weekday` column on `spending_by_day` is a calculated column
   (`'1 Mon' … '7 Sun'`) so weekday bars sort chronologically.
 - The average basket metric is `SUM(total_amount) / SUM(invoice_count)` — never

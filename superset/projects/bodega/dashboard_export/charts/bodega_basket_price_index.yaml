@@ -1,5 +1,6 @@
-slice_name: Bodega - Basket price index
-description: Average price index across all repeat products (100 = first observed price).
+slice_name: Bodega - Staples vs first purchase
+description: How much your staples cost now relative to when each was first bought
+  (100 = unchanged, 110 = 10% more expensive). Average across all repeat products.
 viz_type: big_number
 params:
   datasource: 0__table
@@ -12,7 +13,8 @@ params:
     column:
       column_name: price_index
       type: DOUBLE
-    label: Basket price index
+    hasCustomLabel: true
+    label: Staples vs first purchase
     optionName: metric_bodega_basket_idx
   show_trend_line: true
   start_y_axis_at_zero: false
