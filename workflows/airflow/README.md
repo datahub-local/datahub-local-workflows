@@ -1,7 +1,7 @@
 # Airflow DAGs
 
 Airflow DAGs that orchestrate the dbt and dlt pipelines via Kubernetes pods. Each task runs
-the corresponding image (`datahub-local-workflows-dbt` or `datahub-local-workflows-dlt`) as a
+the corresponding image (`datahub-local-ai-dbt` or `datahub-local-ai-dlt`) as a
 `KubernetesPodOperator` in the `data` namespace.
 
 ## Structure
@@ -18,7 +18,7 @@ workflows/airflow/
     tasks/              unit tests for dbt and dlt
     test_pi_dag.py      DAG structure and task arguments for pi
     test_example_db_dag.py  DAG structure, task ordering, and arguments for example_db
-  pyproject.toml        package: datahub-local-workflows-airflow
+  pyproject.toml        package: datahub-local-ai-airflow
 ```
 
 **DAGs are one file per pipeline** — each file is self-contained and simple to read.

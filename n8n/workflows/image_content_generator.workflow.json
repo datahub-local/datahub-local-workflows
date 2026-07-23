@@ -52,7 +52,7 @@
               {
                 "id": "assign-003",
                 "name": "githubRepo",
-                "value": "=datahub-local-workflows",
+                "value": "=datahub-local-ai",
                 "type": "string"
               },
               {
@@ -1477,7 +1477,7 @@
             {
               "id": "assign-003",
               "name": "githubRepo",
-              "value": "=datahub-local-workflows",
+              "value": "=datahub-local-ai",
               "type": "string"
             },
             {

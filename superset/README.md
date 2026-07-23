@@ -58,12 +58,12 @@ superset/
    apiVersion: argoproj.io/v1alpha1
    kind: Application
    metadata:
-     name: datahub-local-workflows-superset
+     name: datahub-local-ai-superset
      namespace: automation
    spec:
      project: namespace-automation
      source:
-       repoURL: https://github.com/datahub-local/datahub-local-workflows.git
+       repoURL: https://github.com/datahub-local/datahub-local-ai.git
        targetRevision: HEAD
        path: "superset/release/"
      destination:

@@ -53,6 +53,6 @@ jobs:
           context: workflows/dlt
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/datahub-local/datahub-local-workflows-dlt:main
+          tags: ghcr.io/datahub-local/datahub-local-ai-dlt:main
           cache-from: type=gha
           cache-to: type=gha,mode=max

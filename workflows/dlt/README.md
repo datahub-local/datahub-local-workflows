@@ -1,6 +1,6 @@
 # dlt Pipelines
 
-[dlt](https://dlthub.com) ingest/export pipelines for `datahub-local-workflows`. Handles the
+[dlt](https://dlthub.com) ingest/export pipelines for `datahub-local-ai`. Handles the
 data movement *around* dbt — loading source data into bronze and exporting dbt-built tables.
 
 - **ingest** — loads the automotive CSV into `bronze.example_db.automotive_source`, which dbt reads as a source.
@@ -22,21 +22,21 @@ workflows/dlt/
     example_db/       integration test (local DuckDB ingest + export end-to-end)
     test_config.py    config unit tests
   Dockerfile
-  pyproject.toml      package: datahub-local-workflows-dlt
+  pyproject.toml      package: datahub-local-ai-dlt
 ```
 
 ## Pipelines
 
-| Pipeline | Ingest source | Export destination | Notes |
-|---|---|---|---|
+| Pipeline     | Ingest source                      | Export destination            | Notes                            |
+| ------------ | ---------------------------------- | ----------------------------- | -------------------------------- |
 | `example_db` | Automotive CSV (URL or local file) | Postgres / DuckDB export file | Only pipeline with ingest+export |
 
 ## Targets
 
-| Target | Ingest destination | Export destination | Staging |
-|---|---|---|---|
-| `homelab` (default) | Iceberg via Apache Polaris REST + S3 (Garage) | Postgres | Parquet in temp bucket |
-| `local` | `bronze.duckdb` (same file dbt reads) | `export.duckdb` | — |
+| Target              | Ingest destination                            | Export destination | Staging                |
+| ------------------- | --------------------------------------------- | ------------------ | ---------------------- |
+| `homelab` (default) | Iceberg via Apache Polaris REST + S3 (Garage) | Postgres           | Parquet in temp bucket |
+| `local`             | `bronze.duckdb` (same file dbt reads)         | `export.duckdb`    | —                      |
 
 The local DuckDB files are the **same files the dbt `local` target uses** (`DBT_DUCKDB_*`), so
 `dlt ingest → dbt build → dlt export` works without any external services.
@@ -73,21 +73,21 @@ uv run ruff check .
 
 ```bash
 cd workflows/dlt
-docker build -t datahub-local-workflows-dlt .
-docker run --rm -e DBT_DUCKDB_DIR=/data datahub-local-workflows-dlt \
+docker build -t datahub-local-ai-dlt .
+docker run --rm -e DBT_DUCKDB_DIR=/data datahub-local-ai-dlt \
   --pipeline ingest --project example_db --target local
 ```
 
 ## Environment variables
 
-| Variable | Default | Used by |
-|---|---|---|
-| `EXAMPLE_DB_SOURCE_URL` | automotive CSV on GitHub | ingest |
-| `DLT_TEMP_BUCKET` | `datahub-local-temp` | ingest (homelab) |
-| `ICEBERG_CATALOG_URI` | `http://datahub-local-core-data-polaris:8181/api/catalog` | ingest (homelab) |
-| `S3_ENDPOINT` / `S3_ACCESS_KEY` / `S3_SECRET_KEY` | Garage endpoint / — | ingest (homelab) |
-| `TRINO_HOST` / `TRINO_PORT` / `TRINO_USER` | `datahub-local-core-data-trino` / `8080` / `dbt` | export (homelab) |
-| `EXAMPLE_DB_URL` / `EXAMPLE_DB_USER` / `EXAMPLE_DB_PASSWORD` | — | export (homelab) |
-| `EXAMPLE_DB_SCHEMA` | `public` | export |
-| `DBT_DUCKDB_DIR` / `DBT_DUCKDB_*` | `/tmp/duckdb` | local |
-| `DLT_EXPORT_DUCKDB_PATH` | `<dir>/export.duckdb` | export (local) |
+| Variable                                                     | Default                                                   | Used by          |
+| ------------------------------------------------------------ | --------------------------------------------------------- | ---------------- |
+| `EXAMPLE_DB_SOURCE_URL`                                      | automotive CSV on GitHub                                  | ingest           |
+| `DLT_TEMP_BUCKET`                                            | `datahub-local-temp`                                      | ingest (homelab) |
+| `ICEBERG_CATALOG_URI`                                        | `http://datahub-local-core-data-polaris:8181/api/catalog` | ingest (homelab) |
+| `S3_ENDPOINT` / `S3_ACCESS_KEY` / `S3_SECRET_KEY`            | Garage endpoint / —                                       | ingest (homelab) |
+| `TRINO_HOST` / `TRINO_PORT` / `TRINO_USER`                   | `datahub-local-core-data-trino` / `8080` / `dbt`          | export (homelab) |
+| `EXAMPLE_DB_URL` / `EXAMPLE_DB_USER` / `EXAMPLE_DB_PASSWORD` | —                                                         | export (homelab) |
+| `EXAMPLE_DB_SCHEMA`                                          | `public`                                                  | export           |
+| `DBT_DUCKDB_DIR` / `DBT_DUCKDB_*`                            | `/tmp/duckdb`                                             | local            |
+| `DLT_EXPORT_DUCKDB_PATH`                                     | `<dir>/export.duckdb`                                     | export (local)   |

@@ -26,7 +26,7 @@ workflows/<tool>/
     <project>/            tests grouped by project
     test_<cross>.py       cross-project tests stay at the tests/ root
   Dockerfile
-  pyproject.toml          name: datahub-local-workflows-<tool>
+  pyproject.toml          name: datahub-local-ai-<tool>
   README.md
 ```
 
@@ -35,13 +35,13 @@ Both `dbt` and `dlt` use a `src/` layout with a `projects/` directory:
 - **dbt**: `src/dbt_runner/` is the only Python package; `projects/example_db/`, `projects/pi/`, `projects/bodega/` are SQL+YAML dbt projects (not Python packages).
 - **dlt**: `src/dlt_runner/` is the runner; `projects/example_db/` and `projects/bodega/` are Python pipeline packages installed via hatchling.
 
-| What | Convention | Examples |
-|---|---|---|
-| Package name | `datahub-local-workflows-<tool>` | `datahub-local-workflows-dbt` |
-| Python runner module | `<tool>_runner` | `dbt_runner`, `dlt_runner` |
-| Container entry point | `python -m <tool>_runner` | `ENTRYPOINT ["python", "-m", "dbt_runner"]` |
-| Project dir | lowercase, underscores | `example_db`, `pi` |
-| Test subdirs | per-project, mirroring source | `tests/example_db/`, `tests/pi/` |
+| What                  | Convention                    | Examples                                    |
+| --------------------- | ----------------------------- | ------------------------------------------- |
+| Package name          | `datahub-local-ai-<tool>`     | `datahub-local-ai-dbt`                      |
+| Python runner module  | `<tool>_runner`               | `dbt_runner`, `dlt_runner`                  |
+| Container entry point | `python -m <tool>_runner`     | `ENTRYPOINT ["python", "-m", "dbt_runner"]` |
+| Project dir           | lowercase, underscores        | `example_db`, `pi`                          |
+| Test subdirs          | per-project, mirroring source | `tests/example_db/`, `tests/pi/`            |
 
 ## Commands
 
@@ -100,10 +100,10 @@ uv run pytest tests/tasks/test_dlt.py  # single file
 
 dbt models run identical `database.schema.table` SQL on both engines:
 
-| Target | dbt engine | dlt ingest / export | When to use |
-|--------|------------|---------------------|-------------|
-| `homelab` (default) | Trino on Kubernetes (Iceberg over Apache Polaris REST + S3) | Iceberg via Apache Polaris REST / Postgres | Production / CI |
-| `local` | DuckDB (one file per catalog) | DuckDB files / DuckDB export file | Local dev — no external infra |
+| Target              | dbt engine                                                  | dlt ingest / export                        | When to use                   |
+| ------------------- | ----------------------------------------------------------- | ------------------------------------------ | ----------------------------- |
+| `homelab` (default) | Trino on Kubernetes (Iceberg over Apache Polaris REST + S3) | Iceberg via Apache Polaris REST / Postgres | Production / CI               |
+| `local`             | DuckDB (one file per catalog)                               | DuckDB files / DuckDB export file          | Local dev — no external infra |
 
 dbt is **stateless** — no plan/apply or state store. All models are `materialized='table'`.
 
@@ -140,7 +140,7 @@ Trino and DuckDB both have real catalogs, so each medallion layer is its own cat
 
 - `dags/tasks/dbt.py` — `DbtTaskConfig` + `create_dbt_task` (dbt image, `python -m dbt_runner`). The shared `build_pod_env_vars` / `build_pod_resources` and the `SecretEnvVarRef`/`ConfigMapEnvVarRef` dataclasses live here. Pod env is just the explicit env/secret/configmap refs — the pods only need to connect to Trino/Postgres/S3.
 - `dags/tasks/dlt.py` — `DltTaskConfig` + `create_dlt_task` (dlt image, `python -m dlt_runner`), reusing the dbt builders.
-- Images: `ghcr.io/datahub-local/datahub-local-workflows-dbt:main` and `...-dlt:main`.
+- Images: `ghcr.io/datahub-local/datahub-local-ai-dbt:main` and `...-dlt:main`.
 
 ### Test structure
 

@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "datahub-local-workflows-dlt"
+name = "datahub-local-ai-dlt"
 version = "0.1.0"
-description = "dlt ingest/export pipelines for datahub-local-workflows (Iceberg/Polaris + Postgres, DuckDB local)"
+description = "dlt ingest/export pipelines for datahub-local-ai (Iceberg/Polaris + Postgres, DuckDB local)"
 requires-python = ">=3.13"
 
 dependencies = [

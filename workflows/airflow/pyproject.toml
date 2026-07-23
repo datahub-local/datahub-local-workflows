@@ -1,7 +1,7 @@
 [project]
-name = "datahub-local-workflows-airflow"
+name = "datahub-local-ai-airflow"
 version = "0.1.0"
-description = "Airflow project skeleton for datahub-local-workflows"
+description = "Airflow project skeleton for datahub-local-ai"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 

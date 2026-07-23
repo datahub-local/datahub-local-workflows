@@ -3,7 +3,7 @@ name: Test Workflows
 on:
   pull_request:
     paths:
-      - ".github/workflows/test-workflows.yaml"
+      - ".github/workflows/test-ai.yaml"
       - "workflows/airflow/**"
       - "workflows/dbt/**"
       - "workflows/dlt/**"
@@ -11,7 +11,7 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/test-workflows.yaml"
+      - ".github/workflows/test-ai.yaml"
       - "workflows/airflow/**"
       - "workflows/dbt/**"
       - "workflows/dlt/**"
@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: test-workflows-${{ github.workflow }}-${{ github.ref }}
+  group: test-ai-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

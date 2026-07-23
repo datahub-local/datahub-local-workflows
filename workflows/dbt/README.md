@@ -1,6 +1,6 @@
 # dbt Core Pipelines
 
-dbt Core transformation pipelines for `datahub-local-workflows`. Runs on **Trino** (homelab,
+dbt Core transformation pipelines for `datahub-local-ai`. Runs on **Trino** (homelab,
 Iceberg over Apache Polaris) or **DuckDB** (local). CSV ingestion and reverse-ETL export are handled
 by the separate [`../dlt`](../dlt) pipelines, not by dbt.
 
@@ -15,22 +15,22 @@ workflows/dbt/
     example_db/       integration test (seeds bronze, runs dbt build, asserts tables)
     pi/               structural / parse tests
   Dockerfile
-  pyproject.toml      package: datahub-local-workflows-dbt
+  pyproject.toml      package: datahub-local-ai-dbt
 ```
 
 ## Pipelines
 
-| Pipeline | Description | Targets |
-|---|---|---|
-| `example_db` | Automotive dataset — bronze → silver → gold medallion | `homelab`, `local` |
-| `pi` | Monte Carlo π estimation (DuckDB/Trino adapter-dispatched) | `homelab`, `local` |
+| Pipeline     | Description                                                | Targets            |
+| ------------ | ---------------------------------------------------------- | ------------------ |
+| `example_db` | Automotive dataset — bronze → silver → gold medallion      | `homelab`, `local` |
+| `pi`         | Monte Carlo π estimation (DuckDB/Trino adapter-dispatched) | `homelab`, `local` |
 
 ## Targets
 
-| Target | Engine | Catalogs | Use case |
-|---|---|---|---|
-| `homelab` (default) | Trino on Kubernetes (Iceberg over Apache Polaris REST + S3) | Polaris catalogs | Production / CI |
-| `local` | DuckDB (one file per catalog) | Attached DuckDB files | Local dev — no external infra |
+| Target              | Engine                                                      | Catalogs              | Use case                      |
+| ------------------- | ----------------------------------------------------------- | --------------------- | ----------------------------- |
+| `homelab` (default) | Trino on Kubernetes (Iceberg over Apache Polaris REST + S3) | Polaris catalogs      | Production / CI               |
+| `local`             | DuckDB (one file per catalog)                               | Attached DuckDB files | Local dev — no external infra |
 
 `database.schema.table` resolves identically on both engines.
 
@@ -70,36 +70,36 @@ uv run ruff check .
 
 ```bash
 cd workflows/dbt
-docker build -t datahub-local-workflows-dbt .
-docker run --rm datahub-local-workflows-dbt --project pi --target local
+docker build -t datahub-local-ai-dbt .
+docker run --rm datahub-local-ai-dbt --project pi --target local
 ```
 
 ## Environment variables
 
 ### `homelab` target (Trino)
 
-| Variable | Default | Description |
-|---|---|---|
+| Variable     | Default                         | Description            |
+| ------------ | ------------------------------- | ---------------------- |
 | `TRINO_HOST` | `datahub-local-core-data-trino` | Trino coordinator host |
-| `TRINO_PORT` | `8080` | Trino coordinator port |
-| `TRINO_USER` | `dbt` | Trino user |
+| `TRINO_PORT` | `8080`                          | Trino coordinator port |
+| `TRINO_USER` | `dbt`                           | Trino user             |
 
 ### `local` target (DuckDB)
 
-| Variable | Default | Description |
-|---|---|---|
-| `DBT_DUCKDB_PATH` | `/tmp/duckdb/bronze.duckdb` | bronze catalog file (example_db) |
+| Variable                 | Default                     | Description                      |
+| ------------------------ | --------------------------- | -------------------------------- |
+| `DBT_DUCKDB_PATH`        | `/tmp/duckdb/bronze.duckdb` | bronze catalog file (example_db) |
 | `DBT_DUCKDB_SILVER_PATH` | `/tmp/duckdb/silver.duckdb` | silver catalog file (example_db) |
-| `DBT_DUCKDB_GOLD_PATH` | `/tmp/duckdb/gold.duckdb` | gold catalog file (example_db) |
-| `DBT_DUCKDB_PI_PATH` | `/tmp/duckdb/test.duckdb` | test catalog file (pi) |
+| `DBT_DUCKDB_GOLD_PATH`   | `/tmp/duckdb/gold.duckdb`   | gold catalog file (example_db)   |
+| `DBT_DUCKDB_PI_PATH`     | `/tmp/duckdb/test.duckdb`   | test catalog file (pi)           |
 
 ### `pi` pipeline extras
 
-| Variable | Default | Description |
-|---|---|---|
-| `PI_PARTITIONS` | `500` | Outer grid dimension |
-| `PI_SAMPLES_PER_PARTITION` | `100000` | Inner grid dimension (× partitions) |
-| `PI_RANDOM_SEED` | `7` | Carried as a column (engine `random()` is unseeded) |
+| Variable                   | Default  | Description                                         |
+| -------------------------- | -------- | --------------------------------------------------- |
+| `PI_PARTITIONS`            | `500`    | Outer grid dimension                                |
+| `PI_SAMPLES_PER_PARTITION` | `100000` | Inner grid dimension (× partitions)                 |
+| `PI_RANDOM_SEED`           | `7`      | Carried as a column (engine `random()` is unseeded) |
 
 ## Medallion catalogs (example_db)
 

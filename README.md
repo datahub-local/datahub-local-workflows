@@ -1,4 +1,4 @@
-# datahub-local-workflows
+# datahub-local-ai
 
 This repository serves as a centralized collection of workflow definitions for use with Datahub.local and related tools. It is designed to organize, version, and share workflows that automate or orchestrate data processes in local or development environments.
 
